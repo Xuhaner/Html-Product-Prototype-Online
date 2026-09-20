@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课时管理 - 贵兰在线</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== 顶部导航栏 ===== -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="13" fill="#3B82F6"/><text x="14" y="19" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">G</text></svg>
+    </div>
+    <nav class="breadcrumb">
+      <a href="#">课程管理</a>
+      <span class="sep">/</span>
+      <span class="current">课程计划</span>
+    </nav>
+  </div>
+  <div class="topbar-tabs">
+    <button class="topbar-tab">总览</button>
+    <button class="topbar-tab">作业批阅</button>
+    <button class="topbar-tab">课程计划</button>
+    <button class="topbar-tab active">计划管理</button>
+  </div>
+</header>
+
+<div class="main-layout">
+  <!-- ===== 侧边栏 ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>总览</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-header">
+        <svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 4h10M3 8h10M3 12h10" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        <span>教务管理</span>
+        <svg class="arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="sidebar-item active">课程管理</div>
+      <div class="sidebar-item">课程列表</div>
+      <div class="sidebar-item">课程计划</div>
+      <div class="sidebar-item">平台课程</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-header">
+        <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>助学管理</span>
+        <svg class="arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-header">
+        <svg width="16" height="16" viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>批阅管理</span>
+        <svg class="arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-header">
+        <svg width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>题库管理</span>
+        <svg class="arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 12V6a4 4 0 018 0v6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>资料库</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-item">
+        <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>系统设置</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== 内容区域 ===== -->
+  <main class="content">
+    <!-- 课程卡片 -->
+    <div class="course-card">
+      <div class="course-thumb">
+        <svg width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" rx="4" fill="#E5E7EB"/><path d="M12 28l8-12 8 12H12z" fill="#9CA3AF"/></svg>
+      </div>
+      <div class="course-info">
+        <h2 class="course-name">数字素养</h2>
+        <p class="course-sub">所属课程：数字素养通识课</p>
+        <div class="course-status">当前状态：<span class="badge badge-green">已发布</span></div>
+      </div>
+      <div class="course-stats">
+        <div class="stat-item">
+          <span class="stat-label">课时总数</span>
+          <span class="stat-val">2</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">学生人数</span>
+          <span class="stat-val">1</span>
+        </div>
+      </div>
+      <div class="course-actions">
+        <button class="btn btn-outline-blue">预览</button>
+        <button class="btn btn-outline-red">关闭</button>
+        <button class="btn btn-green">结课</button>
+      </div>
+    </div>
+
+    <!-- 课时管理区 -->
+    <div class="lesson-section">
+      <div class="lesson-tabs">
+        <button class="lesson-tab">基础设置</button>
+        <button class="lesson-tab active">课时管理</button>
+        <button class="lesson-tab">教师管理</button>
+        <button class="lesson-tab">学生管理</button>
+      </div>
+
+      <div class="lesson-body">
+        <!-- 左侧：课时树 -->
+        <div class="lesson-tree-panel">
+          <div class="tree-toolbar">
+            <button class="btn btn-sm btn-primary">添加课时</button>
+            <button class="btn btn-sm btn-primary">添加章节</button>
+            <button class="btn btn-sm btn-default">展开</button>
+            <button class="btn btn-sm btn-default">收起</button>
+            <button class="btn btn-sm btn-default">管理目录</button>
+          </div>
+          <div class="tree">
+            <div class="tree-item tree-chapter selected">
+              <svg class="tree-caret" width="12" height="12" viewBox="0 0 12 12"><path d="M3 2l6 4-6 4V2z" fill="currentColor"/></svg>
+              <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
+              <span>第一章 总论</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item tree-lesson">
+                <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
+                <span>绪论</span>
+                <span class="badge badge-green-sm">已发布</span>
+              </div>
+            </div>
+            <div class="tree-item tree-chapter expanded">
+              <svg class="tree-caret" width="12" height="12" viewBox="0 0 12 12"><path d="M2 3l4 6 4-6H2z" fill="currentColor"/></svg>
+              <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
+              <span>第二章 数字素养</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-item tree-lesson active">
+                <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#3B82F6" stroke-width="1.2"/></svg>
+                <span>数字素养1</span>
+                <span class="badge badge-green-sm">已发布</span>
+              </div>
+              <div class="tree-children-nested">
+                <div class="tree-item tree-lesson">
+                  <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
+                  <span>二级目录</span>
+                  <span class="badge badge-green-sm">已发布</span>
+                </div>
+                <div class="tree-item tree-lesson">
+                  <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
+                  <span>三级目录</span>
+                  <span class="badge badge-green-sm">已发布</span>
+                </div>
+              </div>
+            </div>
+            <div class="tree-item tree-chapter">
+              <svg class="tree-caret" width="12" height="12" viewBox="0 0 12 12"><path d="M3 2l6 4-6 4V2z" fill="currentColor"/></svg>
+              <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
+              <span>第三章 数字化转型</span>
+            </div>
+            <div class="tree-children collapsed">
+              <div class="tree-item tree-lesson">
+                <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
+                <span>数字化转型1</span>
+                <span class="badge badge-green-sm">已发布</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧：课时详情 -->
+        <div class="lesson-detail-panel">
+          <div class="detail-header">
+            <h3>课时：数字素养1</h3>
+            <span class="badge badge-green">已发布</span>
+          </div>
+
+          <div class="task-section">
+            <div class="task-header">
+              <button class="btn btn-primary" id="btn-open-modal">创建课时任务</button>
+              <span class="task-count">包含任务数：5</span>
+            </div>
+            <div class="task-list">
+              <div class="task-card">
+                <span class="task-name">任务名称</span>
+                <span class="task-val">绪论</span>
+              </div>
+              <div class="task-card">
+                <span class="task-name">任务名称</span>
+                <span class="task-val">组会9.3_3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== 添加课时任务 弹窗 ===== -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-label="添加课时任务">
+    <!-- 标题栏 -->
+    <div class="modal-header">
+      <h3 class="modal-title">添加课时任务</h3>
+      <button class="modal-close" id="modal-close" aria-label="关闭">&times;</button>
+    </div>
+
+    <!-- 步骤条 -->
+    <div class="wizard-steps">
+      <div class="wizard-step active" data-step="1">
+        <span class="step-num">1</span>
+        <span class="step-label">选择任务类型</span>
+      </div>
+      <div class="wizard-connector"></div>
+      <div class="wizard-step" data-step="2">
+        <span class="step-num">2</span>
+        <span class="step-label">任务配置</span>
+      </div>
+      <div class="wizard-connector"></div>
+      <div class="wizard-step" data-step="3">
+        <span class="step-num">3</span>
+        <span class="step-label">完成条件</span>
+      </div>
+    </div>
+
+    <!-- ========== 步骤1：选择任务类型 ========== -->
+    <div class="wizard-panel active" id="panel-step1">
+      <div class="type-grid">
+        <button class="type-card" data-type="video">
+          <div class="type-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40"><rect x="4" y="8" width="32" height="24" rx="3" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/><path d="M17 16v8l7-4-7-4z" fill="#3B82F6"/></svg>
+          </div>
+          <span class="type-label">视频</span>
+        </button>
+        <button class="type-card" data-type="ppt">
+          <div class="type-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40"><rect x="6" y="4" width="28" height="32" rx="2" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.5"/><text x="20" y="26" text-anchor="middle" fill="#EA580C" font-size="16" font-weight="bold">P</text></svg>
+          </div>
+          <span class="type-label">PPT</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== 步骤2：任务配置 ========== -->
+    <div class="wizard-panel" id="panel-step2">
+      <!-- 表单字段 -->
+      <div class="form-row">
+        <label class="form-label"><em>*</em> 任务内容</label>
+      </div>
+
+      <!-- 上传方式切换 -->
+      <div class="upload-tabs" id="upload-tabs">
+        <button class="upload-tab active" data-tab="local">上传资料</button>
+        <button class="upload-tab" data-tab="library">从资料库中选择</button>
+        <button class="upload-tab" data-tab="official">官方资源库导入</button>
+        <button class="upload-tab" data-tab="network" id="tab-network">导入网络视频</button>
+      </div>
+
+      <!-- 本地上传 -->
+      <div class="upload-panel active" id="upload-local">
+        <div class="dropzone" id="dropzone">
+          <svg class="dropzone-icon" width="48" height="48" viewBox="0 0 48 48">
+            <rect x="8" y="12" width="32" height="28" rx="3" fill="none" stroke="#9CA3AF" stroke-width="1.5"/>
+            <path d="M18 28l6-8 6 8" fill="none" stroke="#9CA3AF" stroke-width="1.5"/>
+            <line x1="24" y1="20" x2="24" y2="32" stroke="#9CA3AF" stroke-width="1.5"/>
+            <path d="M14 12V8h20v4" fill="none" stroke="#9CA3AF" stroke-width="1.5"/>
+          </svg>
+          <p class="dropzone-text">将文件拖到此处，或 <a href="#" class="dropzone-link" id="btn-browse">上传文件</a></p>
+          <p class="dropzone-hint" id="dropzone-hint">
+            视频文件（仅支持 .mp4，单个文件最大 2GB，单次最多 10 个文件）
+          </p>
+        </div>
+      </div>
+
+      <!-- 从资料库中选择 -->
+      <div class="upload-panel" id="upload-library">
+        <div class="lib-search">
+          <span class="lib-search-label">文件名</span>
+          <input type="text" class="lib-search-input" id="lib-keyword" placeholder="请输入文件名">
+          <div class="lib-search-actions">
+            <button class="btn btn-default" id="btn-lib-reset">重置</button>
+            <button class="btn btn-primary" id="btn-lib-search">查询</button>
+          </div>
+        </div>
+        <div class="lib-table-wrap">
+          <table class="lib-table">
+            <thead>
+              <tr>
+                <th style="width:40px"><input type="checkbox" class="lib-check" id="lib-check-all" aria-label="全选本页"></th>
+                <th>文件名</th>
+                <th style="width:110px">文件大小</th>
+                <th style="width:110px" id="lib-th-duration">文件时长</th>
+                <th style="width:170px">创建日期</th>
+              </tr>
+            </thead>
+            <tbody id="lib-tbody"></tbody>
+          </table>
+        </div>
+        <div class="lib-pager">
+          <button class="btn btn-primary btn-sm" id="btn-lib-add">添加</button>
+          <span id="lib-total">共 17 条数据</span>
+          <span id="lib-pages" style="display:flex;gap:8px"></span>
+          <button class="pager-btn" id="lib-next" aria-label="下一页">&gt;</button>
+          <select class="pager-size" aria-label="每页条数"><option>10 条/页</option></select>
+        </div>
+      </div>
+
+      <!-- 官方资源库导入 -->
+      <div class="upload-panel" id="upload-official">
+        <div class="lib-search">
+          <span class="lib-search-label">文件名</span>
+          <input type="text" class="lib-search-input" id="off-keyword" placeholder="请输入文件名">
+          <div class="lib-search-actions">
+            <button class="btn btn-default" id="btn-off-reset">重置</button>
+            <button class="btn btn-primary" id="btn-off-search">查询</button>
+          </div>
+        </div>
+        <div class="lib-table-wrap">
+          <table class="lib-table">
+            <thead>
+              <tr>
+                <th style="width:40px"><input type="checkbox" class="lib-check" id="off-check-all" aria-label="全选本页"></th>
+                <th>文件名</th>
+                <th style="width:110px">文件大小</th>
+                <th style="width:110px" id="off-th-duration">文件时长</th>
+                <th style="width:170px">创建日期</th>
+              </tr>
+            </thead>
+            <tbody id="off-tbody"></tbody>
+          </table>
+        </div>
+        <div class="lib-pager">
+          <button class="btn btn-primary btn-sm" id="btn-off-add">添加</button>
+          <span id="off-total">共 0 条数据</span>
+          <span id="off-pages" style="display:flex;gap:8px"></span>
+          <button class="pager-btn" id="off-next" aria-label="下一页">&gt;</button>
+          <select class="pager-size" aria-label="每页条数"><option>10 条/页</option></select>
+        </div>
+      </div>
+
+      <!-- 网络视频 -->
+      <div class="upload-panel" id="upload-network">
+        <div class="network-section">
+          <h4 class="network-title">请输入视频网址</h4>
+          <p class="network-hint">每行粘贴一个视频链接，支持同时粘贴多个网址（最多 20 条）</p>
+          <textarea class="network-textarea" id="network-urls" placeholder="请粘贴视频链接，每行一个"></textarea>
+          <div class="network-duration">
+            <span class="duration-label">默认时长</span>
+            <input type="number" class="duration-input" id="dur-min" value="0" min="0">
+            <span class="duration-unit">分</span>
+            <input type="number" class="duration-input" id="dur-sec" value="0" min="0" max="59">
+            <span class="duration-unit">秒</span>
+          </div>
+          <div class="network-actions">
+            <button class="btn btn-outline-red" id="btn-clear-urls">全部清空</button>
+            <button class="btn btn-primary" id="btn-import-urls">确认导入</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 上传文件列表（文件选择后显示） -->
+      <div class="upload-list-wrap" id="upload-list-wrap" style="display:none">
+        <div class="list-meta">
+          <span id="list-meta-count">文件列表：0 个</span>
+          <span class="meta-note" id="list-meta-note"></span>
+        </div>
+        <table class="upload-table">
+          <thead>
+            <tr id="table-head-video">
+              <th class="col-name">视频名</th>
+              <th class="col-title">标题名称</th>
+              <th class="col-duration">视频时长</th>
+              <th class="col-size">文件大小</th>
+              <th class="col-lesson"><em>*</em> 课时名</th>
+              <th class="col-action">操作</th>
+            </tr>
+            <tr id="table-head-ppt" style="display:none">
+              <th class="col-name">文件名</th>
+              <th class="col-title">标题名称</th>
+              <th class="col-duration">时长（分钟）</th>
+              <th class="col-size">文件大小</th>
+              <th class="col-lesson"><em>*</em> 课时名</th>
+              <th class="col-action">操作</th>
+            </tr>
+          </thead>
+          <tbody id="upload-tbody"></tbody>
+        </table>
+        <div class="bulk-row" id="ppt-bulk-row" style="display:none">
+          <span class="bulk-label">页面停留时长</span>
+          <input type="number" class="form-input-sm" id="ppt-bulk-min" value="0" min="0">
+          <span class="input-unit">分钟</span>
+          <button class="btn btn-default btn-sm" id="btn-ppt-apply">设置</button>
+          <span class="bulk-hint">点击设置后，统一应用到列表内所有文件</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========== 步骤3：完成条件 ========== -->
+    <div class="wizard-panel" id="panel-step3">
+      <div class="form-row">
+        <label class="form-label"><em>*</em> 完成类型</label>
+        <div class="form-select-wrap" id="completion-type-video">
+          <select class="form-select" id="completion-type">
+            <option value="video-play">完成视频播放</option>
+            <option value="video-60">完成视频时长60%</option>
+          </select>
+        </div>
+        <div class="form-select-wrap" id="completion-type-ppt" style="display:none">
+          <select class="form-select" id="completion-type-ppt-select">
+            <option value="page-stay">页面停留时长</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" id="completion-lock-row">
+        <label class="check-label">
+          <input type="checkbox" id="completion-lock">
+          学习未达标前，锁定进度条
+        </label>
+      </div>
+
+      <div class="completion-summary" id="completion-summary">
+        <h4>文件列表</h4>
+        <table class="upload-table summary-table">
+          <thead>
+            <tr>
+              <th class="col-sum-name">文件名</th>
+              <th class="col-sum-duration" id="summary-th-duration">视频时长</th>
+              <th class="col-sum-size">文件大小</th>
+              <th class="col-sum-lesson">课时名</th>
+            </tr>
+          </thead>
+          <tbody id="summary-list"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- 底部固定操作栏 -->
+    <div class="wizard-footer" id="wizard-footer">
+      <button class="btn btn-default" id="btn-footer-cancel">取消</button>
+      <button class="btn btn-default" id="btn-footer-prev">上一步</button>
+      <button class="btn btn-primary" id="btn-footer-next">下一步</button>
+    </div>
+  </div>
+</div>
+
+<div class="picker-overlay" id="picker-overlay" hidden>
+  <div class="picker-dialog" role="dialog" aria-label="选择文件">
+    <div class="picker-header">
+      <span class="picker-title">选择文件</span>
+      <button class="modal-close" id="picker-close" aria-label="关闭">&times;</button>
+    </div>
+    <p class="picker-hint">已默认选中以下 5 个示例文件，无需手动选择</p>
+    <div class="picker-list" id="picker-list"></div>
+    <div class="picker-footer">
+      <button class="btn btn-default" id="picker-cancel">取消</button>
+      <button class="btn btn-primary" id="picker-ok">确定</button>
+    </div>
+  </div>
+</div>
+
+<div class="lesson-pop" id="lesson-pop" hidden></div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

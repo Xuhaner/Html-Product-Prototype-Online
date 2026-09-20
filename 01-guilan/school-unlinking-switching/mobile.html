@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>个人信息 · 学校解绑与切换（移动端原型）</title>
+<link rel="stylesheet" href="mobile.css">
+</head>
+<body data-platform="mobile">
+<div class="phone">
+
+  <div class="statusbar" aria-hidden="true">
+    <span class="sb-time">09:47</span>
+    <span class="sb-icons">
+      <svg viewBox="0 0 16 16" width="15" height="15"><path d="M8 3.6c2.5 0 4.8 1 6.5 2.6l-1.2 1.2A7.4 7.4 0 0 0 8 5.3c-2 0-3.9.8-5.3 2.1L1.5 6.2A9.1 9.1 0 0 1 8 3.6Zm0 3.4c1.6 0 3 .6 4.1 1.6l-1.2 1.2A4.3 4.3 0 0 0 8 8.7c-1.1 0-2.1.4-2.9 1.1L3.9 8.6A5.9 5.9 0 0 1 8 7Zm0 3.4c.8 0 1.6.3 2.1.9L8 13.4 5.9 11.3c.5-.6 1.3-.9 2.1-.9Z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 25 12" width="24" height="12"><rect x=".5" y=".5" width="21" height="11" rx="2.6" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="16" height="8" rx="1.4" fill="currentColor"/><path d="M23 4v4c1.2-.3 1.8-1 1.8-2S24.2 4.3 23 4Z" fill="currentColor" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <header class="navbar">
+    <button class="nav-back" type="button" data-boundary="原型边界：返回上级页面不在本原型范围。" aria-label="返回">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <h1 class="nav-title">个人信息</h1>
+    <button class="capsule" type="button" data-boundary="原型边界：微信小程序胶囊菜单不在本原型范围。" aria-label="小程序菜单">
+      <span class="cap-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="cap-div" aria-hidden="true"></span>
+      <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.4" fill="currentColor"/></svg>
+    </button>
+  </header>
+
+  <main class="page">
+    <section class="card">
+      <div class="card-head">
+        <span class="card-title">证件号码</span>
+        <span class="card-tip">用于证书上链，证明证书真实有效</span>
+      </div>
+      <button class="row" type="button" data-boundary="原型边界：证件编辑不在本原型范围。">
+        <span class="row-label">身份证号</span><span class="row-value muted">无</span>
+        <svg class="chev" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="row" type="button" data-boundary="原型边界：证件编辑不在本原型范围。">
+        <span class="row-label">护照号</span><span class="row-value muted">无</span>
+        <svg class="chev" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="row" type="button" data-boundary="原型边界：证件编辑不在本原型范围。">
+        <span class="row-label">居留证号</span><span class="row-value muted">无</span>
+        <svg class="chev" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </section>
+
+    <section class="card" id="schoolSection" tabindex="-1">
+      <div class="card-head">
+        <span class="card-title">学校信息</span>
+        <button class="btn primary small" type="button" data-boundary="原型边界：学校认证表单由真实系统提供，本原型仅演示切换与解绑。">立即认证</button>
+      </div>
+      <p class="school-description">可认证并保留多所学校信息。课程、考试等学校专属服务以当前学校为准。</p>
+      <div id="schoolBody"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><span class="card-title">个人介绍</span></div>
+      <div class="intro-body">
+        <button class="intro-edit" type="button" data-boundary="原型边界：个人介绍编辑不在本原型范围。" aria-label="编辑个人介绍">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3Z" fill="currentColor"/><path d="M3 21.5h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div class="foot-bar">
+    <button class="btn-logout" type="button" data-boundary="原型边界：退出登录不在本原型范围。">退出登录</button>
+  </div>
+
+  <div class="demo-bar" id="demoBar" aria-label="演示控制">
+    <nav class="demo-platforms" aria-label="原型端切换">
+      <a href="index.html">Web</a>
+      <span aria-current="page">Mobile</span>
+    </nav>
+    <button id="resetBtn" type="button">重置状态</button>
+    <button id="hideBarBtn" type="button">隐藏</button>
+  </div>
+
+  <!-- 切换当前学校 -->
+  <div class="overlay" id="switchModal" hidden>
+    <div class="dialog sheet" role="dialog" aria-modal="true" aria-labelledby="switchTitle">
+      <div class="sheet-head">
+        <h3 id="switchTitle">切换当前学校</h3>
+        <button class="sheet-close" type="button" data-close aria-label="关闭">&times;</button>
+      </div>
+      <div class="sheet-body">
+        <div class="fromto">
+          <div class="ft-row"><span class="ft-label">当前学校</span><span class="ft-value" id="switchFrom"></span></div>
+          <div class="ft-row"><span class="ft-label">切换为</span><span class="ft-value strong" id="switchTo"></span></div>
+        </div>
+        <ul class="impact">
+          <li>切换后学校专属课程、考试等进度以当前学校为准。</li>
+        </ul>
+      </div>
+      <div class="sheet-foot">
+        <button class="btn ghost" type="button" data-close>取消</button>
+        <button class="btn primary" type="button" id="switchConfirm">确认切换</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 解绑学校 -->
+  <div class="overlay" id="unbindModal" hidden>
+    <div class="dialog sheet" role="dialog" aria-modal="true" aria-labelledby="unbindTitle">
+      <div class="sheet-head">
+        <h3 id="unbindTitle">解绑学校</h3>
+        <button class="sheet-close" type="button" data-close aria-label="关闭">&times;</button>
+      </div>
+      <div class="sheet-body">
+        <div class="warn-banner">
+          <p class="warn-title">解绑将移除你在「<span id="unbindSchoolName"></span>」的学籍身份，请确认以下影响：</p>
+          <ul class="impact" id="unbindImpact"></ul>
+        </div>
+        <div class="verify">
+          <p class="verify-title">身份验证</p>
+          <p class="verify-tip">验证码将发送至绑定手机号 <strong>185****2826</strong></p>
+          <div class="code-row">
+            <input id="codeInput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="请输入验证码" aria-label="短信验证码" aria-describedby="codeError codeHint">
+            <button class="btn ghost" type="button" id="sendCodeBtn">获取验证码</button>
+          </div>
+          <p class="field-error" id="codeError" role="alert" hidden>验证码错误，请重新输入</p>
+          <p class="hint" id="codeHint">原型演示验证码：123456</p>
+        </div>
+      </div>
+      <div class="sheet-foot">
+        <button class="btn ghost" type="button" data-close>取消</button>
+        <button class="btn primary danger" type="button" id="unbindConfirm" disabled>确认解绑</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden role="status"><span id="toastText"></span></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

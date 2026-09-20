@@ -1,0 +1,47 @@
+{
+  "projects": [
+    {
+      "id": "01-guilan",
+      "name": "贵兰在线",
+      "description": "课程管理与校园服务的产品交互原型",
+      "prototypes": [
+        {
+          "id": "bulk-upload",
+          "name": "批量上传",
+          "description": "从选择文件到上传完成，体验课时批量上传的完整流程。",
+          "entry": "index.html",
+          "updatedAt": "2026-09-20"
+        },
+        {
+          "id": "school-unlinking-switching",
+          "name": "学校解绑换绑",
+          "description": "查看学校绑定关系，体验解绑与换绑流程，支持电脑和手机。",
+          "entry": "index.html",
+          "updatedAt": "2026-09-20",
+          "pages": [
+            {
+              "name": "移动端",
+              "entry": "mobile.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02-resole-study",
+      "name": "睿秀学城",
+      "description": "学习平台的产品交互原型",
+      "prototypes": []
+    }
+  ],
+  "legacy": [
+    {
+      "name": "注册 / 登录",
+      "path": "register-login-prototype/index.html"
+    },
+    {
+      "name": "学校管理（历史版本）",
+      "path": "school-management-prototype/index.html"
+    }
+  ]
+}
