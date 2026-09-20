@@ -6,12 +6,13 @@
 
 ## 日常维护
 
-编辑 `catalog.json` 管理英文路径与中文显示名。新增原型放在 `项目 id/原型 id/`，登记 `id`、`name`、`description`、`entry`、`updatedAt`。附加页面登记到 `pages`（`name`、`entry`）。新项目增加一个 projects 条目即可。
+编辑 `catalog.json` 管理英文路径与中文显示名。新增原型放在 `项目 id/原型 id/`，登记 `id`、`name`、`description`、`entries`、`updatedAt`、`updateNote`。全部入口统一登记到 `entries`（`name`、`path`），例如电脑端、移动端、管理端；路径相对原型目录。新项目增加一个 projects 条目即可。
 
-`updatedAt` 是内容实际更新日期；首次纳入本导航的两个原型记为 2026-09-20。最近更新自动展示前 6 项，同日按配置顺序。首页和项目列表均自动生成。
+`updatedAt` 是内容实际更新日期；首次纳入本导航的两个原型记为 2026-09-20。最近更新自动展示前 6 项，同日按配置顺序。首页和项目列表均自动生成。项目独立链接为 `project.html?id=01-guilan`，新增项目无需复制 HTML。`updateNote` 写本次真实变更，未填写则隐藏。
 
 ```sh
 python3 scripts/check_catalog.py
+node scripts/check_navigation.cjs
 python3 -m http.server 8000
 ```
 

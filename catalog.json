@@ -8,22 +8,32 @@
         {
           "id": "bulk-upload",
           "name": "批量上传",
-          "description": "从选择文件到上传完成，体验课时批量上传的完整流程。",
-          "entry": "index.html",
-          "updatedAt": "2026-09-20"
+          "description": "课程计划中的课时批量上传流程与交互。",
+          "updatedAt": "2026-09-20",
+          "entries": [
+            {
+              "name": "电脑端",
+              "path": "index.html"
+            }
+          ],
+          "updateNote": "首次收录：上传入口、文件选择、上传列表与完成状态。"
         },
         {
           "id": "school-unlinking-switching",
           "name": "学校解绑换绑",
-          "description": "查看学校绑定关系，体验解绑与换绑流程，支持电脑和手机。",
-          "entry": "index.html",
+          "description": "个人中心的学校绑定关系、解绑与换绑流程。",
           "updatedAt": "2026-09-20",
-          "pages": [
+          "entries": [
+            {
+              "name": "电脑端",
+              "path": "index.html"
+            },
             {
               "name": "移动端",
-              "entry": "mobile.html"
+              "path": "mobile.html"
             }
-          ]
+          ],
+          "updateNote": "首次收录：学校解绑与换绑流程，包含电脑端和移动端。"
         }
       ]
     },

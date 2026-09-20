@@ -31,12 +31,17 @@ for project in data['projects']:
         assert re.fullmatch(r'\d{4}-\d{2}-\d{2}', item['updatedAt'])
         date.fromisoformat(item['updatedAt'])
         base = ROOT / pid / iid
-        check_path(base, item['entry'])
-        for page in item.get('pages', []):
-            assert page['name'].strip()
-            check_path(base, page['entry'])
+        assert isinstance(item.get('updateNote', ''), str), 'updateNote must be text'
+        assert item['entries'], 'At least one entry is required'
+        entry_names = set()
+        for entry in item['entries']:
+            assert entry['name'].strip() and entry['name'] not in entry_names
+            entry_names.add(entry['name'])
+            check_path(base, entry['path'])
         count += 1
 for item in data.get('legacy', []):
     assert item['name'].strip()
     check_path(ROOT, item['path'])
 print(f'OK: {len(seen_projects)} projects, {count} prototypes; all entry files exist.')
+
+check_path(ROOT, 'project.html')
