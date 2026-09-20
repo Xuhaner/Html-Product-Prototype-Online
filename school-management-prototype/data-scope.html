@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>数据视角 · 课程 / 考试 / 成绩随学校切换 — 贵兰在线</title>
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="logo-mark">贵</span><span>贵兰在线</span></div>
+    <nav class="nav-menu">
+      <a href="index.html">首页</a>
+      <a href="#" data-out="课程">课程</a>
+      <a href="#" data-out="学校">学校</a>
+      <a href="#" data-out="资讯">资讯</a>
+    </nav>
+    <form class="nav-search" onsubmit="return false">
+      <input type="search" placeholder="新生第一课" aria-label="搜索" />
+      <button type="button" data-out="搜索">搜索</button>
+    </form>
+    <div class="nav-right">
+      <div class="nav-user" data-out="个人主页"><span class="avatar-xs">w</span><span>wxh26</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <h5>账号设置</h5>
+    <a href="#" data-page="account" data-out="账号信息">账号信息</a>
+    <a href="#" data-page="security" data-out="安全设置">安全设置</a>
+    <a href="index.html" data-page="school">我的学校</a>
+    <a href="data-scope.html" data-page="scope" class="on">数据视角</a>
+    <a href="data-model.html" data-page="model">数据方案</a>
+    <a href="data-migration.html" data-page="migration">迁移与接口</a>
+  </aside>
+
+  <main class="main">
+
+    <!-- 数据分层说明 -->
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <h3>账号数据是怎么分的</h3>
+          <div class="sub">这一页演示：切换学校后，页面上的课程 / 考试 / 成绩会发生什么变化</div>
+        </div>
+        <a class="btn btn-sm" href="data-model.html">看完整数据方案 →</a>
+      </div>
+
+      <div class="layers four">
+        <div class="layer l1">
+          <div class="lt">① 账号级数据</div>
+          <div class="ls">跨学校共享 · 切换学校不变化</div>
+          <ul>
+            <li>账号、手机号、微信、头像、昵称</li>
+            <li>安全设置、消息偏好</li>
+          </ul>
+        </div>
+        <div class="layer l2">
+          <div class="lt">② 认证关系</div>
+          <div class="ls">你在哪几所学校认证过</div>
+          <ul>
+            <li>认证状态、认证 / 解绑时间</li>
+            <li>主学校标记</li>
+          </ul>
+        </div>
+        <div class="layer l2">
+          <div class="lt">③ 学籍阶段</div>
+          <div class="ls">一所学校可以有多个学历阶段</div>
+          <ul>
+            <li>学号、姓名、学院、专业、班级</li>
+            <li>学历层次、入学年份、在读 / 毕业</li>
+            <li>课程、考试、成绩挂在这一层</li>
+          </ul>
+        </div>
+        <div class="layer l3">
+          <div class="lt">④ 主学校（只是一个指针）</div>
+          <div class="ls">决定默认展示哪一份数据</div>
+          <ul>
+            <li>全局唯一，同一时间只有一所</li>
+            <li>切换 = 改一个字段，不搬数据</li>
+            <li>切回来 = 数据原样还在</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 数据视角 -->
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <h3>我的学习数据</h3>
+          <div class="sub" id="scope-sub">按学校维度查看</div>
+        </div>
+        <div class="seg" id="seg" role="group" aria-label="切换数据范围"></div>
+      </div>
+
+      <div id="banner"></div>
+      <div id="data-host"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var seg = PROTO.$("#seg");
+  var host = PROTO.$("#data-host");
+  var banner = PROTO.$("#banner");
+  var sub = PROTO.$("#scope-sub");
+  var current = null;   // 当前查看的学校 id（已确认不做"全部学校"视图，永远是单校）
+  var phaseSel = {};    // schoolId -> enrollmentId（学校有多个学历阶段时用）
+
+  /* ---------------- 顶部切换（只支持单校视图，已确认不做"全部学校"） ---------------- */
+  function renderSeg() {
+    var bound = PROTO.boundSchools();
+    var primary = PROTO.primarySchool();
+    if (!bound.some(function (s) { return s.id === current; })) {
+      current = primary ? primary.id : (bound.length ? bound[0].id : null);
+    }
+    seg.innerHTML = bound.map(function (s) {
+      var isPrimary = primary && s.id === primary.id;
+      return '<button type="button" data-id="' + PROTO.esc(s.id) + '" aria-pressed="' + (current === s.id) + '">' +
+        (isPrimary ? "★ " : "") + PROTO.esc(s.name) + "</button>";
+    }).join("");
+  }
+
+  /* ---------------- 行渲染 ---------------- */
+  function courseRows(courses) {
+    if (!courses.length) return emptyRows("该校暂无课程数据");
+    return courses.map(function (c) {
+      return '<div class="row">' +
+        '<div class="cell" data-l="课程"><b>' + PROTO.esc(c.name) + "</b></div>" +
+        '<div class="cell" data-l="教师">' + PROTO.esc(c.teacher) + "</div>" +
+        '<div class="cell" data-l="进度"><span class="num">' + c.progress + "%</span><div class=\"bar\"><i style=\"width:" + c.progress + '%"></i></div></div>' +
+        '<div class="cell" data-l="状态">' + PROTO.esc(c.status) + "</div>" +
+      "</div>";
+    }).join("");
+  }
+
+  function examRows(exams) {
+    if (!exams.length) return emptyRows("该校暂无考试安排");
+    return exams.map(function (e) {
+      var badge = e.state === "已出分" ? "badge-ok" : "badge-warn";
+      return '<div class="row">' +
+        '<div class="cell" data-l="考试"><b>' + PROTO.esc(e.name) + "</b></div>" +
+        '<div class="cell" data-l="时间">' + PROTO.esc(e.date) + "</div>" +
+        '<div class="cell" data-l="成绩"><span class="num">' + PROTO.esc(e.score) + "</span></div>" +
+        '<div class="cell" data-l="状态"><span class="badge ' + badge + '">' + PROTO.esc(e.state) + "</span></div>" +
+      "</div>";
+    }).join("");
+  }
+
+  function transcriptRows(rows) {
+    if (!rows.length) return emptyRows("该校暂无成绩单记录");
+    return rows.map(function (r) {
+      return '<div class="row">' +
+        '<div class="cell" data-l="学期">' + PROTO.esc(r.term) + "</div>" +
+        '<div class="cell" data-l="课程"><b>' + PROTO.esc(r.course) + "</b></div>" +
+        '<div class="cell" data-l="学分"><span class="num">' + PROTO.esc(r.credit) + "</span></div>" +
+        '<div class="cell" data-l="成绩"><span class="num">' + PROTO.esc(r.score) + "</span></div>" +
+      "</div>";
+    }).join("");
+  }
+
+  function emptyRows(text) {
+    return '<div class="row" style="grid-template-columns:1fr;color:var(--ink-3);justify-items:center;padding:22px 14px">' + text + "</div>";
+  }
+
+  function block(school, grouped) {
+    var phases = PROTO.enrollmentsOf(school);
+    var enr = phases.filter(function (e) { return e.id === phaseSel[school.id]; })[0] || PROTO.currentEnrollment(school);
+    if (!enr) return "";
+    var m = enr.metrics;
+
+    var phaseTabs = phases.length > 1
+      ? '<div class="seg sm" role="group" aria-label="切换学历阶段">' +
+          phases.map(function (p) {
+            return '<button type="button" data-phase-btn="' + PROTO.esc(school.id) + '" data-enr="' + PROTO.esc(p.id) + '" aria-pressed="' + (p.id === enr.id) + '">' +
+              PROTO.esc(p.level) + " " + PROTO.esc(p.enrollYear) + " 级</button>";
+          }).join("") +
+        "</div>"
+      : "";
+
+    return '<div class="school-block' + (grouped ? " grouped" : "") + '">' +
+      "<header>" +
+        '<div class="sc-logo' + (grouped ? "" : " primary") + '" style="flex:0 0 30px;width:30px;height:30px;font-size:13px" aria-hidden="true">' + PROTO.esc(PROTO.initial(school.name)) + "</div>" +
+        "<h4>" + PROTO.esc(school.name) + "</h4>" +
+        '<span class="badge badge-plain">' + PROTO.esc(enr.level) + " · " + PROTO.esc(enr.track) + "</span>" +
+        '<span class="badge badge-plain">学号 ' + PROTO.esc(enr.studentNo) + "</span>" +
+        '<span class="sp"></span>' +
+        '<span class="muted" style="font-size:12.5px">数据归属：' + PROTO.esc(school.name) + " · " + PROTO.esc(enr.level) + " " + PROTO.esc(enr.enrollYear) + " 级</span>" +
+      "</header>" +
+      (phaseTabs ? '<div style="margin-bottom:14px">' + phaseTabs + "</div>" : "") +
+
+      '<div class="metric">' +
+        "<div><dt>课程</dt><dd>" + m.courses + "<small>门</small></dd></div>" +
+        "<div><dt>学分</dt><dd>" + m.credits + "<small>分</small></dd></div>" +
+        "<div><dt>GPA</dt><dd>" + m.gpa + "</dd></div>" +
+      "</div>" +
+
+      '<div class="group-label" style="margin-bottom:8px">课程</div>' +
+      '<div class="rows">' +
+        '<div class="row head"><div>课程</div><div>授课教师</div><div>进度</div><div>状态</div></div>' +
+        courseRows(enr.courses) +
+      "</div>" +
+
+      '<div class="group-label" style="margin:18px 0 8px">考试</div>' +
+      '<div class="rows">' +
+        '<div class="row head"><div>考试</div><div>时间</div><div>成绩</div><div>状态</div></div>' +
+        examRows(enr.exams) +
+      "</div>" +
+
+      '<div class="group-label" style="margin:18px 0 8px">成绩单</div>' +
+      '<div class="rows">' +
+        '<div class="row head"><div>学期</div><div>课程</div><div>学分</div><div>成绩</div></div>' +
+        transcriptRows(enr.transcript) +
+      "</div>" +
+    "</div>";
+  }
+
+  /* ---------------- 渲染 ---------------- */
+  function render() {
+    var bound = PROTO.boundSchools();
+    renderSeg();
+
+    if (!bound.length) {
+      banner.innerHTML = "";
+      sub.textContent = "按学校维度查看";
+      seg.style.display = "none";
+      host.innerHTML =
+        '<div class="empty"><h4>还没有可查看的数据</h4><p>完成学校认证后，这里会显示该校的课程、考试与成绩</p>' +
+        '<a class="btn btn-primary" href="index.html">去认证学校</a></div>';
+      return;
+    }
+
+    var school = PROTO.schoolById(current);
+    if (!school) { seg.style.display = "none"; return; }
+    seg.style.display = "";
+    sub.textContent = "当前数据范围：" + school.name;
+    banner.innerHTML =
+      '<div class="scope-banner">' +
+        "<span>当前查看</span><b>" + PROTO.esc(school.name) + "</b>" +
+        '<span class="badge badge-plain">' + PROTO.esc(PROTO.currentEnrollment(school).level) + "</span>" +
+        '<span class="sp"></span>' +
+        "<span>切换学校只是换一个查询条件，其他学校的数据不受影响</span>" +
+      "</div>";
+    host.innerHTML = block(school, false);
+  }
+
+  host.addEventListener("click", function (e) {
+    var p = e.target.closest("[data-phase-btn]");
+    if (p) {
+      phaseSel[p.dataset.phaseBtn] = p.dataset.enr;
+      render();
+    }
+  });
+
+  seg.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-id]");
+    if (!b) return;
+    current = b.dataset.id;
+    render();
+  });
+
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-out]");
+    if (!el) return;
+    e.preventDefault();
+    PROTO.toast("「" + el.dataset.out + "」不在本次原型范围内", "info");
+  });
+
+  // 默认聚焦主学校
+  current = PROTO.primarySchool() ? PROTO.primarySchool().id : null;
+  render();
+})();
+</script>
+</body>
+</html>

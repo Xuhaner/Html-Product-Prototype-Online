@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>我的学校 · 切换与解绑 — 贵兰在线</title>
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<!-- ================= 顶部导航 ================= -->
+<header class="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="logo-mark">贵</span><span>贵兰在线</span></div>
+    <nav class="nav-menu">
+      <a href="index.html">首页</a>
+      <a href="#" data-out="课程">课程</a>
+      <a href="#" data-out="学校">学校</a>
+      <a href="#" data-out="资讯">资讯</a>
+    </nav>
+    <form class="nav-search" onsubmit="return false">
+      <input type="search" placeholder="新生第一课" aria-label="搜索" />
+      <button type="button" data-out="搜索">搜索</button>
+    </form>
+    <div class="nav-right">
+      <button class="bell" type="button" data-out="消息中心" aria-label="消息中心，28 条未读">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#646a73" stroke-width="1.8" stroke-linecap="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="dot-num">28</span>
+      </button>
+      <div class="nav-user" data-out="个人主页">
+        <span class="avatar-xs">w</span><span>wxh26</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 主体 ================= -->
+<div class="layout">
+
+  <!-- 侧边栏 -->
+  <aside class="side">
+    <h5>账号设置</h5>
+    <a href="#" data-page="account" data-out="账号信息">账号信息</a>
+    <a href="#" data-page="security" data-out="安全设置">安全设置</a>
+    <a href="index.html" data-page="school" class="on">我的学校</a>
+    <a href="data-scope.html" data-page="scope">数据视角</a>
+    <a href="data-model.html" data-page="model">数据方案</a>
+    <a href="data-migration.html" data-page="migration">迁移与接口</a>
+  </aside>
+
+  <main class="main">
+
+    <!-- 头像 -->
+    <section class="card">
+      <div class="avatar-row">
+        <div class="avatar-lg" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-7 2-7 4.5V21h14v-2.5C19 16 16 14 12 14Z"/></svg>
+        </div>
+        <div>
+          <b>头像</b>
+          <div class="muted" style="font-size:12.5px">账号级信息，切换学校不会变化</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 基本信息 -->
+    <section class="card">
+      <div class="card-head">
+        <h3>基本信息</h3>
+        <button class="btn btn-ghost btn-sm" type="button" data-out="编辑基本信息">✎ 编辑</button>
+      </div>
+      <dl class="info-grid">
+        <div><dt>账号</dt><dd>18500082826</dd></div>
+        <div><dt>性别</dt><dd class="muted">未知</dd></div>
+        <div><dt>手机号</dt><dd>18500082826 <a class="tlink" href="#" data-out="换绑手机号">换绑</a></dd></div>
+        <div><dt>微信号</dt><dd class="muted">未绑定 <a class="tlink" href="#" data-out="绑定微信">绑定</a></dd></div>
+        <div class="wide"><dt>个人介绍</dt><dd class="muted">-</dd></div>
+      </dl>
+    </section>
+
+    <!-- 我的学校 -->
+    <section class="card" id="schools">
+      <div class="card-head">
+        <div>
+          <h3>我的学校</h3>
+          <div class="sub">一所主学校 + 若干已认证学校；课程、考试、成绩按学校分别保存</div>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-out="立即认证（跳转认证页）">立即认证</button>
+      </div>
+
+      <div class="school-list" id="school-host"></div>
+
+      <div id="school-note" style="margin-top:16px"></div>
+    </section>
+
+    <!-- 学习经历（展示层合并，底层仍分离） -->
+    <section class="card" id="timeline">
+      <div class="card-head">
+        <div>
+          <h3>学习经历</h3>
+          <div class="sub">按入学年份排列。展示层做了合并，但底层数据仍按学校与学历阶段分别保存</div>
+        </div>
+      </div>
+      <ol class="timeline" id="timeline-host"></ol>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var host = PROTO.$("#school-host");
+  var noteHost = PROTO.$("#school-note");
+  var timelineHost = PROTO.$("#timeline-host");
+  var D = PROTO.data;
+
+  /* =========================================================
+     渲染「我的学校」
+     主学校突出展示，其余学校降级为列表
+     ========================================================= */
+  function render() {
+    var bound = PROTO.boundSchools();
+    var primary = PROTO.primarySchool();
+
+    if (!bound.length) {
+      host.innerHTML =
+        '<div class="empty">' +
+          '<div class="ill" aria-hidden="true">' +
+            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8f959e" stroke-width="1.7" stroke-linecap="round"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-5h6v5"/></svg>' +
+          "</div>" +
+          "<h4>还没有认证学校</h4>" +
+          "<p>完成学校认证后，才能查看课程、参加考试、查询成绩</p>" +
+          '<button class="btn btn-primary" type="button" data-out="立即认证（跳转认证页）">立即认证</button>' +
+        "</div>";
+      noteHost.innerHTML = "";
+      renderTimeline();
+      return;
+    }
+
+    var others = bound.filter(function (s) { return !primary || s.id !== primary.id; });
+    var html = "";
+
+    if (primary) {
+      html += PROTO.schoolCard(primary, {
+        primary: true,
+        actions:
+          (others.length ? '<button class="btn btn-sm" type="button" data-act="switch">切换主学校</button>' : "") +
+          '<button class="btn btn-ghost btn-sm" type="button" data-act="reverify" data-id="' + primary.id + '">重新认证</button>' +
+          '<button class="btn btn-danger btn-sm" type="button" data-act="unbind" data-id="' + primary.id + '">解绑</button>'
+      });
+    }
+
+    if (others.length) {
+      html += '<div class="group-label">其他已认证学校（' + others.length + "）</div>";
+      others.forEach(function (s) {
+        html += PROTO.schoolCard(s, {
+          actions:
+            '<button class="btn btn-sm" type="button" data-act="set-primary" data-id="' + s.id + '">设为主学校</button>' +
+            '<button class="btn btn-ghost btn-sm" type="button" data-act="reverify" data-id="' + s.id + '">重新认证</button>' +
+            '<button class="btn btn-danger btn-sm" type="button" data-act="unbind" data-id="' + s.id + '">解绑</button>'
+        });
+      });
+    }
+
+    host.innerHTML = html;
+
+    noteHost.innerHTML =
+      '<div class="notice notice-info">' +
+        '<span class="ni">i</span>' +
+        "<div><b>主学校决定默认展示哪一份数据。</b>" +
+        "课程、考试、成绩、学习记录都按学校独立保存，切换主学校不会迁移、不会合并、也不会覆盖任何数据——切回来还是原来的内容。" +
+        '<a href="data-scope.html" style="margin-left:6px">看数据视角演示 →</a></div>' +
+      "</div>";
+
+    renderTimeline();
+  }
+
+  /* =========================================================
+     弹窗一：切换主学校（弹窗提示即可）
+     ========================================================= */
+  function openSwitch(presetId) {
+    var bound = PROTO.boundSchools();
+    var primary = PROTO.primarySchool();
+    var others = bound.filter(function (s) { return !primary || s.id !== primary.id; });
+
+    if (!others.length) {
+      PROTO.toast("当前只有一所已认证学校，无需切换", "info");
+      return;
+    }
+
+    var picks = others.map(function (s, i) {
+      var checked = presetId ? s.id === presetId : i === 0;
+      var e = PROTO.currentEnrollment(s);
+      return '<label class="pick">' +
+        '<input type="radio" name="pick-school" value="' + PROTO.esc(s.id) + '"' + (checked ? " checked" : "") + ' data-autofocus="' + (i === 0 ? "1" : "0") + '" />' +
+        '<span class="pick-body">' +
+          "<b>" + PROTO.esc(s.name) + '<span class="badge badge-plain">' + PROTO.esc(e.level) + "</span></b>" +
+          "<span>学号 " + PROTO.esc(e.studentNo) + " · " + PROTO.esc(e.realName) + " · " + PROTO.esc(e.college) + " · 认证于 " + PROTO.esc(s.authedAt) + "</span>" +
+        "</span>" +
+      "</label>";
+    }).join("");
+
+    var m = PROTO.modal.open({
+      title: "切换主学校",
+      body:
+        '<div class="notice notice-info" style="margin-bottom:16px">' +
+          '<span class="ni">i</span>' +
+          "<div><b>切换只改变默认展示，不影响数据归属。</b><br>" +
+          "「" + PROTO.esc(primary.name) + "」的课程、考试、成绩会完整保留，随时可以切回；两所学校的数据不会合并计算学分与 GPA。</div>" +
+        "</div>" +
+        '<div class="field" role="radiogroup" aria-label="选择要设为主学校的院校">' +
+          "<label>选择要设为主学校的院校</label>" + picks +
+        "</div>",
+      footer:
+        '<button class="btn" type="button" data-close>取消</button>' +
+        '<button class="btn btn-primary" type="button" data-confirm>确认切换</button>',
+      onMount: function (api) {
+        api.q("[data-close]").addEventListener("click", api.close);
+        api.q("[data-confirm]").addEventListener("click", function () {
+          var checked = api.q('input[name="pick-school"]:checked');
+          if (!checked) { PROTO.toast("请选择一所学校", "err"); return; }
+          var target = PROTO.schoolById(checked.value);
+          var btn = this;
+          api.lock(true);
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spin"></span><span>切换中…</span>';
+
+          // 真实系统在此处调用「设置主学校」接口，这里模拟 900ms 往返
+          setTimeout(function () {
+            PROTO.store.patch({ primaryId: target.id });
+            api.destroy();
+            render();
+            PROTO.toast("已切换主学校为「" + target.name + "」，课程 / 考试 / 成绩已切换至该校", "ok");
+          }, 900);
+        });
+      }
+    });
+    return m;
+  }
+
+  /* =========================================================
+     弹窗二：解绑（短信验证码验证）
+     ========================================================= */
+  function openUnbind(schoolId) {
+    var school = PROTO.schoolById(schoolId);
+    if (!school) return;
+    var enr = PROTO.currentEnrollment(school);
+
+    var bound = PROTO.boundSchools();
+    var isPrimary = PROTO.primarySchool() && PROTO.primarySchool().id === school.id;
+    var rest = bound.filter(function (s) { return s.id !== school.id; });
+    var isLast = rest.length === 0;
+
+    /* --- 解绑主学校时，自动切到剩余学校里最近认证的一所（已确认：不做手动指定） --- */
+    var autoPrimary = null;
+    if (isPrimary && !isLast) {
+      autoPrimary = rest.slice().sort(function (a, b) {
+        return String(b.authedAt).localeCompare(String(a.authedAt));
+      })[0];
+    }
+
+    /* --- 剩余学校的处理提示 --- */
+    var restBlock = "";
+    if (isLast) {
+      restBlock =
+        '<div class="notice notice-danger" style="margin-bottom:16px">' +
+          '<span class="ni">!</span>' +
+          "<div><b>这是你唯一已认证的学校，无法解绑。</b><br>" +
+          "解绑后将无法查看课程、参加考试或查询成绩。请先认证一所新学校，再回来解绑这一所。</div>" +
+        "</div>";
+    } else if (autoPrimary) {
+      restBlock =
+        '<div class="notice notice-warn" style="margin-bottom:16px">' +
+          '<span class="ni">!</span>' +
+          "<div>解绑的是<b>主学校</b>。解绑后，主学校将自动切换为「" + PROTO.esc(autoPrimary.name) +
+          "」（剩余学校里最近认证的一所），无需手动选择。</div>" +
+        "</div>";
+    }
+
+    var codeField =
+      '<div class="field" id="f-code">' +
+        "<label for=\"ub-code\">短信验证码</label>" +
+        '<div class="sms-row">' +
+          '<input class="input" id="ub-code" type="text" inputmode="numeric" maxlength="6" placeholder="请输入 6 位验证码" autocomplete="one-time-code" data-autofocus="1" />' +
+          '<button class="sms-btn" type="button" id="ub-send">获取验证码</button>' +
+        "</div>" +
+        '<div class="err" id="ub-err" role="alert"></div>' +
+        '<div class="code-demo" id="ub-demo">验证码将发送至 ' + PROTO.esc(D.ACCOUNT.phoneMask) + '　原型验证码：<code>' + D.MOCK_CODE + "</code></div>" +
+      "</div>";
+
+    var m = PROTO.modal.open({
+      title: "解绑学校",
+      size: "lg",
+      body:
+        '<div class="target">' +
+          '<div class="sc-logo' + (isPrimary ? " primary" : "") + '" aria-hidden="true">' + PROTO.esc(PROTO.initial(school.name)) + "</div>" +
+          "<div><b>" + PROTO.esc(school.name) + (isPrimary ? ' <span class="badge badge-primary">主学校</span>' : "") + "</b>" +
+          "<span>学号 " + PROTO.esc(enr.studentNo) + " · " + PROTO.esc(enr.realName) + " · " + PROTO.esc(enr.college) + " · " + PROTO.esc(enr.level) + "</span></div>" +
+        "</div>" +
+        restBlock +
+        '<div class="notice notice-info" style="margin-bottom:16px">' +
+          '<span class="ni">i</span>' +
+          "<div><b>解绑后该校数据会保留 " + D.UNBIND_KEEP_DAYS + " 天。</b><br>" +
+          "课程、考试、成绩将暂时不可见；用同一学校重新认证即可恢复。超过 " + D.UNBIND_KEEP_DAYS + " 天未重新认证，数据将被清除且无法恢复。</div>" +
+        "</div>" +
+        codeField,
+      footer:
+        '<button class="btn" type="button" data-close>取消</button>' +
+        '<button class="btn btn-danger" type="button" data-confirm' + (isLast ? " disabled" : "") + ">确认解绑</button>",
+      onMount: function (api) {
+        var codeInput = api.q("#ub-code");
+        var errBox = api.q("#ub-err");
+        var sendBtn = api.q("#ub-send");
+        var confirmBtn = api.q("[data-confirm]");
+        var sent = false;
+
+        function fail(msg) {
+          var f = api.q("#f-code");
+          f.classList.add("invalid");
+          errBox.textContent = msg;
+          f.classList.add("shake");
+          setTimeout(function () { f.classList.remove("shake"); }, 320);
+        }
+        function pass() {
+          api.q("#f-code").classList.remove("invalid");
+          errBox.textContent = "";
+        }
+
+        PROTO.bindSms(sendBtn, {
+          onSent: function () {
+            sent = true;
+            var demo = api.q("#ub-demo");
+            if (demo) demo.textContent = "验证码已发送至 " + D.ACCOUNT.phoneMask + "　原型验证码：" + D.MOCK_CODE;
+            PROTO.toast("验证码已发送至 " + D.ACCOUNT.phoneMask, "ok");
+          }
+        });
+
+        codeInput.addEventListener("input", function () {
+          this.value = this.value.replace(/\D/g, "");
+          if (api.q("#f-code").classList.contains("invalid")) pass();
+        });
+        codeInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !confirmBtn.disabled) confirmBtn.click();
+        });
+
+        api.q("[data-close]").addEventListener("click", api.close);
+
+        confirmBtn.addEventListener("click", function () {
+          if (isLast) return;
+          if (!sent) { fail("请先点击「获取验证码」"); PROTO.toast("请先获取验证码", "err"); return; }
+          var code = codeInput.value.trim();
+          if (!code) { fail("请输入验证码"); return; }
+          if (code.length !== 6) { fail("验证码为 6 位数字"); return; }
+          if (code !== D.MOCK_CODE) { fail("验证码错误或已失效，请重新获取"); return; }
+
+          // 主学校被解绑时自动切换，不需要用户指定
+          var newPrimary = autoPrimary ? autoPrimary.id : null;
+
+          pass();
+          api.lock(true);
+          confirmBtn.disabled = true;
+          confirmBtn.innerHTML = '<span class="spin dark"></span><span>解绑中…</span>';
+
+          // 真实系统：校验验证码 → 解绑认证关系 → 若有需要则重设主学校
+          setTimeout(function () {
+            var s = PROTO.store.get();
+            var unbound = s.unboundIds.slice();
+            unbound.push(school.id);
+            var patch = { unboundIds: unbound };
+            if (newPrimary) patch.primaryId = newPrimary;
+            PROTO.store.patch(patch);
+
+            api.destroy();
+            render();
+            PROTO.toast("已解绑「" + school.name + "」，数据保留 " + D.UNBIND_KEEP_DAYS + " 天", "ok");
+            if (newPrimary) {
+              setTimeout(function () {
+                PROTO.toast("主学校已切换为「" + PROTO.schoolById(newPrimary).name + "」", "info");
+              }, 400);
+            }
+          }, 1000);
+        });
+      }
+    });
+    return m;
+  }
+
+  /* =========================================================
+     学习经历时间线
+     跨学校、跨学历阶段合并展示；但每一条都明确标注数据归属
+     ========================================================= */
+  function renderTimeline() {
+    var list = PROTO.allEnrollments();
+    if (!list.length) {
+      timelineHost.innerHTML = '<li class="tl-empty">完成学校认证后，这里会按时间线展示你的学习经历</li>';
+      return;
+    }
+    timelineHost.innerHTML = list.map(function (item) {
+      var s = item.school, e = item.enrollment;
+      // is_current 是"每所学校的当前阶段"，所以每所学校各有一条。
+      // 时间线上要高亮的只有"当前默认展示"的那一条：主学校的当前阶段。
+      var isDefault = PROTO.primarySchool() && PROTO.primarySchool().id === s.id && e.isCurrent;
+      return '<li class="tl-item' + (isDefault ? " is-current" : "") + '">' +
+        '<div class="tl-dot" aria-hidden="true"></div>' +
+        '<div class="tl-body">' +
+          '<div class="tl-head">' +
+            "<b>" + PROTO.esc(s.name) + "</b>" +
+            '<span class="badge badge-plain">' + PROTO.esc(e.level) + "</span>" +
+            '<span class="badge ' + (e.status === "在读" ? "badge-ok" : "badge-plain") + '">' + PROTO.esc(e.status) + "</span>" +
+            (isDefault ? '<span class="badge badge-primary">主学校 · 当前展示</span>' : "") +
+            '<span class="sp"></span>' +
+            '<span class="tl-year">' + PROTO.esc(e.enrollYear) + " 级 · " + PROTO.esc(e.track) + "</span>" +
+          "</div>" +
+          '<div class="tl-meta">学号 ' + PROTO.esc(e.studentNo) +
+            " · " + PROTO.esc(e.college) + " · " + PROTO.esc(e.major) + " · " + PROTO.esc(e.className) + "</div>" +
+          '<div class="tl-scope">数据归属：' + PROTO.esc(s.name) + " · " + PROTO.esc(e.level) + " " + PROTO.esc(e.enrollYear) +
+            " 级　（课程 " + e.metrics.courses + " · 考试 " + e.metrics.exams + " · 学分 " + e.metrics.credits + "）</div>" +
+        "</div>" +
+      "</li>";
+    }).join("");
+  }
+
+  /* =========================================================
+     弹窗三：重新认证
+     两条分支：更新当前学籍 / 新增学历阶段（专升本、读研）
+     ========================================================= */
+  function openReverify(schoolId) {
+    var school = PROTO.schoolById(schoolId);
+    if (!school) return;
+    var phases = PROTO.enrollmentsOf(school);
+    var cur = PROTO.currentEnrollment(school);
+
+    function field(id, label, value, type) {
+      return '<div class="field"><label for="' + id + '">' + label + "</label>" +
+        '<input class="input" id="' + id + '" type="' + (type || "text") + '" value="' + PROTO.esc(value || "") + '" /></div>';
+    }
+
+    var updateForm =
+      '<div class="phase-form" id="form-update">' +
+        '<div class="form-grid">' +
+          field("rv-no", "学号", cur.studentNo) +
+          field("rv-name", "姓名", cur.realName) +
+          field("rv-college", "学院", cur.college) +
+          field("rv-major", "专业", cur.major) +
+          field("rv-class", "班级", cur.className) +
+          field("rv-year", "入学年份", cur.enrollYear) +
+        "</div>" +
+        '<div class="notice notice-info" style="margin-top:4px"><span class="ni">i</span>' +
+        "<div>只更新学籍信息，该校已有的课程、考试、成绩不受影响。</div></div>" +
+      "</div>";
+
+    var addForm =
+      '<div class="phase-form" id="form-add" hidden>' +
+        '<div class="form-grid">' +
+          '<div class="field"><label for="rv-level">学历层次</label><select class="input" id="rv-level">' +
+            D.LEVELS.map(function (l) { return '<option value="' + PROTO.esc(l) + '">' + PROTO.esc(l) + "</option>"; }).join("") +
+          "</select></div>" +
+          '<div class="field"><label for="rv-track">升学方式</label><select class="input" id="rv-track">' +
+            D.TRACKS.map(function (t) { return '<option value="' + PROTO.esc(t) + '">' + PROTO.esc(t) + "</option>"; }).join("") +
+          "</select></div>" +
+          field("rv-no2", "新学号", "") +
+          field("rv-year2", "入学年份", "2026") +
+          field("rv-college2", "学院", "") +
+          field("rv-major2", "专业", "") +
+          field("rv-class2", "班级", "") +
+        "</div>" +
+        '<div class="notice notice-warn" style="margin-top:4px"><span class="ni">!</span>' +
+        "<div><b>新增学历阶段不会覆盖原学籍。</b>" +
+        "原学历阶段的课程、成绩会完整保留，两个阶段的学分不互相折算。" +
+        (phases.length > 1 ? "该校已有 " + phases.length + " 个阶段。" : "") +
+        "</div></div>" +
+      "</div>";
+
+    var m = PROTO.modal.open({
+      title: "重新认证 · " + school.name,
+      size: "lg",
+      body:
+        '<div class="target">' +
+          '<div class="sc-logo" aria-hidden="true">' + PROTO.esc(PROTO.initial(school.name)) + "</div>" +
+          "<div><b>" + PROTO.esc(school.name) + "</b>" +
+          "<span>当前学籍：" + PROTO.esc(cur.level) + " · " + PROTO.esc(cur.enrollYear) + " 级 · " + PROTO.esc(cur.track) + " · " + PROTO.esc(cur.status) + "</span></div>" +
+        "</div>" +
+        '<div class="radio-group" role="radiogroup" aria-label="选择重新认证的方式">' +
+          '<label class="radio-card"><input type="radio" name="rv-mode" value="update" checked data-autofocus="1" />' +
+            '<span><b>学籍信息有变化</b><em>更新当前阶段的学号、学院、专业、班级</em></span></label>' +
+          '<label class="radio-card"><input type="radio" name="rv-mode" value="add" />' +
+            '<span><b>升学了（专升本 / 读研）</b><em>新增一个学历阶段，原阶段数据保留</em></span></label>' +
+        "</div>" +
+        updateForm + addForm,
+      footer:
+        '<button class="btn" type="button" data-close>取消</button>' +
+        '<button class="btn btn-primary" type="button" data-confirm>提交认证</button>',
+      onMount: function (api) {
+        var updateEl = api.q("#form-update");
+        var addEl = api.q("#form-add");
+
+        api.qa('input[name="rv-mode"]').forEach(function (r) {
+          r.addEventListener("change", function () {
+            var isAdd = r.value === "add";
+            updateEl.hidden = isAdd;
+            addEl.hidden = !isAdd;
+          });
+        });
+
+        api.q("[data-close]").addEventListener("click", api.close);
+
+        api.q("[data-confirm]").addEventListener("click", function () {
+          var mode = api.q('input[name="rv-mode"]:checked').value;
+          var btn = this;
+          var payload;
+
+          if (mode === "update") {
+            var no = api.q("#rv-no").value.trim();
+            if (!no) { PROTO.toast("请填写学号", "err"); api.q("#rv-no").focus(); return; }
+            payload = {
+              studentNo: no,
+              realName: api.q("#rv-name").value.trim(),
+              college: api.q("#rv-college").value.trim(),
+              major: api.q("#rv-major").value.trim(),
+              className: api.q("#rv-class").value.trim(),
+              enrollYear: api.q("#rv-year").value.trim()
+            };
+          } else {
+            var no2 = api.q("#rv-no2").value.trim();
+            var year2 = api.q("#rv-year2").value.trim();
+            if (!no2) { PROTO.toast("请填写新学号", "err"); api.q("#rv-no2").focus(); return; }
+            if (!/^\d{4}$/.test(year2)) { PROTO.toast("入学年份需为 4 位数字", "err"); api.q("#rv-year2").focus(); return; }
+            payload = {
+              isNew: true,
+              level: api.q("#rv-level").value,
+              track: api.q("#rv-track").value,
+              studentNo: no2,
+              enrollYear: year2,
+              college: api.q("#rv-college2").value.trim(),
+              major: api.q("#rv-major2").value.trim(),
+              className: api.q("#rv-class2").value.trim(),
+              realName: cur.realName
+            };
+          }
+
+          api.lock(true);
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spin"></span><span>提交中…</span>';
+
+          // 真实系统：提交认证资料 → 学校/学信网核验 → 更新学籍
+          setTimeout(function () {
+            var list = PROTO.enrollmentsOf(school).map(function (e) {
+              return Object.assign({}, e, { isCurrent: false });
+            });
+
+            if (payload.isNew) {
+              list.push({
+                id: "enr-" + school.id + "-" + Date.now(),
+                level: payload.level,
+                track: payload.track,
+                studentNo: payload.studentNo,
+                realName: payload.realName,
+                college: payload.college || "--",
+                major: payload.major || "--",
+                className: payload.className || "--",
+                enrollYear: payload.enrollYear,
+                status: "在读",
+                isCurrent: true,
+                verifiedAt: "刚刚",
+                metrics: { courses: 0, exams: 0, credits: 0, gpa: "--" },
+                courses: [], exams: [], transcript: []
+              });
+            } else {
+              list = list.map(function (e) {
+                return e.isCurrent ? Object.assign({}, e, payload, { isCurrent: true }) : e;
+              });
+            }
+
+            PROTO.setEnrollments(school.id, list);
+            api.destroy();
+            render();
+            PROTO.toast(
+              payload.isNew
+                ? "已新增 " + payload.level + " 学历阶段，原阶段数据完整保留"
+                : "学籍信息已更新",
+              "ok"
+            );
+          }, 1000);
+        });
+      }
+    });
+    return m;
+  }
+
+  /* =========================================================
+     事件绑定
+     ========================================================= */
+  host.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-act]");
+    if (!el) return;
+    var act = el.dataset.act;
+    if (act === "switch") openSwitch(null);
+    else if (act === "set-primary") openSwitch(el.dataset.id);
+    else if (act === "unbind") openUnbind(el.dataset.id);
+    else if (act === "reverify") openReverify(el.dataset.id);
+  });
+
+  // 未接入的导航与按钮：明确边界，不做假动作
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-out]");
+    if (!el) return;
+    e.preventDefault();
+    PROTO.toast("「" + el.dataset.out + "」不在本次原型范围内", "info");
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

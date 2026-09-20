@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>个人中心 · 我的学校 — 贵兰在线</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true" width="30" height="30">
+        <path d="M16 3 29 9.5 16 16 3 9.5Z" fill="#1677ff"/>
+        <path d="M16 13.5 29 20 16 26.5 3 20Z" fill="#2fbf71"/>
+      </svg>
+      <strong>贵兰在线</strong>
+    </span>
+    <nav class="topnav" aria-label="主导航">
+      <span class="nav-link" data-boundary="原型边界：站点导航不在本原型范围。" tabindex="0">首页</span>
+      <span class="nav-link" data-boundary="原型边界：站点导航不在本原型范围。" tabindex="0">课程</span>
+      <span class="nav-link" data-boundary="原型边界：站点导航不在本原型范围。" tabindex="0">学校</span>
+      <span class="nav-link" data-boundary="原型边界：站点导航不在本原型范围。" tabindex="0">资讯</span>
+    </nav>
+    <div class="search">
+      <input type="search" placeholder="新生第一课" aria-label="搜索">
+      <button class="btn primary" type="button" data-boundary="原型边界：搜索不在本原型范围。">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        搜索
+      </button>
+    </div>
+    <button class="iconbtn" type="button" data-boundary="原型边界：消息中心不在本原型范围。" aria-label="消息通知，26 条未读">
+      <svg viewBox="0 0 20 20" width="19" height="19" aria-hidden="true"><path d="M10 2.5a5 5 0 0 0-5 5v3L3.5 13h13L15 10.5v-3a5 5 0 0 0-5-5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 15.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span class="badge">26</span>
+    </button>
+    <button class="userchip" type="button" data-boundary="原型边界：账号菜单不在本原型范围。">
+      <span class="mini-avatar" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="14" height="14"><circle cx="10" cy="7" r="3.4" fill="#8a94a6"/><path d="M3.5 16.5a6.5 6.5 0 0 1 13 0Z" fill="#8a94a6"/></svg>
+      </span>
+      wxh26
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidenav" aria-label="个人中心菜单">
+    <button class="side-item active" type="button" aria-current="page">个人中心</button>
+    <button class="side-item" type="button" data-boundary="原型边界：安全设置不在本原型范围。">安全设置</button>
+  </aside>
+
+  <main class="main">
+    <section class="card avatar-card">
+      <span class="avatar" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="14" r="7" fill="#8a94a6"/><path d="M6 34a14 14 0 0 1 28 0Z" fill="#8a94a6"/></svg>
+      </span>
+      <div>
+        <strong>头像</strong>
+        <p class="muted">wxh26</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>基本信息</h2>
+        <button class="btn-link" type="button" data-boundary="原型边界：资料编辑不在本原型范围。">
+          <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M11.3 2.7a1.6 1.6 0 0 1 2.3 2.3L5.5 13 2.5 13.8 3.3 10.8Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          编辑
+        </button>
+      </div>
+      <div class="fields">
+        <div class="field"><span class="field-label">账号</span><span class="field-value">18500082826</span></div>
+        <div class="field"><span class="field-label">性别</span><span class="field-value">未知</span></div>
+        <div class="field"><span class="field-label">手机号</span><span class="field-value">18500082826 <button class="btn-link" type="button" data-boundary="原型边界：换绑手机不在本原型范围。">换绑</button></span></div>
+        <div class="field"><span class="field-label">微信号</span><span class="field-value">未绑定 <button class="btn-link" type="button" data-boundary="原型边界：微信绑定不在本原型范围。">绑定</button></span></div>
+        <div class="field field-wide"><span class="field-label">个人介绍</span><span class="field-value">–</span></div>
+      </div>
+    </section>
+
+    <section class="card" id="schoolSection" tabindex="-1" aria-labelledby="schoolTitle">
+      <div class="card-head">
+        <div>
+          <h2 id="schoolTitle">我的学校</h2>
+          <p class="card-sub">可认证并保留多所学校信息。课程、考试等学校专属服务以当前学校为准。</p>
+        </div>
+        <button class="btn primary" type="button" data-boundary="原型边界：学校认证表单由真实系统提供，本原型仅演示切换与解绑。">立即认证</button>
+      </div>
+      <div id="schoolBody"></div>
+    </section>
+  </main>
+</div>
+
+<!-- 切换当前学校弹窗 -->
+<div class="overlay" id="switchModal" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="switchTitle">
+    <div class="dialog-head">
+      <h3 id="switchTitle">切换当前学校</h3>
+      <button class="iconbtn plain" type="button" data-close aria-label="关闭">×</button>
+    </div>
+    <div class="dialog-body">
+      <div class="fromto">
+        <div class="ft-row"><span class="ft-label">当前学校</span><strong id="switchFrom"></strong></div>
+        <div class="ft-arrow" aria-hidden="true">
+          <svg viewBox="0 0 16 22" width="14" height="20"><path d="M8 2v15m0 0-5-5m5 5 5-5" fill="none" stroke="#1677ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="ft-row to"><span class="ft-label">切换为</span><strong id="switchTo"></strong></div>
+      </div>
+      <ul class="impact-list" id="switchImpact">
+        <li>切换后学校专属课程、考试等进度以当前学校为准。</li>
+      </ul>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn ghost" type="button" data-close>取消</button>
+      <button class="btn primary" type="button" id="switchConfirm">确认切换</button>
+    </div>
+  </div>
+</div>
+
+<!-- 解绑学校弹窗 -->
+<div class="overlay" id="unbindModal" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="unbindTitle">
+    <div class="dialog-head">
+      <h3 id="unbindTitle">解绑学校</h3>
+      <button class="iconbtn plain" type="button" data-close aria-label="关闭">×</button>
+    </div>
+    <div class="dialog-body">
+      <div class="warn-banner">
+        <p class="warn-title">解绑将移除你在「<span id="unbindSchoolName"></span>」的学籍身份，请确认以下影响：</p>
+        <ul id="unbindImpact"></ul>
+      </div>
+      <div class="verify">
+        <p class="verify-title">身份验证</p>
+        <p class="verify-tip">验证码将发送至绑定手机号 <strong>185****2826</strong></p>
+        <div class="code-row">
+          <input id="codeInput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="请输入验证码" aria-label="短信验证码" aria-describedby="codeError codeHint">
+          <button class="btn ghost" type="button" id="sendCodeBtn">获取验证码</button>
+        </div>
+        <p class="field-error" id="codeError" role="alert" hidden>验证码错误，请重新输入</p>
+        <p class="hint" id="codeHint">原型演示验证码：123456</p>
+      </div>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn ghost" type="button" data-close>取消</button>
+      <button class="btn danger" type="button" id="unbindConfirm" disabled>确认解绑</button>
+    </div>
+  </div>
+</div>
+
+<div class="demo-bar" id="demoBar" aria-label="演示控制">
+  <nav class="demo-platforms" aria-label="原型端切换">
+    <span aria-current="page">Web</span>
+    <a href="mobile.html">Mobile</a>
+  </nav>
+  <button class="btn ghost small" type="button" id="resetBtn">重置状态</button>
+  <button class="btn-link" type="button" id="hideBarBtn">隐藏</button>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+  <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="8.4" fill="#22c55e"/><path d="m6.4 10.2 2.4 2.4 4.8-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span id="toastText"></span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

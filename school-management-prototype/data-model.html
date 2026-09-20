@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>数据方案 · 账号与学校的关系 — 贵兰在线</title>
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="logo-mark">贵</span><span>贵兰在线</span></div>
+    <nav class="nav-menu">
+      <a href="index.html">首页</a>
+      <a href="data-scope.html">数据视角</a>
+      <a href="data-model.html" class="on">数据方案</a>
+      <a href="data-migration.html">迁移与接口</a>
+    </nav>
+    <div class="nav-right">
+      <div class="nav-user" data-out="个人主页"><span class="avatar-xs">w</span><span>wxh26</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <h5>账号设置</h5>
+    <a href="#" data-page="account" data-out="账号信息">账号信息</a>
+    <a href="#" data-page="security" data-out="安全设置">安全设置</a>
+    <a href="index.html" data-page="school">我的学校</a>
+    <a href="data-scope.html" data-page="scope">数据视角</a>
+    <a href="data-model.html" data-page="model" class="on">数据方案</a>
+    <a href="data-migration.html" data-page="migration">迁移与接口</a>
+  </aside>
+
+  <main class="main">
+    <article class="card doc">
+
+      <h2>账号数据归属方案</h2>
+      <p>对应「解绑学校」与「切换学校」两个功能点背后的数据设计。结论先行，后面是可讨论项。</p>
+
+      <div class="notice notice-ok" style="margin:14px 0 4px">
+        <span class="ni">✓</span>
+        <div><b>一句话结论：学校是「数据分区」，不是「数据快照」；主学校只是一个指针。</b><br>
+        切换学校 = 换一个查询条件，不搬数据、不合并、不覆盖。所以「切回来数据还在」不是额外做的功能，而是这套设计天然的结果。</div>
+      </div>
+
+      <h3>一、三个方案，为什么只选第一个</h3>
+      <table class="tbl">
+        <thead>
+          <tr><th style="width:130px">方案</th><th>行为</th><th>专升本场景下会发生什么</th><th style="width:88px">结论</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A · 独立保存</td>
+            <td>每所学校一份数据，主学校决定默认展示哪一份</td>
+            <td>专科成绩完整保留，本科成绩独立累计，互不干扰</td>
+            <td><span class="badge badge-ok">采用</span></td>
+          </tr>
+          <tr>
+            <td>B · 以最新为准</td>
+            <td>切换后新学校数据覆盖旧的</td>
+            <td>专科成绩、学分永久丢失，且不可逆</td>
+            <td><span class="badge badge-danger">不可用</span></td>
+          </tr>
+          <tr>
+            <td>C · 合并展示</td>
+            <td>两所学校的数据混在一起</td>
+            <td>学分与 GPA 会算错；两校课程重名时无法区分</td>
+            <td><span class="badge badge-danger">不可用</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>方案 B 的问题不只是"体验不好"：学籍、成绩属于重要数据，覆盖式切换一旦误操作就永久丢数据，同时也不满足教育数据的留存要求。所以 <b>覆盖式切换在方案层面就该排除，而不是靠二次确认弹窗去兜底</b>。</p>
+
+      <h3>二、数据分四层</h3>
+      <div class="layers four">
+        <div class="layer l1">
+          <div class="lt">① 账号级</div>
+          <div class="ls">user 表 · 跨学校共享</div>
+          <ul>
+            <li>账号、手机号、微信</li>
+            <li>头像、昵称、性别、个人介绍</li>
+            <li>安全设置、消息偏好</li>
+          </ul>
+        </div>
+        <div class="layer l2">
+          <div class="lt">② 认证关系</div>
+          <div class="ls">user_school · 用户 × 学校</div>
+          <ul>
+            <li>你在哪几所学校认证过</li>
+            <li>认证状态、认证 / 解绑时间</li>
+            <li>主学校标记 is_primary</li>
+          </ul>
+        </div>
+        <div class="layer l2">
+          <div class="lt">③ 学籍阶段</div>
+          <div class="ls">user_enrollment · 学历阶段</div>
+          <ul>
+            <li>学号、姓名、学院、专业、班级</li>
+            <li>学历层次、入学年份、在读 / 毕业</li>
+            <li>专升本 = 同一所学校下的第二个阶段</li>
+          </ul>
+        </div>
+        <div class="layer l3">
+          <div class="lt">④ 主学校指针</div>
+          <div class="ls">user.primary_school_id</div>
+          <ul>
+            <li>全局唯一，同一时间只有一所</li>
+            <li>切换 = 一次 UPDATE</li>
+            <li>不承载任何业务数据</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>三、为什么学籍要单独一张表</h3>
+      <p>这是这版方案里最容易做错的地方。最初的想法是"一张 user_school 表装下认证关系 + 学籍信息"，用 <code>(user_id, school_id)</code> 做唯一索引。但这条索引会直接挡掉一个真实场景：</p>
+      <div class="notice notice-warn" style="margin-bottom:12px">
+        <span class="ni">!</span>
+        <div><b>同一个人在同一所学校读了专科，又专升本读了本科。</b><br>
+        学校没变，但学号、学院、专业、学历层次全变了。此时 <code>(user_id, school_id)</code> 唯一索引会拒绝第二条记录；如果为了塞进去而覆盖原记录，专科阶段的成绩就找不到归属了。</div>
+      </div>
+      <p>所以要把两件事拆开：<b>「你在这所学校认证过」和「你在这所学校的哪个学历阶段」是两层关系</b>。前者是认证关系（一人一校一条），后者是学籍阶段（一人一校可以有多条）。业务数据（课程、考试、成绩）挂在<b>学籍阶段</b>上，而不是挂在学校上——这样专科的课归专科、本科的课归本科，跨阶段学分天然不会互相折算。</p>
+      <table class="tbl">
+        <thead><tr><th style="width:200px">场景</th><th>关系怎么变</th></tr></thead>
+        <tbody>
+          <tr><td>专升本，换学校</td><td>新增一条 user_school（新学校）+ 一条 enrollment。原学校的关系与学籍都不动</td></tr>
+          <tr><td>专升本，同一所学校</td><td>user_school 不变，新增一条 enrollment，旧的 enrollment 置 <code>is_current = false</code></td></tr>
+          <tr><td>本硕连读 / 读研</td><td>同上，学历层次从本科变为硕士</td></tr>
+          <tr><td>学号填错了</td><td>更新当前 enrollment 的字段，不新增记录</td></tr>
+        </tbody>
+      </table>
+
+      <h3>四、七条硬规则</h3>
+      <ul class="bullet">
+        <li><b>主学校唯一。</b>约束 <code>primary_school_id</code> 必须指向一条"已认证且未解绑"的 user_school，不允许为空（除非一所都没有）。</li>
+        <li><b>所有业务表必须带归属维度。</b>课程、考试、成绩挂 <code>user_enrollment_id</code>；高频查询再冗余一个 <code>school_id</code> 做过滤，避免每次两层 join。</li>
+        <li><b>一所学校下同时只有一个"当前阶段"。</b>用 <code>is_current</code> 标记，唯一约束保证不会出现两个。</li>
+        <li><b>切换主学校不产生任何数据迁移，也不需要重新认证。</b>认证关系是"用户 × 学校"，与谁是主学校无关。</li>
+        <li><b>解绑是软删除。</b><code>auth_status</code> 从 <code>active</code> 改为 <code>unbound</code>，认证关系下的所有学籍阶段与业务数据保留 90 天。</li>
+        <li><b>解绑主学校时自动切换。</b>自动切到剩余学校里最近认证的一所，并明确告知用户切到了哪一所；只剩一所时禁止解绑。</li>
+        <li><b>重新认证同一所学校要能复用原关系。</b>按 <code>(user_id, school_id)</code> 命中历史记录，只更新或新增学籍阶段，不新建认证关系——这正是软删除存在的理由。</li>
+      </ul>
+
+      <h3>五、表结构示例</h3>
+      <table class="tbl">
+        <thead><tr><th style="width:190px">字段</th><th style="width:140px">类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td colspan="3" style="background:var(--surface-2);color:var(--ink-3);font-weight:600">user_school —— 认证关系（用户 × 学校）</td></tr>
+          <tr><td>id</td><td>bigint PK</td><td>主键</td></tr>
+          <tr><td>user_id / school_id</td><td>bigint</td><td>账号 ID、学校 ID</td></tr>
+          <tr><td>is_primary</td><td>bool</td><td>是否主学校</td></tr>
+          <tr><td>auth_status</td><td>tinyint</td><td>认证中 / 已认证 / 已解绑</td></tr>
+          <tr><td>authed_at / unbound_at</td><td>datetime</td><td>解绑时间决定 90 天保留窗口</td></tr>
+          <tr><td colspan="3" style="background:var(--surface-2);color:var(--ink-3);font-weight:600">user_enrollment —— 学籍阶段（一所学校可有多条）</td></tr>
+          <tr><td>id</td><td>bigint PK</td><td>主键</td></tr>
+          <tr><td>user_school_id</td><td>bigint</td><td>指向认证关系</td></tr>
+          <tr><td>student_no / real_name / college / major / class_name</td><td>varchar</td><td>该学历阶段的学籍信息，与账号级昵称互相独立</td></tr>
+          <tr><td>education_level</td><td>tinyint</td><td>专科 / 本科 / 硕士 / 博士</td></tr>
+          <tr><td>enroll_year / graduate_year</td><td>varchar</td><td>入学与毕业年份，用于"学习经历"时间线</td></tr>
+          <tr><td>is_current</td><td>bool</td><td>是否为当前在读阶段</td></tr>
+          <tr><td>verify_status / verified_at</td><td>tinyint / datetime</td><td>核验状态与时间</td></tr>
+          <tr><td colspan="3" style="background:var(--surface-2);color:var(--ink-3);font-weight:600">唯一约束</td></tr>
+          <tr><td>uk_user_school</td><td>unique</td><td><code>(user_id, school_id)</code> where <code>auth_status != unbound</code> —— 防止重复认证同一所学校</td></tr>
+          <tr><td>uk_user_primary</td><td>unique</td><td><code>(user_id)</code> where <code>is_primary = true</code> —— 保证主学校全局唯一</td></tr>
+          <tr><td>uk_school_student</td><td>unique</td><td><code>(user_school_id, student_no)</code> —— 同一学校内学号不重复</td></tr>
+          <tr><td>uk_enrollment_current</td><td>unique</td><td><code>(user_school_id)</code> where <code>is_current = true</code> —— 当前阶段唯一</td></tr>
+          <tr><td colspan="3" style="background:var(--surface-2);color:var(--ink-3);font-weight:600">业务表（课程 / 考试 / 成绩）统一新增</td></tr>
+          <tr><td>user_enrollment_id</td><td>bigint</td><td>数据归属的学历阶段（精确归属）</td></tr>
+          <tr><td>school_id</td><td>bigint</td><td>冗余字段，主学校过滤用，避免每次两层 join</td></tr>
+        </tbody>
+      </table>
+
+      <h3>六、容易踩的坑</h3>
+      <ul class="bullet">
+        <li><b>同一个人在两所学校的姓名可能不一样。</b>当前截图里就是「wxh26」和「王东喜」。昵称、头像归账号级，学籍姓名归学籍阶段，两者不能互相覆盖。</li>
+        <li><b>专升本不是"改学籍"，是新增一个学历阶段。</b>原阶段必须保持可查，否则学历档案就断了。</li>
+        <li><b>主学校被解绑后必须有兜底。</b>不能出现 <code>primary_school_id</code> 指向已解绑学校的中间状态。</li>
+        <li><b>业务数据不能只挂学校。</b>否则同一所学校内专升本后，专科和本科的课程会混在一起算学分。</li>
+        <li><b>消息通知要标来源学校与阶段。</b>解绑后，来自该校的历史通知是隐藏还是保留，需要定。</li>
+        <li><b>数据导出要能按学校 / 按阶段选。</b>否则导出全部时会混淆不同阶段的成绩。</li>
+      </ul>
+
+      <h3>七、已确认的决策</h3>
+      <p>下面 7 条已经确认，按"规则尽量少"的原则定稿。原型与接口文档都已按这个结论实现。</p>
+      <table class="tbl">
+        <thead><tr><th style="width:40px">#</th><th style="width:220px">决策点</th><th style="width:104px">结论</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>是否提供"彻底删除数据"的入口</td><td><span class="badge badge-plain">不做</span></td><td>只保留软删除 + 90 天可恢复，不开放不可逆的删除操作</td></tr>
+          <tr><td>2</td><td>数据保留期时长</td><td><span class="badge badge-plain">维持 90 天</span></td><td>按现方案执行，不额外调整</td></tr>
+          <tr><td>3</td><td>解绑主学校时如何确定新主学校</td><td><span class="badge badge-ok">自动切换</span></td><td>自动切到剩余学校里最近认证的一所，弹窗中明确告知切到了哪一所；不要求用户手动选择</td></tr>
+          <tr><td>4</td><td>是否限制绑定学校数量</td><td><span class="badge badge-plain">不限制</span></td><td>不加数量上限</td></tr>
+          <tr><td>5</td><td>是否提供"全部学校"汇总视图</td><td><span class="badge badge-plain">不做</span></td><td>数据视角只提供单校视图，通过切换学校查看不同学校的数据</td></tr>
+          <tr><td>6</td><td>跨学历阶段的学分是否折算</td><td><span class="badge badge-plain">不折算</span></td><td>各阶段学分独立计算，不引入"学分认定"关系表</td></tr>
+          <tr><td>7</td><td>解绑是否需要填写原因</td><td><span class="badge badge-plain">不填</span></td><td>短信验证码 + 二次确认即可，服务端保留操作日志便于追溯</td></tr>
+        </tbody>
+      </table>
+      <div class="notice notice-info" style="margin-top:14px">
+        <span class="ni">i</span>
+        <div>一条连带影响值得记一下：<b>不限制绑定数量、同时又不提供汇总视图</b>，意味着绑了 3 所以上的用户只能靠"切换"逐所查看。如果后续收到"找不到另一所学校数据"的反馈，第一个该补的是学校列表里的数据量提示，而不是把汇总视图加回来。</div>
+      </div>
+
+      <div class="notice notice-info" style="margin-top:22px">
+        <span class="ni">i</span>
+        <div>存量数据怎么迁到这套结构、接口怎么定，见 <a href="data-migration.html">迁移与接口</a>。</div>
+      </div>
+
+    </article>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener("click", function (e) {
+  var el = e.target.closest("[data-out]");
+  if (!el) return;
+  e.preventDefault();
+  PROTO.toast("「" + el.dataset.out + "」不在本次原型范围内", "info");
+});
+</script>
+</body>
+</html>

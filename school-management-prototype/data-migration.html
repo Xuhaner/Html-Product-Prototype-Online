@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>迁移与接口 · 存量数据怎么迁、接口怎么定 — 贵兰在线</title>
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="logo-mark">贵</span><span>贵兰在线</span></div>
+    <nav class="nav-menu">
+      <a href="index.html">首页</a>
+      <a href="data-scope.html">数据视角</a>
+      <a href="data-model.html">数据方案</a>
+      <a href="data-migration.html" class="on">迁移与接口</a>
+    </nav>
+    <div class="nav-right">
+      <div class="nav-user" data-out="个人主页"><span class="avatar-xs">w</span><span>wxh26</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <h5>账号设置</h5>
+    <a href="#" data-page="account" data-out="账号信息">账号信息</a>
+    <a href="#" data-page="security" data-out="安全设置">安全设置</a>
+    <a href="index.html" data-page="school">我的学校</a>
+    <a href="data-scope.html" data-page="scope">数据视角</a>
+    <a href="data-model.html" data-page="model">数据方案</a>
+    <a href="data-migration.html" data-page="migration" class="on">迁移与接口</a>
+  </aside>
+
+  <main class="main">
+    <article class="card doc">
+
+      <h2>存量数据迁移与接口契约</h2>
+      <p>这套结构上线时，库里已经有用户、有绑定关系、有课程和成绩了。下面是迁移路径和接口定义。</p>
+
+      <div class="notice notice-warn" style="margin:14px 0 4px">
+        <span class="ni">!</span>
+        <div><b>迁移里唯一真正难的一步是「业务数据归属」。</b><br>
+        已经绑了两所学校的用户，他们的课程和成绩是在没有学校维度的情况下产生的。这些数据归哪一所，是必须提前定规则的事，不能上线时再想。</div>
+      </div>
+
+      <h3>一、现状与目标态</h3>
+      <table class="tbl">
+        <thead><tr><th style="width:120px">维度</th><th>现状（推测）</th><th>目标态</th></tr></thead>
+        <tbody>
+          <tr><td>学校绑定</td><td>一张绑定表，或 user 表上的字段，允许多人多校</td><td>user_school 认证关系表，带 auth_status 与 is_primary</td></tr>
+          <tr><td>学籍信息</td><td>直接挂在绑定关系上</td><td>拆到 user_enrollment，支持一校多阶段</td></tr>
+          <tr><td>主学校</td><td>不存在这个概念</td><td>user.primary_school_id，全局唯一</td></tr>
+          <tr><td>业务数据</td><td>只挂 user_id，没有学校维度</td><td>挂 user_enrollment_id + 冗余 school_id</td></tr>
+        </tbody>
+      </table>
+
+      <h3>二、迁移六步</h3>
+      <table class="tbl">
+        <thead><tr><th style="width:64px">步骤</th><th style="width:170px">做什么</th><th>要点</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>0 · 盘点</td>
+            <td>统计分布</td>
+            <td>先出三个数：每人绑定学校数的分布（1 所 / 2 所 / 3+）、业务表总量、按现有线索能直接归属的比例。<b>这三个数决定后面要不要开人工队列。</b></td>
+          </tr>
+          <tr>
+            <td>1 · 建关系</td>
+            <td>回填 user_school</td>
+            <td>从现有绑定关系生成，<code>auth_status = active</code>，<code>authed_at</code> 沿用原绑定时间，不要写成迁移当天</td>
+          </tr>
+          <tr>
+            <td>2 · 建学籍</td>
+            <td>回填 user_enrollment</td>
+            <td>每所学校的学籍字段生成一条 enrollment，<code>is_current = true</code>。学历层次若原表没有，先置"未知"并进补全队列，不要瞎猜</td>
+          </tr>
+          <tr>
+            <td>3 · 归属</td>
+            <td>回填业务表</td>
+            <td>最难的一步，见下一节</td>
+          </tr>
+          <tr>
+            <td>4 · 主学校</td>
+            <td>指定 primary</td>
+            <td>自动取"最近一次认证且未解绑"的学校，脚本直接写入，不做首登确认。用户觉得不对可以自己切（切换主学校是已有能力）</td>
+          </tr>
+          <tr>
+            <td>5 · 校验</td>
+            <td>跑断言</td>
+            <td>见第四节。断言不通过就不发布</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>三、业务数据归属怎么定</h3>
+      <p>按用户的绑定情况分三档处理，<b>优先级从确定到不确定</b>：</p>
+      <table class="tbl">
+        <thead><tr><th style="width:150px">情况</th><th>处理方式</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>只绑了 1 所学校</td>
+            <td>直接归到那一所。零歧义，预计覆盖绝大多数用户</td>
+          </tr>
+          <tr>
+            <td>绑了多所，记录上有线索</td>
+            <td>按线索归属：课程 ID 前缀、考试场次、成绩单里带学号的快照字段、日志里的学校上下文。<b>有线索就用，不要用时间猜</b></td>
+          </tr>
+          <tr>
+            <td>绑了多所，且无线索</td>
+            <td>按认证时间窗归属：记录创建时间落在 A 校认证期内的归 A，落在 B 校认证期内的归 B</td>
+          </tr>
+          <tr>
+            <td>仍然判断不出</td>
+            <td><b>留空，进人工队列。</b><code>school_id = NULL, needs_review = 1</code>，不要默认归给最近认证的那所</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="notice notice-danger" style="margin-top:4px">
+        <span class="ni">!</span>
+        <div><b>留空比猜错好。</b>猜错的后果是把 A 校的成绩挂到 B 校，用户看到的是"我的成绩串了"，而且很难被发现和纠正；留空的后果只是"这条记录暂时不显示"，可修复且可统计。人工队列的数量本身就是迁移质量指标。</div>
+      </div>
+
+      <h3>四、校验断言</h3>
+      <ul class="bullet">
+        <li>每条 <code>active</code> 的 user_school 至少有一条 <code>is_current = true</code> 的 enrollment。</li>
+        <li>每个用户至多一条 <code>is_primary = true</code>；迁移后不存在 <code>primary_school_id</code> 为空却有多校关系的用户。</li>
+        <li>业务表无孤儿：所有 <code>user_enrollment_id</code> 都能 join 到 user_enrollment。</li>
+        <li>迁移前后行数守恒：业务表总行数不变，只有归属字段被填充。</li>
+        <li>抽样比对：随机取 500 个单校用户，迁移后按主学校查询的结果应与迁移前完全一致。</li>
+        <li><code>needs_review = 1</code> 的占比低于阈值（比如 0.5%）才允许发布，否则先人工清理。</li>
+      </ul>
+
+      <h3>五、灰度与回滚</h3>
+      <table class="tbl">
+        <thead><tr><th style="width:130px">阶段</th><th>动作</th></tr></thead>
+        <tbody>
+          <tr><td>加字段</td><td>先加可空字段与索引，不动数据、不改代码。此时读写都还是老逻辑，随时可回退</td></tr>
+          <tr><td>回填 + 校验</td><td>跑迁移脚本，输出校验报告。保留迁移前的字段快照表，回滚脚本必须可逆</td></tr>
+          <tr><td>双写</td><td>新代码写入业务数据时同时写 <code>user_enrollment_id</code> 与 <code>school_id</code>，读取仍走老路径</td></tr>
+          <tr><td>切读</td><td>按用户灰度切到新查询路径，观察错误率与"数据串校"类客服反馈</td></tr>
+          <tr><td>收紧</td><td>全量稳定后，字段改为非空 + 补唯一约束。这一步之后才真正不可回退，前面每一步都可以退</td></tr>
+        </tbody>
+      </table>
+
+      <h3>六、接口契约</h3>
+      <table class="tbl">
+        <thead><tr><th style="width:74px">方法</th><th style="width:230px">路径</th><th>说明与关键约束</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>GET</td>
+            <td><code>/api/me/schools</code></td>
+            <td>返回认证关系列表 + 每校的学籍阶段 + 数据量统计 + <code>is_primary</code>。前端首屏只需要这一个接口</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td><code>/api/me/schools/{id}/primary</code></td>
+            <td>切换主学校。<b>幂等</b>：重复提交同一个目标学校返回成功。<b>并发</b>：靠 <code>uk_user_primary</code> 唯一索引兜底，两个端同时切换只会有一个成功，另一个返回 <code>PRIMARY_CONFLICT</code> 由前端重试</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td><code>/api/me/schools/{id}/unbind/code</code></td>
+            <td>发送解绑验证码。必须做频控：同一手机号 60 秒一次、每天上限；返回 <code>code_ttl</code> 供前端倒计时</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td><code>/api/me/schools/{id}/unbind</code></td>
+            <td>提交解绑。入参只有 <code>code</code>。解绑主学校时，<b>服务端自动把主学校切到剩余学校里最近认证的一所</b>，不需要前端传新主学校；响应里返回切换后的 <code>primary_school_id</code> 供前端提示。<b>服务端必须重新校验</b>"是否最后一所学校"，不能只靠前端禁用按钮</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td><code>/api/me/schools/{id}/enrollments</code></td>
+            <td>重新认证。带 <code>mode</code>：<code>update</code> 更新当前阶段 / <code>add</code> 新增学历阶段。新增时服务端要把该校其它阶段置为 <code>is_current = false</code>，并用 <code>uk_enrollment_current</code> 保证唯一</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:14px">错误码至少要覆盖这些，前端才好给准确提示：</p>
+      <table class="tbl">
+        <thead><tr><th style="width:250px">错误码</th><th>触发场景 / 前端应对</th></tr></thead>
+        <tbody>
+          <tr><td><code>SCHOOL_NOT_BOUND</code></td><td>学校不存在或已解绑。刷新列表</td></tr>
+          <tr><td><code>LAST_SCHOOL_CANNOT_UNBIND</code></td><td>只剩一所学校。按钮置灰并给出原因</td></tr>
+          <tr><td><code>CODE_INVALID / CODE_EXPIRED</code></td><td>验证码错误或过期。清空输入框，提示重新获取</td></tr>
+          <tr><td><code>CODE_ATTEMPTS_EXCEEDED</code></td><td>验证码错误次数过多。锁定并要求重新发送</td></tr>
+          <tr><td><code>PRIMARY_CONFLICT</code></td><td>并发切换冲突。静默重试一次，仍失败则提示稍后再试</td></tr>
+          <tr><td><code>ENROLLMENT_DUPLICATE</code></td><td>同一学校内该学号已被本人或其他账号占用</td></tr>
+        </tbody>
+      </table>
+
+      <div class="notice notice-info" style="margin-top:22px">
+        <span class="ni">i</span>
+        <div>这套结构和上层的功能设计是一体的，先看 <a href="data-model.html">数据方案</a> 再读这一页会更顺。</div>
+      </div>
+
+    </article>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener("click", function (e) {
+  var el = e.target.closest("[data-out]");
+  if (!el) return;
+  e.preventDefault();
+  PROTO.toast("「" + el.dataset.out + "」不在本次原型范围内", "info");
+});
+</script>
+</body>
+</html>
