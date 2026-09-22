@@ -116,7 +116,8 @@
     <div class="lesson-section">
       <div class="lesson-tabs">
         <button class="lesson-tab">基础设置</button>
-        <button class="lesson-tab active">课时管理</button>
+        <button class="lesson-tab">课时管理</button>
+        <button class="lesson-tab active">章节管理</button>
         <button class="lesson-tab">教师管理</button>
         <button class="lesson-tab">学生管理</button>
       </div>
@@ -132,8 +133,8 @@
             <button class="btn btn-sm btn-default">管理目录</button>
           </div>
           <div class="tree">
-            <div class="tree-item tree-chapter selected">
-              <svg class="tree-caret" width="12" height="12" viewBox="0 0 12 12"><path d="M3 2l6 4-6 4V2z" fill="currentColor"/></svg>
+            <div class="tree-item tree-chapter expanded">
+              <svg class="tree-caret" width="12" height="12" viewBox="0 0 12 12"><path d="M2 3l4 6 4-6H2z" fill="currentColor"/></svg>
               <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
               <span>第一章 总论</span>
             </div>
@@ -150,8 +151,8 @@
               <span>第二章 数字素养</span>
             </div>
             <div class="tree-children">
-              <div class="tree-item tree-lesson active">
-                <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#3B82F6" stroke-width="1.2"/></svg>
+              <div class="tree-item tree-lesson">
+                <svg class="tree-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 4h5l2 2h5v7H2V4z" fill="none" stroke="#6B7280" stroke-width="1.2"/></svg>
                 <span>数字素养1</span>
                 <span class="badge badge-green-sm">已发布</span>
               </div>
@@ -183,28 +184,15 @@
           </div>
         </div>
 
-        <!-- 右侧：课时详情 -->
         <div class="lesson-detail-panel">
-          <div class="detail-header">
-            <h3>课时：数字素养1</h3>
-            <span class="badge badge-green">已发布</span>
-          </div>
-
-          <div class="task-section">
-            <div class="task-header">
-              <button class="btn btn-primary" id="btn-open-modal">创建课时任务</button>
-              <span class="task-count">包含任务数：5</span>
-            </div>
-            <div class="task-list">
-              <div class="task-card">
-                <span class="task-name">任务名称</span>
-                <span class="task-val">绪论</span>
-              </div>
-              <div class="task-card">
-                <span class="task-name">任务名称</span>
-                <span class="task-val">组会9.3_3</span>
-              </div>
-            </div>
+          <div class="lesson-empty">
+            <svg class="lesson-empty-icon" width="48" height="40" viewBox="0 0 48 40" fill="none" aria-hidden="true">
+              <ellipse cx="24" cy="35" rx="21" ry="3" fill="#F3F4F6"/>
+              <path d="M8 17 17 6h14l9 11v16H8V17Z" fill="#FAFAFA" stroke="currentColor"/>
+              <path d="M8 17h10l3 5h6l3-5h10" fill="#fff" stroke="currentColor" stroke-linejoin="round"/>
+            </svg>
+            <p class="lesson-empty-text">请选择左侧课时</p>
+            <button class="btn btn-primary" id="btn-open-modal" aria-haspopup="dialog">批量创建课时任务</button>
           </div>
         </div>
       </div>
