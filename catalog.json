@@ -34,6 +34,23 @@
             }
           ],
           "updateNote": "首次收录：学校解绑与换绑流程，包含电脑端和移动端。"
+        },
+        {
+          "id": "digital-literacy-month",
+          "name": "全民数字素养能力提升月",
+          "description": "活动专区、作品展示与投稿，以及专区配置、内容审核和作品管理。",
+          "updatedAt": "2026-11-02",
+          "entries": [
+            {
+              "name": "前台（电脑 / 手机）",
+              "path": "index.html"
+            },
+            {
+              "name": "管理端",
+              "path": "admin.html"
+            }
+          ],
+          "updateNote": "收录 V1.1：前后台富文本、可选专区头图、作品直接下架、管理列表状态隔离与批量审核。"
         }
       ]
     },
