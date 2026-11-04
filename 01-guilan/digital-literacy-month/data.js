@@ -3,7 +3,7 @@ const DEMO_KEY='guilan-literacy-prototype-v1';
 const INITIAL_TOPICS=[{id:'gnu',name:'贵兰·AI实践月 · 第1期',stageView:true},{id:'gzu',name:'贵兰·AI实践月 · 第2期'},{id:'gufe',name:'贵兰·AI实践月 · 第3期'}];
 const TYPES={video:'视频',audio:'音频',html:'单 HTML',article:'图文',document:'文档'};
 const STATUS={pending:'待审核',published:'已发布',rejected:'已驳回',offline:'已下架'};
-const LABELS=['','一等奖','二等奖','三等奖','优秀作品','青铜','白银','黄金','铂金','王者'];
+const LABELS=['','优秀作品'];
 const TIERS=[{name:'青铜',key:'bronze'},{name:'白银',key:'silver'},{name:'黄金',key:'gold'},{name:'铂金',key:'platinum'},{name:'王者',key:'king'}];
 const LABEL_CLASSES={'一等奖':'first','二等奖':'second','三等奖':'third','优秀作品':'excellent','青铜':'bronze','白银':'silver','黄金':'gold','铂金':'platinum','王者':'king'};
 function tagClass(label){return 'label-'+(LABEL_CLASSES[label]||'none')}
@@ -30,7 +30,7 @@ function seed(){
  ['o1','校园网络安全微课堂','郑知行','gnu','video','video',65,'','2026-10-28T10:00:00','用校园案例介绍数字安全。']
  ];
  const result={user:null,liked:[],schemaVersion:2,config:{title:'全民数字素养能力提升实践活动',visible:true,headerImage:'',description:'汇聚校园数字创意，展示青年实践成果。让每一个好作品被看见。',contact:'活动咨询：贵兰在线活动工作组\n咨询方式：请通过学校活动负责老师联系工作组\n服务时间：工作日 09:00—18:00',schools:INITIAL_TOPICS.map(t=>({...t}))},works:rows.map((r,i)=>{let [id,title,author,school,type,cover,likes,award,date,intro]=r;const status=i===12||i===13?'pending':i===14?'rejected':i===15?'offline':'published';return {id,title,author,school,type,cover:'assets/'+cover+'.svg',likes,award,date,submitted:date,status,intro,department:school==='gufe'?'信息管理学院 / 信息管理与信息系统':'计算机与信息学院 / 计算机科学与技术',body:type==='article'?ARTICLE:type==='document'?DOCUMENT:'',filename:title+(type==='document'?'.docx':type==='video'?'.mp4':type==='audio'?'.mp3':type==='html'?'.html':''),source:'学生上传',submitter:'demo-student-'+(i+1),original:{title,author,school,type,intro},reason:i===14?'作品正文缺少完整结语，请联系活动工作组补充。':i===15?'内容需进一步核实，暂时下架。':'',logs:status==='pending'?[]:[{at:date,text:status==='published'?'市场部审核员：审核通过并发布':status==='rejected'?'市场部审核员：已驳回':'市场部审核员：已下架'}]}})};
- const ranks={v1:'王者',h1:'铂金',a1:'铂金',p1:'黄金',d1:'黄金',v2:'黄金',p2:'一等奖'};result.works.forEach(w=>{if(ranks[w.id])w.award=ranks[w.id]});result.works.push(...stageSamples());result.config.contactHtml=defaultConsultation();return result;
+ const ranks={v1:'王者',h1:'铂金',a1:'铂金',p1:'黄金',d1:'黄金',v2:'黄金'};result.works.forEach(w=>{if(ranks[w.id])w.tier=ranks[w.id]});result.works.push(...stageSamples());result.config.contactHtml=defaultConsultation();return upgradeDemoV14(result);
 }
 function defaultConsultation(){return '<h3>活动咨询</h3><p><strong>贵兰在线活动工作组</strong></p><p>请通过活动负责老师联系工作组，咨询活动安排、作品提交和审核相关问题。</p><p><b>服务时间：</b>工作日 09:00—18:00</p><img src="assets/contact-card.svg" alt="贵兰·AI实践月活动咨询示意图">'}
 function stageSamples(){
@@ -41,12 +41,35 @@ function stageSamples(){
 // Keep the V1.x storage keys (schools/school/award) so existing local drafts remain readable.
 function migrateDemo(saved){
  if(!saved||!Array.isArray(saved.works)||!Array.isArray(saved.config?.schools))return seed();
- if(saved.schemaVersion===2)return saved;
+ if(saved.schemaVersion===3)return saved;
+ if(saved.schemaVersion===2)return upgradeDemoV14(saved);
  if(saved.config.title==='全民数字素养能力提升月')saved.config.title='全民数字素养能力提升实践活动';
  saved.config.schools=saved.config.schools.map(s=>{const t=INITIAL_TOPICS.find(t=>t.id===s.id);return t?{...s,...t}:s});
  if(!saved.config.contactHtml){const text=String(saved.config.contact||'');saved.config.contactHtml=text.split('\n').map(line=>'<p>'+esc(line)+'</p>').join('')}
  const ranks={v1:'王者',h1:'铂金',a1:'铂金',p1:'黄金',d1:'黄金',v2:'黄金'};saved.works.forEach(w=>{if(ranks[w.id])w.award=ranks[w.id];if(w.id==='p2'&&!w.award)w.award='一等奖'});
- const ids=new Set(saved.works.map(w=>w.id));saved.works.push(...stageSamples().filter(w=>!ids.has(w.id)));saved.schemaVersion=2;return saved;
+ const ids=new Set(saved.works.map(w=>w.id));saved.works.push(...stageSamples().filter(w=>!ids.has(w.id)));return upgradeDemoV14(saved);
+}
+
+// 段位与优秀标签分别保存；升级不改变已有正文、点赞、专题及审核结果。
+function upgradeDemoV14(saved){
+ const excellentSamples=['v1','a1','d1','stage-01'];
+ saved.works.forEach(w=>{const old=w.award;w.tier=w.tier||(TIERS.some(t=>t.name===old)?old:'');w.award=old==='优秀作品'||excellentSamples.includes(w.id)?'优秀作品':''});
+ const ids=new Set(saved.works.map(w=>w.id));saved.works.push(...pendingSamples().filter(w=>!ids.has(w.id)));saved.schemaVersion=3;return saved;
+}
+function pendingSamples(){
+ const rows=[['q3','AI 帮我读懂一张图','谢知遥','gnu','article'],['q4','校园节能数据实验室','顾亦辰','gzu','html'],['q5','给未来的数字生活留言','苏念','gufe','audio'],['q6','我的 AI 学习方法清单','陆景然','gnu','document'],['q7','用镜头发现智慧校园','沈安宁','gufe','video'],['q8','第一次数字创作复盘','程以宁','gzu','article']];
+ return rows.map(([id,title,author,school,type],i)=>{const date=`2026-11-04T10:${String(10+i*5).padStart(2,'0')}:00+08:00`,intro='记录一次校园数字实践，分享工具使用、信息判断和创作过程中的体会。';return {id,title,author,school,type,tier:'',award:'',likes:0,status:'pending',cover:'assets/'+type+'.svg',date,submitted:date,intro,department:'数字媒体学院 / 数字媒体技术',body:type==='article'?ARTICLE:type==='document'?DOCUMENT:'',filename:title+({video:'.mp4',audio:'.mp3',html:'.html',document:'.docx',article:''}[type]),source:'学生上传',submitter:'demo-student-'+id,original:{title,author,school,type,intro},reason:'',logs:[]}});
+}
+function topicWorkCount(id){return db.works.filter(w=>w.school===id).length}
+function saveTopics(topics){
+ const names=topics.map(t=>String(t.name||'').trim());
+ if(names.some(n=>!n||n.length>30)||new Set(names).size!==names.length)return {ok:false,error:'专题名称须为 1—30 字，且不能重复。'};
+ if(topics.some(t=>!t.id)||new Set(topics.map(t=>t.id)).size!==topics.length)return {ok:false,error:'专题数据无效，请重新打开专题管理。'};
+ const ids=new Set(topics.map(t=>t.id));
+ if(db.works.some(w=>!ids.has(w.school)))return {ok:false,error:'有作品的专题不能删除（含待审核、已驳回和已下架作品），请重新检查。'};
+ const old=db.config.schools;db.config.schools=topics.map((t,i)=>({...t,name:names[i]}));
+ if(!persist()){db.config.schools=old;return {ok:false,error:'专题保存失败，修改已保留，请重试。'}}
+ return {ok:true};
 }
 
 let storageAvailable=true;

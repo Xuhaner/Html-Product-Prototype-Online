@@ -38,13 +38,28 @@ vm.runInContext(`
 `,moderation);
 const tiers=context();
 vm.runInContext(`
- const counts=TIERS.map(t=>published('gnu').filter(w=>w.award===t.name).length);
+ const counts=TIERS.map(t=>published('gnu').filter(w=>w.tier===t.name).length);
  if(JSON.stringify(counts)!=='[8,6,3,2,1]')throw Error('五段位示例比例');
- if(new Set(LABELS.filter(Boolean).map(tagClass)).size!==9)throw Error('标签颜色标识唯一');
+ if(JSON.stringify(LABELS)!=='["","优秀作品"]')throw Error('管理标签仅保留无标签和优秀作品');
  let legacy=seed();delete legacy.schemaVersion;legacy.config.title='全民数字素养能力提升月';legacy.config.schools=[{id:'gnu',name:'贵州师范大学站'},{id:'gzu',name:'贵州大学站'},{id:'gufe',name:'贵州财经大学站'}];legacy.works=legacy.works.filter(w=>!w.id.startsWith('stage-'));legacy.works[0].likes=777;delete legacy.config.contactHtml;
- const updated=migrateDemo(legacy);if(updated.config.title!=='全民数字素养能力提升实践活动'||updated.config.schools[0].name!=='贵兰·AI实践月 · 第1期'||updated.works[0].likes!==777||updated.works.length!==30)throw Error('旧数据保留与迁移');
- if(migrateDemo(updated).works.length!==30)throw Error('迁移不可重复添加示例');
+ const updated=migrateDemo(legacy);if(updated.config.title!=='全民数字素养能力提升实践活动'||updated.config.schools[0].name!=='贵兰·AI实践月 · 第1期'||updated.works[0].likes!==777||updated.works.length!==36)throw Error('旧数据保留与迁移');
+ if(migrateDemo(updated).works.length!==36)throw Error('迁移不可重复添加示例');
 `,tiers);
+// V1.4：旧段位拆分后保留用户数据，新增待审核示例不重复添加。
+const upgrade=context();
+vm.runInContext(`
+ let old=seed();old.schemaVersion=2;old.works=old.works.filter(w=>!/^q[3-8]$/.test(w.id));old.works.forEach(w=>{if(w.tier)w.award=w.tier;delete w.tier});old.works[0].likes=891;old.config.description='用户自己的说明';
+ let next=migrateDemo(old);if(next.schemaVersion!==3||next.works[0].likes!==891||next.works[0].tier!=='王者'||next.config.description!=='用户自己的说明')throw Error('V1.3数据迁移');
+ if(next.works.filter(w=>w.status==='pending').length!==8||migrateDemo(next).works.length!==36)throw Error('待审核示例或重复迁移');
+ db=seed();const current=db.config.schools.map(t=>({...t}));
+ if(saveTopics(current.filter(t=>t.id!=='gnu')).ok)throw Error('含作品专题禁止删除');
+ db.config.schools.push({id:'only-pending',name:'待审核专题'});db.works.find(w=>w.id==='q3').school='only-pending';
+ if(saveTopics(current).ok)throw Error('待审核内容也阻止删除');
+ db=seed();db.config.schools.push({id:'empty',name:'空专题'});if(!saveTopics(current).ok)throw Error('空专题可删除');
+ if(saveTopics([...current,{id:'dup',name:current[0].name}]).ok)throw Error('禁止重名专题');
+ const ordered=[...current].reverse();ordered[0]={...ordered[0],name:'新专题名称'};if(!saveTopics(ordered).ok||db.config.schools[0].name!=='新专题名称'||!db.config.schools.find(t=>t.id==='gnu').stageView)throw Error('编辑排序及榜单模式保留');
+ const snapshot=JSON.stringify(db.config.schools);persist=()=>false;if(saveTopics(current).ok||JSON.stringify(db.config.schools)!==snapshot)throw Error('专题保存失败回滚');
+`,upgrade);
 // V1.3：验证两个筛选独立组合、榜单排除未分段作品，以及后台排序。
 const views=context();views.document={body:{dataset:{page:'admin'}},addEventListener(){}};views.window.addEventListener=()=>{};views.location.search='';
 vm.runInContext(fs.readFileSync(path.join(root,'app.js'),'utf8'),views);
@@ -57,6 +72,9 @@ vm.runInContext(`
  const ranking=gallery();if(!ranking.includes('共 20 件作品')||ranking.includes('data-sort=')||ranking.includes('其他作品')||ranking.includes('tier-quota')||ranking.includes('tier-kicker'))throw Error('榜单范围与精简结构');
  if(ranking.indexOf('id="tier-king-title"')>ranking.indexOf('id="tier-bronze-title"'))throw Error('王者必须优先');
  listSchool='all';listLabel='';listTopicFilter='all';if(!gallery().includes('共 27 件作品'))throw Error('全部作品应包含已发布的未分段作品');
+ const king=db.works.find(w=>w.id==='v1');if(!card(king).includes('card-excellent')||!card(king).includes('label-king'))throw Error('卡片并列优秀与段位');
+ const editorForm=workForm(king,true);if(editorForm.includes('<option value="王者"')||!editorForm.includes('<option value="优秀作品" selected>'))throw Error('管理仅可编辑优秀标签');
+ const settingsHtml=settings();if(settingsHtml.includes('data-rich-editor')||settingsHtml.includes('station-setting')||!settingsHtml.includes('data-manage-topics')||!settingsHtml.includes('data-edit-contact')||settingsHtml.includes('name="description" required'))throw Error('设置拆分及活动说明可空');
  adminTab='review';const audit=table();if(audit.includes('<th>标签</th>')||audit.includes('col-likes')||!audit.includes('data-review-select'))throw Error('审核字段边界');
  adminTab='manage';adminLikesSort='ascending';let counts=adminRows().map(w=>w.likes);if(counts.some((n,i)=>i&&n<counts[i-1]))throw Error('后台点赞升序');
  adminLikesSort='descending';counts=adminRows().map(w=>w.likes);if(counts.some((n,i)=>i&&n>counts[i-1]))throw Error('后台点赞降序');
@@ -67,7 +85,7 @@ const otherFile=context('file:',file.location.hash);
 assert.equal(vm.runInContext('db.user.name',otherFile),'演示同学');
 assert.equal(vm.runInContext('db.config.title',otherFile),'中文标题');
 assert.equal(vm.runInContext('db.works[0].likes',otherFile),999);
-assert.equal(vm.runInContext('db.works.length',context('file:','#demo=invalid')),30);
+assert.equal(vm.runInContext('db.works.length',context('file:','#demo=invalid')),36);
 for(const name of fs.readdirSync(root).filter(f=>f.endsWith('.html'))){
  const html=fs.readFileSync(path.join(root,name),'utf8');
  assert(!/type=["']module|fetch\(/.test(html),'文件模式不应依赖模块加载或 fetch');
