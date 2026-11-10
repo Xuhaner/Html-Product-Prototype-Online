@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<base href="../../">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>睿秀学城 · 个人中心</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="profile">
+<div class="app">
+  <div id="site-header"></div>
+  <main class="shell" id="main" tabindex="-1">
+    <section class="page active" id="page-profile" aria-labelledby="profile-title">
+      <div class="member-profile">
+<section class="profile-hero">
+<div class="profile-person"><span class="profile-avatar">林</span>
+<div>
+<div class="eyebrow" style="color:var(--lime)">我的学习</div>
+<h1 id="profile-title">林晓同学，上午好</h1>
+<p>华东师范大学 · 数据科学与工程学院</p>
+</div>
+</div>
+</section>
+      <div class="profile-shell">
+<nav class="profile-nav" aria-label="个人中心导航"><button class="profile-nav-btn active" data-profile-view="courses">我的学习</button><button class="profile-nav-btn" data-profile-view="favorites">我的收藏</button><button class="profile-nav-btn" data-profile-view="assignments">作业中心</button>
+</nav>
+<div class="profile-panel" id="profile-content" tabindex="-1">
+<div class="view-head">
+<div>
+<h2>今天，从这里继续</h2>
+<p class="meta">围绕一个目标完成“学、练、测、创”闭环。</p>
+</div><span class="meta">9 月 8 日 · 星期二</span>
+</div>
+<div class="next-study">
+<div>
+<div class="eyebrow" style="color:var(--lime)">继续学习</div><strong style="font-size:20px">3.2 列表与循环</strong>
+<p>Python 程序设计 · 剩余 18 分钟</p>
+</div><button class="btn primary" data-go="learn">继续学习</button>
+</div>
+<div class="dashboard-grid" style="margin-top:14px">
+<section class="dashboard-card">
+<h3>近期任务</h3>
+<div class="todo-list">
+<div class="todo"><span><b>第三章小测</b><br><small>9 月 8 日 23:59 截止</small></span><button class="btn small primary" data-go="test">开始</button>
+</div>
+<div class="todo"><span><b>词频统计器</b><br><small>还有 1 个测试用例未通过</small></span><button class="btn small" data-go="code">继续</button>
+</div>
+<div class="todo"><span><b>期中考试</b><br><small>9 月 12 日开放</small></span><button class="btn small" data-go="exam">查看</button>
+</div>
+</div>
+</section>
+<section class="dashboard-card">
+<h3>本周学习</h3>
+<div class="kpi-grid" style="grid-template-columns:repeat(2,1fr)">
+<div class="kpi-card"><strong>3.6h</strong><span>有效时长</span>
+</div>
+<div class="kpi-card"><strong>72%</strong><span>周目标</span>
+</div>
+<div class="kpi-card"><strong>18</strong><span>学习活动</span>
+</div>
+<div class="kpi-card"><strong>6 天</strong><span>连续学习</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</div>
+      <div class="guest-profile">
+<div class="brand-mark" style="margin:auto">睿</div>
+<h1>登录后继续你的学习</h1>
+<p>课程进度、收藏、作业和学习成果会安全地保存在个人中心。</p><button class="btn primary" data-auth="member">登录 / 注册</button><button class="btn" data-go="courses">先逛逛课程</button>
+</div>
+    </section>
+    <section class="statebox" id="global-state" aria-live="polite" tabindex="-1"></section>
+  </main>
+  <div id="site-footer"></div>
+
+</div>
+<script src="js/shared/shell.js"></script>
+<script src="js/shared/core.js"></script>
+<script src="js/shared/workflows.js"></script>
+<script src="js/shared/learning-activity.js"></script>
+<script src="js/shared/auth.js"></script>
+
+<script src="js/data/questions.js"></script>
+
+
+
+
+
+
+<script src="js/pages/profile.js"></script>
+
+
+<script src="js/shared/states.js"></script>
+<script src="js/shared/init.js"></script>
+<script src="js/shared/topbar.js"></script>
+
+
+</body></html>

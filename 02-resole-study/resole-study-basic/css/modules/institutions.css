@@ -1,0 +1,33 @@
+.institutions-page { padding-bottom:48px; }
+.institutions-page .institution-breadcrumb { display:flex;flex-wrap:wrap;gap:10px;margin:24px 0;color:var(--muted);font-size:14px; }
+.institutions-page .institutions-heading { text-align:center;padding:48px 16px; }
+.institutions-page h1 { font-size:36px;margin:12px 0; }
+.institutions-page .institutions-heading p,.institutions-page .institution-profile p { color:var(--muted);line-height:1.9; }
+.institutions-page .institution-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px; }
+.institutions-page .institution-tile { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:220px;padding:26px 16px;border:1px solid var(--line);border-radius:16px;background:var(--surface,#fff);text-align:center;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s; }
+.institutions-page .institution-tile:hover { transform:translateY(-3px);border-color:var(--green); }
+.institutions-page .institution-tile h2 { font-size:18px;margin:0; }
+.institutions-page .institution-tile>span:last-child { color:var(--muted);font-size:13px; }
+.institutions-page .institution-mark { display:grid;place-items:center;flex-shrink:0;width:72px;height:72px;border:3px double var(--green);border-radius:50%;color:var(--green);background:var(--surface,#fff);font-family:serif;font-size:32px;font-weight:700; }
+.institutions-page .institution-banner { height:180px;border-radius:18px 18px 0 0;background:linear-gradient(120deg,var(--green-dark,#173c33),var(--green));display:flex;align-items:center;padding:40px;color:white;font-size:24px;letter-spacing:4px; }
+.institutions-page .institution-profile { display:flex;align-items:flex-start;gap:30px;padding:32px;background:var(--surface,#fff);border:1px solid var(--line);border-radius:0 0 18px 18px; }
+.institutions-page .institution-profile .institution-mark { width:100px;height:100px;font-size:44px;margin-top:-64px;box-shadow:0 0 0 8px var(--surface,#fff); }
+.institutions-page .institution-profile h1 { font-size:28px; }
+.institutions-page .institution-note { color:var(--muted);font-size:12px;line-height:1.8; }
+.institutions-page> .institution-note { margin-top:24px;text-align:center; }
+.institutions-page .institution-course-heading { display:flex;align-items:center;justify-content:space-between;margin:36px 0 20px; }
+.institutions-page .institution-course-heading h2 { margin:0; }
+#page-home a.partner { text-decoration:none; }
+#page-home .partners-section:focus-within .partner-strip { animation-play-state:paused; }
+@media(max-width:900px) { .institutions-page .institution-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) {
+ .institutions-page .institutions-heading { padding:24px 8px; }
+ .institutions-page h1 { font-size:28px; }
+ .institutions-page .institution-grid { gap:12px; }
+ .institutions-page .institution-tile { padding:20px 8px;min-height:190px; }
+ .institutions-page .institution-tile h2 { font-size:15px; }
+ .institutions-page .institution-banner { height:130px;padding:24px;font-size:18px;letter-spacing:2px; }
+ .institutions-page .institution-profile { flex-direction:column;padding:24px;gap:20px; }
+ .institutions-page .institution-profile .institution-mark { width:76px;height:76px;font-size:32px;margin-top:-55px; }
+ .institutions-page .institution-profile h1 { font-size:24px; }
+}

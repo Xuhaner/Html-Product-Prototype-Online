@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>睿秀学城管理端 · 专属课程入课审核</title><link rel="stylesheet" href="styles.css"></head>
+<body data-page="governance">
+<div class="app">
+<aside class="sidebar" aria-label="主导航"></aside><div class="mobile-overlay" hidden=""></div>
+<header class="topbar"><button class="menu-toggle" aria-label="打开导航" aria-expanded="false">☰</button><div class="crumb">课程管理 <span>/ 专属课程入课审核</span></div><div class="top-actions"><a class="icon-button" aria-label="查看课程" href="content.html#courses">▤</a><div class="admin-user"><span class="avatar">陈</span><div><strong>陈若云</strong><span>任课教师</span></div></div></div></header>
+<main class="main" id="main">
+<div class="page-head"><div><h1>专属课程入课审核</h1><p id="review-scope"></p></div></div>
+<section class="tab-panel" id="panel-review" aria-label="专属课程入课审核">
+<form class="review-filters card" id="review-filters">
+<div class="form-group"><label for="review-course">课程名</label><input id="review-course" name="course" type="search" placeholder="请输入课程名"></div>
+<div class="form-group"><label for="review-name">姓名</label><input id="review-name" name="name" type="search" placeholder="请输入姓名"></div>
+<div class="form-group"><label for="review-student">学号</label><input id="review-student" name="student" type="search" placeholder="请输入学号"></div>
+<div class="inline-actions"><button class="btn" type="reset">重置</button><button class="btn primary" type="submit">查询</button></div>
+</form>
+<div class="review-status-filters" id="review-status-filters" aria-label="按审核状态筛选"></div>
+<div class="split"><div class="review-column">
+<div class="review-batch card"><label><input type="checkbox" id="review-select-page"> 选择本页待审核申请</label><div class="inline-actions"><span id="review-selection" aria-live="polite"></span><button class="btn primary small" id="review-bulk" disabled="">批量通过</button></div></div>
+<div class="review-list" id="review-list"></div><nav class="review-pagination" id="review-pagination" aria-label="入课申请分页"></nav>
+</div><aside class="card detail-card" id="review-detail" aria-live="polite"></aside></div>
+</section></main></div>
+<div class="modal-backdrop" id="reject-modal" hidden=""><form class="modal" id="review-reject-form" role="dialog" aria-modal="true" aria-labelledby="reject-title" novalidate=""><div class="modal-head"><div><h2 id="reject-title">驳回入课申请</h2><p id="reject-target"></p></div><button type="button" class="close" data-close="" aria-label="关闭">×</button></div><div class="modal-body"><div class="form-group"><label for="reject-reason">驳回理由 <span aria-hidden="true">*</span></label><textarea id="reject-reason" required="" maxlength="255" placeholder="请说明需要补充的材料或不通过原因" aria-describedby="reject-error"></textarea><p id="reject-error" class="review-error" role="alert"></p></div></div><div class="modal-foot"><button type="button" class="btn" data-close="">取消</button><button class="btn danger" type="submit">确认驳回</button></div></form></div>
+<div class="modal-backdrop" id="review-bulk-modal" hidden=""><form class="modal" id="review-bulk-form" role="dialog" aria-modal="true" aria-labelledby="review-bulk-title"><div class="modal-head"><h2 id="review-bulk-title">批量通过入课申请</h2><button type="button" class="close" data-close="" aria-label="关闭">×</button></div><div class="modal-body"><p id="review-bulk-summary"></p><ul id="review-bulk-targets"></ul></div><div class="modal-foot"><button type="button" class="btn" data-close="">取消</button><button class="btn primary" type="submit">确认通过</button></div></form></div>
+<div class="toast-region" aria-live="polite"></div><script src="js/shared/core.js"></script><script src="js/shared/interactions.js"></script><script src="js/shared/auth.js"></script><script src="js/data/teaching.js"></script><script src="js/pages/governance.js"></script>
+
+</body></html>

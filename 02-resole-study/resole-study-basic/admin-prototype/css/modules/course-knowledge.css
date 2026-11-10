@@ -1,0 +1,85 @@
+/* Course knowledge map: list, hierarchy canvas and node inspector. */
+.course-knowledge{min-width:0}.course-knowledge[hidden]{display:none}
+.course-knowledge .kg-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin:24px 0 8px}
+.course-knowledge .kg-heading h2{margin:5px 0 4px;font-size:23px;letter-spacing:-.5px}
+.course-knowledge .kg-heading p{margin:0;color:var(--muted);font-size:13px}
+.course-knowledge .kg-heading>.btn{flex-shrink:0}
+.course-knowledge .kg-eyebrow{font-size:10px;font-weight:750;letter-spacing:1.5px;color:var(--green)}
+.course-knowledge .kg-demo{font-size:12px;color:var(--muted);margin:0 0 22px}
+.course-knowledge .kg-summary{display:flex;align-items:center;gap:48px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:20px}
+.course-knowledge .kg-summary>div:first-child{display:flex;align-items:center;gap:16px;flex:1;min-width:0}
+.course-knowledge .kg-summary-icon{display:grid;place-items:center;width:50px;height:50px;border-radius:14px;background:var(--green-soft);color:var(--green);font-size:30px;flex-shrink:0}
+.course-knowledge .kg-summary strong{display:block;font-size:24px;line-height:1.4}
+.course-knowledge .kg-summary>div:first-child strong{font-size:17px}
+.course-knowledge .kg-summary p{margin:4px 0 0;color:var(--muted);overflow-wrap:anywhere}
+.course-knowledge .kg-summary>div>span:not(.kg-summary-icon){color:var(--muted);font-size:12px}
+.course-knowledge .kg-table{min-width:720px}
+.course-knowledge .kg-table th,.course-knowledge .kg-table td{padding:19px 22px}
+.course-knowledge .kg-table td small{display:block;color:var(--muted);font-size:12px;margin-top:5px}
+.course-knowledge .kg-table .inline-actions{flex-wrap:nowrap;white-space:nowrap}
+.course-knowledge .kg-text-danger{color:var(--red)}
+.course-knowledge button.kg-text-danger:not(.btn){background:none;border:0;padding:8px;font-size:13px}
+.course-knowledge .kg-list-foot{text-align:right;font-size:12px;color:var(--muted);margin-top:16px}
+.course-knowledge .kg-workspace{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden}
+.course-knowledge .kg-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px;border-bottom:1px solid var(--line)}
+.course-knowledge .kg-tool-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.course-knowledge .kg-tool-group:last-child{margin-left:auto}
+.course-knowledge .kg-map-label{font-size:14px;font-weight:750;color:var(--green);margin-right:5px}
+.course-knowledge .kg-tool-divider{width:1px;height:22px;background:var(--line);margin:0 3px}
+.course-knowledge .kg-editor-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;min-width:0}
+.course-knowledge .kg-canvas-wrap{position:relative;min-width:0;background-color:#fafcfb;background-image:radial-gradient(#d7e2dc .8px,transparent .8px);background-size:18px 18px}
+.course-knowledge .kg-canvas-tip{padding:16px 20px;color:var(--muted);font-size:11px}
+.course-knowledge .kg-viewport{height:540px;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.course-knowledge .kg-canvas{position:relative}
+.course-knowledge .kg-scene{position:absolute;left:0;top:0;transform-origin:0 0}
+.course-knowledge .kg-scene svg{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.course-knowledge .kg-edge{fill:none;stroke:#afc7b9;stroke-width:1.5}
+.course-knowledge .kg-edge-before,.course-knowledge .kg-edge-after,.course-knowledge .kg-edge-related{stroke:var(--blue);stroke-dasharray:5 4;stroke-width:1.6}
+.course-knowledge .kg-node-wrap{position:absolute;width:172px;height:64px}
+.course-knowledge .kg-node{width:100%;height:100%;background:#fff;border:1px solid #bcd0c4;border-left:3px solid #379169;border-radius:9px;padding:10px 15px;text-align:left;box-shadow:0 3px 8px #264e3810;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.course-knowledge .kg-node-type{font-size:10px;letter-spacing:.5px;color:#697c72}
+.course-knowledge .kg-node strong{font-size:13px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.course-knowledge .kg-node.kg-category{background:#edf4fc;border-color:#b3c9e3;border-left-color:var(--blue)}
+.course-knowledge .kg-node.kg-category .kg-node-type{color:var(--blue)}
+.course-knowledge .kg-node.kg-root{background:var(--green);border-color:var(--green);color:#fff}
+.course-knowledge .kg-root .kg-node-type{color:#d3ecdf!important}
+.course-knowledge .kg-node[aria-pressed=true]{outline:2px solid var(--green);outline-offset:4px;box-shadow:0 0 0 5px #e8f4ee}
+.course-knowledge .kg-node-toggle{position:absolute;right:-12px;top:22px;border:1px solid #b7cbbf;background:#fff;color:var(--green);width:24px;height:24px;border-radius:50%;padding:0;line-height:20px;font-size:17px}
+.course-knowledge .kg-canvas-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;font-size:12px;color:var(--muted)}
+.course-knowledge .kg-zoom{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden}
+.course-knowledge .kg-zoom button{border:0;background:#fff;padding:6px 9px;font-size:12px;color:var(--ink)}
+.course-knowledge .kg-zoom button:hover{background:var(--green-soft)}
+.course-knowledge .kg-zoom output{font-size:11px;min-width:38px;text-align:center}
+.course-knowledge .kg-legend{display:flex;flex-wrap:wrap;gap:15px;padding:0 18px 18px;font-size:10px;color:var(--muted)}
+.course-knowledge .kg-legend span{display:flex;align-items:center;gap:5px}
+.course-knowledge .kg-legend i{width:7px;height:7px;background:#379169;border-radius:2px}
+.course-knowledge .kg-legend i.kg-category-dot{background:var(--blue)}
+.course-knowledge .kg-relation-legend{color:var(--blue)}
+.course-knowledge .kg-inspector{border-left:1px solid var(--line);padding:20px;min-width:0;max-height:790px;overflow:auto;scrollbar-width:thin}
+.course-knowledge .kg-inspector-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.course-knowledge .kg-inspector-head span{font-size:10px;color:var(--muted)}
+.course-knowledge .kg-inspector-head h3{margin:3px 0 0;font-size:17px}
+.course-knowledge .kg-inspector-empty{padding:90px 8px 30px;color:var(--muted);font-size:12px}
+.course-knowledge .kg-inspector-empty>span{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--green-soft);font-size:30px;color:var(--green);margin-bottom:20px}
+.course-knowledge .kg-inspector-empty h3{font-size:17px;color:var(--ink)}
+.course-knowledge .kg-inspector-empty>div{line-height:3;border-top:1px solid var(--line);margin-top:24px;padding-top:18px}
+.course-knowledge .kg-inspector-empty strong{color:var(--green);margin-right:10px}
+.course-knowledge #kg-node-form{display:grid;gap:16px}
+.course-knowledge #kg-node-form .form-group{align-content:start;min-width:0;gap:6px}
+.course-knowledge #kg-node-form input:not([type=radio]),.course-knowledge #kg-node-form textarea,.course-knowledge #kg-node-form select{width:100%;min-width:0;font-size:12px;border-radius:7px}
+.course-knowledge #kg-node-form textarea{min-height:72px}
+.course-knowledge #kg-node-form label,.course-knowledge .kg-type legend,.course-knowledge .kg-relation-group strong{font-size:12px}
+.course-knowledge #kg-node-form input[readonly]{background:var(--mist);color:var(--muted)}
+.course-knowledge #kg-node-form em{font-style:normal;color:var(--red)}
+.course-knowledge .kg-char-count{text-align:right;font-size:10px}
+.course-knowledge .kg-type{padding:0;border:0;margin:0;display:flex;gap:18px}
+.course-knowledge .kg-type legend{font-weight:750;margin-bottom:9px}
+.course-knowledge .kg-type label{display:flex;align-items:center;gap:6px}
+.course-knowledge .kg-type input{width:15px;min-height:0;height:15px;margin:0;accent-color:var(--green)}
+.course-knowledge .kg-relation-group>div:first-child{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.course-knowledge .kg-relation-group button{border:0;background:transparent;color:var(--green);padding:0;width:26px;height:28px;font-size:20px;flex-shrink:0}
+.course-knowledge .kg-relation-row{display:flex;gap:5px;align-items:center;margin-top:7px}
+.course-knowledge #kg-form-error{color:var(--red);font-size:12px;margin:0}
+.course-knowledge .kg-node-save{width:100%;position:sticky;bottom:0;z-index:1;box-shadow:0 -10px 0 #fff}
+@media(max-width:1150px){.course-knowledge .kg-editor-layout{grid-template-columns:minmax(0,1fr) 270px}.course-knowledge .kg-inspector{padding:16px}.course-knowledge .kg-summary{gap:25px}.course-knowledge .kg-tool-group:last-child{margin-left:0}}
+@media(max-width:700px){.course-knowledge .kg-heading{align-items:flex-start;flex-direction:column;margin-top:18px;gap:12px}.course-knowledge .kg-heading h2{font-size:21px}.course-knowledge .kg-demo{margin:12px 0 18px}.course-knowledge .kg-summary{padding:16px;gap:14px;flex-wrap:wrap}.course-knowledge .kg-summary>div:first-child{flex-basis:100%}.course-knowledge .kg-summary>div:not(:first-child){flex:1}.course-knowledge .kg-summary strong{font-size:22px}.course-knowledge .kg-table-wrap{border-radius:10px}.course-knowledge .kg-editor-layout{grid-template-columns:1fr}.course-knowledge .kg-toolbar{padding:12px;gap:10px}.course-knowledge .kg-tool-group{gap:6px}.course-knowledge .kg-tool-group:last-child{width:100%;padding-top:10px;border-top:1px solid var(--line)}.course-knowledge #kg-save-state{flex-basis:100%;margin-bottom:3px}.course-knowledge .kg-map-label{font-size:13px}.course-knowledge .kg-toolbar .btn{padding:7px 9px;font-size:11px}.course-knowledge .kg-tool-divider{display:none}.course-knowledge .kg-viewport{height:360px}.course-knowledge .kg-canvas-tip{padding:12px;font-size:10px}.course-knowledge .kg-canvas-footer{padding:12px;font-size:10px;align-items:flex-start;flex-wrap:wrap}.course-knowledge .kg-legend{padding:0 12px 14px;gap:10px}.course-knowledge .kg-inspector{border-left:0;border-top:1px solid var(--line);max-height:none;padding:18px;scroll-margin-top:85px}.course-knowledge .kg-inspector-empty{padding:16px 0}.course-knowledge .kg-inspector-empty>span,.course-knowledge .kg-inspector-empty>div{display:none}.course-knowledge .kg-inspector-empty h3{margin-top:0}.course-knowledge .kg-heading>.btn{max-width:100%}}

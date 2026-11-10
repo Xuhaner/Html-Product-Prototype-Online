@@ -1,0 +1,13 @@
+.management-summary{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;padding:16px 18px;background:#eaf3ee;border-radius:12px;color:#284e3e}.management-summary p{margin:0}.manage-heading{display:flex;justify-content:space-between;gap:20px;align-items:center;margin:20px 0}.manage-heading h2{margin:0;font-size:20px}.manage-heading p{margin:6px 0 0;max-width:780px}#manage-table{min-width:760px}#manage-table td{max-width:340px;overflow-wrap:anywhere;white-space:pre-line}#record-modal .modal{width:min(800px,100%)}#record-error{color:var(--red)}.management-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}.management-links a{padding:20px}.management-links strong{display:block;font-size:17px}.management-links p{color:var(--muted);margin:8px 0 0}.sidebar{overflow-y:auto}.sidebar .brand{flex-shrink:0}.sidebar .side-label{margin-top:20px}.sidebar .side-foot{margin-top:24px}.management-summary .status{flex-shrink:0}body [hidden]{display:none!important}
+@media(max-width:1000px){.management-links{grid-template-columns:1fr 1fr}}@media(max-width:760px){.management-links{grid-template-columns:1fr}.management-summary{flex-direction:column}.manage-heading{align-items:flex-start;flex-direction:column}.manage-heading .btn{width:100%}.form-group{min-width:0}.form-group input,.form-group select,.form-group textarea{width:100%;min-width:0}}
+
+.admin-user .avatar{display:grid;place-items:center;flex-shrink:0;color:#694816;font-size:14px}.coverage-section{margin-bottom:20px}
+.manage-related{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 20px}.manage-related:empty{display:none}.manage-related .btn{min-height:40px}#record-fields [aria-invalid="true"]{border-color:var(--red)}
+
+#management-root>.tabs{flex-wrap:wrap;overflow:visible;row-gap:4px}
+#management-root>.tabs a.tab{display:inline-block;line-height:inherit}
+#management-root>.tabs a.tab:hover{color:var(--green);background:var(--green-soft)}
+
+#record-modal .record-history{min-width:0;max-width:100%}
+#record-modal .record-history table{min-width:720px}
+#record-modal .record-history td{min-width:110px;max-width:280px;overflow-wrap:anywhere;white-space:pre-line}

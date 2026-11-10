@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>睿秀学城管理端 · 班级管理</title><link rel="stylesheet" href="styles.css"></head>
+<body data-page="classes" class="classes-page"><div class="app">
+<aside class="sidebar" aria-label="主导航"></aside><div class="mobile-overlay" hidden=""></div>
+<header class="topbar"><button class="menu-toggle" aria-label="打开导航" aria-expanded="false">☰</button><div class="crumb">班级管理 <span>/ 管理工作区</span></div><div class="top-actions"><div class="admin-user"><span class="avatar">陈</span><div><strong>陈若云</strong><span>教师</span></div></div></div></header>
+<main class="main mode-workspace" id="main"><div class="page-head"><div><h1>班级管理</h1><p>负责班级与学生名册</p></div></div><div id="management-root"></div></main></div><div class="modal-backdrop" id="record-modal" hidden=""><section class="modal" role="dialog" aria-modal="true" aria-labelledby="record-title"><div class="modal-head"><div><h2 id="record-title"></h2><p id="record-description"></p></div><button class="close" data-close="" aria-label="关闭">×</button></div><form id="record-form" novalidate=""><div class="modal-body"><div class="form-grid" id="record-fields"></div><p id="record-error" role="alert"></p></div><div class="modal-foot"><button type="button" class="btn" data-close="">关闭</button><button type="submit" class="btn primary" id="record-save">保存演示记录</button></div></form></section></div><dialog id="attendance-editor" class="class-child-dialog" aria-labelledby="attendance-editor-title"><div class="modal-head"><div><h2 id="attendance-editor-title"></h2><p>管理考勤项设置</p></div><button type="button" class="close" data-child-close="" aria-label="关闭考勤设置">×</button></div><form id="attendance-form" novalidate=""><div class="modal-body"><div class="form-grid" id="attendance-fields"></div><p id="attendance-error" role="alert"></p></div><div class="modal-foot"><button type="button" class="btn" data-child-close="">取消</button><button type="submit" class="btn primary">确定</button></div></form></dialog><div class="toast-region" aria-live="polite"></div>
+<script src="js/shared/core.js"></script>
+<script src="js/shared/interactions.js"></script>
+<script src="js/shared/auth.js"></script>
+<script src="js/data/teaching.js"></script>
+<script src="js/pages/classes.js"></script>
+</body></html>

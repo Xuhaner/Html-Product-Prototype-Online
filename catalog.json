@@ -58,7 +58,29 @@
       "id": "02-resole-study",
       "name": "睿秀学城",
       "description": "学习平台的产品交互原型",
-      "prototypes": []
+      "prototypes": [
+        {
+          "id": "resole-study-basic",
+          "name": "校内基础教学 V1.0",
+          "description": "校内基础教学评审原型，覆盖学生课程学习、作业考试、教师备课与批阅，以及平台账号管理。",
+          "updatedAt": "2026-11-10",
+          "entries": [
+            {
+              "name": "学生端（电脑 / 手机）",
+              "path": "index.html"
+            },
+            {
+              "name": "教师端",
+              "path": "admin-prototype/index.html"
+            },
+            {
+              "name": "平台管理端",
+              "path": "admin-prototype/super-admin.html"
+            }
+          ],
+          "updateNote": "首次收录 V1.0：校内基础教学评审版，包含学生端、教师端和平台管理端。"
+        }
+      ]
     }
   ],
   "legacy": [

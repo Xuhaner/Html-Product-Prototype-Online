@@ -1,0 +1,7 @@
+function renderNotifications(){
+ const items=getNotificationItems(),unread=items.filter(x=>!demo.announcements.read.includes(x.id)).length;
+ $('#notifications-root').innerHTML=`<div class="flow-head"><div><div class="eyebrow">学习服务</div><h1>公告</h1><p class="meta" role="status">${unread} 条未读</p></div><div><button class="btn" id="read-all" ${unread?'':'disabled'}>全部标为已读</button> <button class="btn" data-go="profile">个人中心</button></div></div><div class="flow-stack">${items.length?items.map(x=>`<article class="card flow-card announcement-item ${demo.announcements.read.includes(x.id)?'is-read':'is-unread'}"><span class="flow-pill">${demo.announcements.read.includes(x.id)?'已读':'● 未读'}</span><h2>${escapeHTML(x.title)}</h2><p>${escapeHTML(x.body)}</p><p class="meta">${x.time}</p><button class="btn primary" data-open-notification="${x.id}" data-route="${x.route}">查看详情</button></article>`).join(''):'<div class="card flow-empty"><h2>暂无相关公告</h2><p class="meta">新的课程公告发布后会显示在这里。</p></div>'}</div>`;
+ $('#read-all').onclick=()=>{demo.announcements.read=items.map(x=>x.id);persistDemo();renderNotifications();if(typeof updateHeaderUnread==='function')updateHeaderUnread();};
+ $$('[data-open-notification]').forEach(b=>b.onclick=()=>{if(!demo.announcements.read.includes(b.dataset.openNotification))demo.announcements.read.push(b.dataset.openNotification);persistDemo();go(b.dataset.route);});
+}
+renderNotifications();

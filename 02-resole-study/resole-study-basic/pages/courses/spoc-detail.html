@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<base href="../../">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>睿秀学城 · 数字素养与安全</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="spoc-detail">
+<div class="app">
+  <div id="site-header"></div>
+  <main class="shell" id="main" tabindex="-1">
+    <section class="page active" aria-labelledby="spoc-title">
+      <div class="crumbs"><button data-go="courses">课程</button>　/　数字素养与安全</div>
+      <section class="course-mast spoc-mast">
+        <div class="course-identity">
+          <div class="course-art spoc-art"><small>DIGITAL CITIZENSHIP</small><strong>数字素养<br>与安全</strong><small>2026 秋 · 专属课程示例</small></div>
+          <div class="course-summary">
+            <div class="course-summary-head"><div><div class="badges"><span class="badge">专属课程 · 需审核</span><span class="badge neutral">通识教育</span><span class="badge neutral">数字公民素养</span></div><h1 id="spoc-title">数字素养与安全</h1></div></div>
+            <p class="lead">识别网络风险、保护个人信息，学会在数字社会中负责任地判断与行动。</p>
+            <div class="teacher"><span class="avatar">周</span><div><strong>周恺 · 课程负责人</strong><br><span class="meta">睿秀学城联合课程 · 数字素养教研组</span></div></div>
+            <div class="course-facts"><div><strong>2 章</strong><span>课程结构</span></div><div><strong>6 课时</strong><span>学习内容</span></div><div><strong>1,286</strong><span>已加入</span></div></div>
+            <div class="apply-entry spoc-access" id="spoc-access" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+      <nav class="course-nav spoc-nav" role="tablist" aria-label="专属课程详情导航">
+        <button class="course-nav-btn active" role="tab" aria-selected="true" data-spoc-view="overview">课程总览</button>
+        <button class="course-nav-btn" role="tab" aria-selected="false" data-spoc-view="catalog">课程目录</button>
+        <button class="course-nav-btn" role="tab" aria-selected="false" data-spoc-view="tasks">作业 / 测验</button>
+        <button class="course-nav-btn" role="tab" aria-selected="false" data-spoc-view="knowledge">知识点</button>
+        <button class="course-nav-btn" role="tab" aria-selected="false" data-spoc-view="notices">课程公告</button>
+        <button class="course-nav-btn" role="tab" aria-selected="false" data-spoc-view="discussion">讨论互动</button>
+        <button class="course-nav-btn" role="tab" aria-selected="false" data-spoc-view="team">教研团队</button>
+        <button class="course-nav-btn" role="tab" aria-selected="false" data-spoc-view="results">学习成果</button>
+      </nav>
+      <div class="course-dashboard spoc-dashboard">
+        <div class="detail-main course-tab-panel" id="spoc-content" role="tabpanel" tabindex="-1"></div>
+        <aside class="detail-aside">
+          <section class="detail-aside-card"><h3>加入方式</h3><p><strong>专属课程审核制</strong></p><p class="meta">提交申请理由，通过后可访问课时与考核内容。本地演示提交后自动通过，不进入教师审核队列。</p></section>
+          <section class="detail-aside-card"><h3>最新公告</h3><div class="notice"><strong>学习资格审核说明</strong><p>申请通过后即可开始课程学习。</p></div><button class="btn small" data-spoc-view="notices">查看全部公告</button></section>
+          <section class="detail-aside-card"><h3>教研团队 · 3 人</h3><div class="avatars"><span class="mini-avatar">周</span><span class="mini-avatar">陈</span><span class="mini-avatar">林</span></div><p class="meta">主讲教师与课程助教</p><button class="btn small" data-spoc-view="team">查看团队</button></section>
+          <section class="detail-aside-card"><h3>课程说明</h3><p class="meta">审核、视频、作业与学习记录均为本地原型演示。</p></section>
+        </aside>
+      </div>
+    </section>
+    <section class="statebox" id="global-state" aria-live="polite" tabindex="-1"></section>
+  </main>
+  <div id="site-footer"></div>
+  <dialog id="spoc-application-dialog" aria-labelledby="spoc-application-title">
+    <form class="dialog-body" id="spoc-application-form" novalidate>
+      <div class="eyebrow">专属课程加入审核</div>
+      <h2 id="spoc-application-title">申请加入《数字素养与安全》</h2>
+      <div class="field"><label for="spoc-reason">申请理由</label><textarea id="spoc-reason" required minlength="8" placeholder="请简要说明学习目标"></textarea><div class="error-text">请至少输入 8 个字的申请理由。</div></div>
+      <p class="auth-error" id="spoc-application-error" role="alert"></p>
+      <div class="dialog-actions"><button class="btn" type="button" id="cancel-spoc-application">取消</button><button class="btn primary" type="submit">提交审核</button></div>
+    </form>
+  </dialog>
+</div>
+<script src="js/shared/shell.js"></script>
+<script src="js/shared/core.js"></script>
+<script src="js/shared/workflows.js"></script>
+<script src="js/shared/auth.js"></script>
+<script src="js/shared/knowledge-graph.js"></script>
+<script src="js/pages/spoc-detail.js"></script>
+<script src="js/shared/states.js"></script>
+<script src="js/shared/init.js"></script>
+<script src="js/shared/topbar.js"></script>
+</body>
+</html>

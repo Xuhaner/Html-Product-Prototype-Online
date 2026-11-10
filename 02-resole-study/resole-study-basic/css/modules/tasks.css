@@ -1,0 +1,72 @@
+.page-lead {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:32px;
+  padding:28px 0 32px;
+  border-bottom:1px solid var(--line)
+}
+.page-lead h1 { margin:8px 0 10px;font-size:clamp(34px,4vw,52px);line-height:1.12;letter-spacing:-.04em }
+.page-lead p { max-width:720px;margin:0;color:var(--muted);font-size:16px }
+.page-lead-note { flex:none;padding:9px 13px;border-radius:30px;background:var(--green2);color:var(--green);font-weight:800 }
+.plaza-tabs { margin:24px 0 18px }
+.practice-topics { padding:30px 0 4px }
+.section-heading { display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:18px }
+.section-heading h2 { margin:5px 0 0;font-size:28px }
+.section-heading p { margin:0;color:var(--muted);font-size:13px }
+.section-heading>.btn { text-decoration:none }
+.topic-showcase-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px }
+.task-topic-card { min-width:0;padding:22px;border-radius:22px;background:var(--deep);color:#fff }
+.task-topic-card.topic-data { background:color-mix(in srgb,var(--deep) 76%,#315a7c) }
+.task-topic-card.topic-ai { background:color-mix(in srgb,var(--deep) 76%,#6d4d83) }
+.task-topic-card header .eyebrow { color:var(--lime) }
+.task-topic-card header h3 { margin:5px 0 4px;font-size:23px }
+.task-topic-card header p { min-height:48px;margin:0 0 16px;color:rgba(255,255,255,.7);font-size:13px }
+.topic-task-row { display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:10px;margin-top:9px;padding:12px;border-radius:14px;background:#fff;color:var(--ink) }
+.topic-task-row>span { width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:var(--green2);color:var(--green);font-weight:900 }
+.topic-task-row strong,.topic-task-row small { display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis }
+.topic-task-row small { color:var(--muted);font-size:11px }
+.topic-task-action { min-height:34px;padding:5px 10px;border:1px solid color-mix(in srgb,var(--green) 25%,var(--line));border-radius:10px;background:var(--green2);color:var(--green);font-size:12px;font-weight:800 }
+.task-topic-card footer { display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;color:rgba(255,255,255,.72);font-size:12px }
+.task-topic-card footer .btn { flex:none;background:#fff;color:var(--ink);text-decoration:none }
+.open-task-head h2 { margin:5px 0 6px;font-size:26px }
+.task-collection-count { flex:none;display:grid;grid-template-columns:auto auto;align-items:end;column-gap:8px;padding:13px 18px;border:1px solid rgba(255,255,255,.2);border-radius:16px;background:rgba(255,255,255,.08) }
+.task-collection-count strong { font-size:28px;line-height:1 }
+.task-collection-count span { font-weight:800 }
+.task-collection-count small { grid-column:1/-1;margin-top:5px;color:rgba(255,255,255,.65) }
+.plaza-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px }
+.open-task-section { padding:34px 0 10px }
+.open-task-head { display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:16px }
+.open-task-head p { margin:0;color:var(--muted);font-size:13px }
+.open-task-head>.btn { text-decoration:none }
+.page-back { display:inline-flex;margin-top:26px;text-decoration:none }
+.task-list-hero { display:flex;align-items:center;justify-content:space-between;gap:32px;margin-top:18px;padding:30px;border-radius:24px;background:linear-gradient(135deg,var(--deep),color-mix(in srgb,var(--deep) 82%,var(--green)));color:#fff }
+.task-list-hero .eyebrow { color:var(--lime) }
+.task-list-hero h1 { margin:6px 0;font-size:clamp(32px,4vw,48px);line-height:1.15 }
+.task-list-hero p { max-width:700px;margin:0;color:rgba(255,255,255,.72) }
+.task-list-grid { margin-top:20px }
+.topic-directory-grid { margin-top:24px }
+.topic-directory-grid .task-topic-card { display:flex;min-height:250px;flex-direction:column }
+.topic-directory-grid .task-topic-card footer { margin-top:auto }
+body[data-page="tasks"] :is(.topic-task-row small,.open-task-grid .badge,.open-task-grid .plaza-meta,.open-task-grid .plaza-src),
+body[data-page="open-tasks"] :is(.page-lead p,.badge,.plaza-meta,.plaza-src),
+body[data-page="task-topic"] :is(.task-list-hero p,.badge,.plaza-meta,.plaza-src) { display:none }
+body:is([data-page="tasks"],[data-page="open-tasks"],[data-page="task-topic"]) .plaza-head h3 { margin-top:0 }
+body[data-page="task-topic"] .plaza-foot .btn,
+body[data-page="tasks"] .open-task-grid .plaza-foot .btn,
+body[data-page="open-tasks"] .plaza-foot .btn { margin-left:auto }
+.plaza-card { display:flex;flex-direction:column;gap:12px;padding:22px;border:1px solid var(--line);border-radius:20px;background:#fff }
+.plaza-card[hidden] { display:none }
+.plaza-card.is-featured { background:var(--green2);border-color:color-mix(in srgb,var(--green) 28%,transparent) }
+.plaza-head { display:flex;align-items:flex-start;gap:14px }
+.plaza-icon { flex:none;width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:var(--green2);color:var(--green);font-size:19px;font-weight:900 }
+.plaza-card[data-kind="exam"] .plaza-icon { background:#f7efe2;color:#9a6a2e }
+.plaza-card.is-featured .plaza-icon { background:#fff }
+.plaza-head h3 { margin:7px 0 0;font-size:18px;line-height:1.3 }
+.plaza-meta { margin:0;color:var(--muted);font-size:13px }
+.plaza-foot { margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px dashed var(--line) }
+.plaza-src { min-width:0;padding:5px 10px;border-radius:20px;background:var(--green2);color:var(--green);font-size:12px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis }
+.plaza-src.open { background:var(--mist);color:#56625c }
+.plaza-foot .btn { flex:none }
+@media(max-width:1100px) { .topic-showcase-grid,.plaza-grid { grid-template-columns:repeat(2,minmax(0,1fr)) }.task-topic-card:first-child { grid-column:1/-1 }.open-task-grid .plaza-card:last-child { grid-column:1/-1 } }
+.module-boundary { margin:18px 2px 0;color:var(--muted);font-size:12px }

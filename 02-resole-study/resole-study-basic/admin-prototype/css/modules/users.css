@@ -1,0 +1,75 @@
+/* User account management (students, teachers and administrators). */
+#account-panel{min-width:0}
+#account-panel .account-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 20px;padding:22px;margin-bottom:24px}
+#account-panel .form-group input,#account-panel .form-group select{width:100%;min-width:0}
+#account-panel .account-filter-actions{grid-column:3/-1;display:flex;align-items:flex-end;justify-content:flex-end;gap:10px}
+#account-panel .account-list-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 12px}
+#account-panel .account-table-wrap{max-width:100%;max-height:610px;scrollbar-gutter:stable}
+#account-panel .account-table{min-width:2030px}
+#account-panel .account-table th{position:sticky;top:0;z-index:1}
+#account-panel .account-table td{white-space:nowrap}
+#account-panel .account-actions-cell{position:sticky;right:0;min-width:220px;background:var(--paper);box-shadow:-8px 0 16px -12px rgba(12,29,23,.3)}
+#account-panel .account-table th.account-actions-cell{z-index:2;background:#f8faf9}
+#account-panel .account-row-actions{display:flex;gap:0;justify-content:flex-end}
+#account-panel .account-action{border:0;background:transparent;color:var(--blue);padding:8px;font-weight:600}
+#account-panel .account-action:hover{text-decoration:underline}
+#account-panel .account-action.danger{color:var(--red)}
+#account-panel .account-bio{display:block;max-width:230px;overflow:hidden;text-overflow:ellipsis}
+#account-panel .account-cell-createdAt,#account-panel .account-cell-updatedAt{font-size:12px}
+#account-panel .account-avatar,#account-modal .account-avatar{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:10px;background:var(--green-soft);color:var(--green);font-size:17px;font-weight:700}
+#account-panel .account-avatar.is-empty,#account-modal .account-avatar.is-empty{background:var(--mist);color:var(--muted)}
+#account-modal .modal{display:flex;flex-direction:column;overflow:hidden;width:min(620px,100%)}
+#account-modal .modal-head{align-items:center;flex-shrink:0;border-bottom:1px solid var(--line);padding:20px 24px}
+#account-form{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+#account-modal .modal-body{overflow:auto;padding:24px;min-height:0}
+#account-modal .modal-foot{flex-shrink:0;margin-top:auto}
+#account-modal #account-error{color:var(--red);margin:0;padding:0 24px 16px}
+#account-modal #account-error:empty{display:none}
+#account-modal.is-drawer{place-items:stretch end;padding:0}
+#account-modal.is-drawer .modal{width:min(940px,100%);max-height:100dvh;height:100dvh;border-radius:18px 0 0 18px}
+#account-modal.is-drawer #account-form{flex:1}
+#account-modal.is-drawer .modal-body{flex:1}
+#account-modal.is-drawer .modal-foot{border-radius:0}
+#account-modal h3{font-size:17px;margin:0 0 12px}
+#account-modal .account-details{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line);margin:0 0 26px}
+#account-modal .account-detail-pair{display:grid;grid-template-columns:116px minmax(0,1fr);border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+#account-modal .account-detail-pair dt,#account-modal .account-detail-pair dd{display:flex;align-items:center;padding:14px;margin:0;overflow-wrap:anywhere;white-space:pre-wrap}
+#account-modal .account-detail-pair dt{background:#f8faf9;color:var(--muted);border-right:1px solid var(--line)}
+#account-modal .account-org-wrap{border:1px solid var(--line);margin-bottom:26px}
+#account-modal .account-org-wrap table{min-width:730px}
+#account-modal .account-no-org{padding:24px;background:var(--mist);border-radius:10px;color:var(--muted);margin-bottom:26px}
+#account-modal .account-edit-fields{display:grid;gap:24px;margin-top:24px}
+#account-modal input{width:100%;min-width:0}
+#account-modal input:disabled{background:var(--mist);color:var(--muted)}
+#account-modal [aria-invalid="true"]{border-color:var(--red)}
+#account-modal .risk-note{font-size:14px;padding:16px;border:1px solid #edd197}
+#account-modal .risk-note p{margin:8px 0 0}
+#account-modal .account-required{color:var(--red)}
+@media(max-width:1100px){#account-panel .account-filters{grid-template-columns:repeat(2,minmax(0,1fr))}#account-panel .account-filter-actions{grid-column:1/-1}}
+@media(max-width:760px){#account-panel .account-filters{gap:14px;padding:16px}#account-panel .account-list-heading{align-items:flex-start;flex-direction:column;gap:4px}#account-panel .account-table .account-actions-cell{position:static;min-width:198px;box-shadow:none}#account-panel .account-action{padding:8px 5px}#account-modal.is-drawer .modal{border-radius:0}#account-modal .modal-head{padding:16px}#account-modal .modal-body{padding:18px 16px}#account-modal .account-details{grid-template-columns:1fr}#account-modal .account-detail-pair{grid-template-columns:112px minmax(0,1fr)}#account-modal #account-error{padding:0 16px 16px}#account-modal .modal-foot{padding:14px 16px}}
+@media(max-width:430px){#account-panel .account-filters{grid-template-columns:1fr}#account-panel .account-filter-actions .btn{flex:1}}
+
+#account-panel .account-new{margin-left:auto}
+#account-modal .account-new-fields{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+#account-modal .account-new-fields .form-group{align-content:start}
+#account-modal .account-new-fields .full{grid-column:1/-1}
+#account-modal .account-institutions{margin:0;padding:14px;border:1px solid var(--line);border-radius:10px;display:grid;gap:8px}
+#account-modal .account-institutions label{display:flex;gap:8px;align-items:center;font-weight:400}
+#account-modal .account-institutions input{width:16px;min-height:16px}
+#account-modal .account-institution-select{padding:0;display:block;position:relative}
+#account-modal .account-institution-select summary{padding:11px 14px;cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+#account-modal .account-institution-select summary::-webkit-details-marker{display:none}
+#account-modal .account-institution-options{padding:12px;border-top:1px solid var(--line)}
+#account-modal .account-institution-options>input{width:100%;margin-bottom:10px}
+#account-modal .account-institution-list{max-height:200px;overflow:auto;display:grid;gap:10px}
+#account-modal .account-institution-selection{margin-top:6px;color:var(--muted);overflow-wrap:anywhere}
+#account-modal .account-password-control{position:relative}
+#account-modal .account-password-control input{padding-right:65px}
+#account-modal .account-password-control button{position:absolute;right:8px;top:5px;border:0;background:transparent;color:var(--blue);min-height:30px}
+#account-modal .account-avatar-upload{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#account-modal .account-avatar-upload input{max-width:280px}
+#account-panel .account-avatar img,#account-modal .account-avatar img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+#account-panel .account-cell-schools{max-width:280px;white-space:normal}
+#account-modal input[readonly]{background:var(--mist);color:var(--muted)}
+#account-modal select,#account-modal textarea{width:100%;min-width:0}
+@media(max-width:760px){#account-modal .account-new-fields{grid-template-columns:1fr}#account-modal .account-new-fields .full{grid-column:auto}}

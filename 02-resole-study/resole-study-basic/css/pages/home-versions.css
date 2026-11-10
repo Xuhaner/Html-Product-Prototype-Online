@@ -1,0 +1,242 @@
+/* Homepage studies; loaded by index.html only. */
+body[data-page="home"] { --home-accent:#d5ef85; --home-text:#eaf5ed; --home-muted:#abc3b7; --home-line:#ffffff26; background:#071d17; }
+body[data-page="home"] .shell { width:min(1440px,calc(100% - 112px)); }
+body[data-page="home"] #page-home { color:var(--home-text); padding-top:0; }
+.home-version-bar { position:sticky;top:70px;z-index:19;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 4%;background:#f8faf7f5;border-bottom:1px solid #dbe4dc;backdrop-filter:blur(18px);color:#143b2c; }
+.version-label { font:10px/1.5 monospace;letter-spacing:.12em;white-space:nowrap; }
+.version-label b { display:block;font:600 12px/1.5 sans-serif;letter-spacing:.05em; }
+.home-version-options { display:flex;gap:6px; }
+.home-version-options button { border:1px solid transparent;background:transparent;color:#476153;padding:9px 14px;border-radius:6px;font-size:12px;white-space:nowrap;transition:background .2s,color .2s; }
+.home-version-options button[hidden] { display:none; }
+.home-version-options button span { font:11px monospace;opacity:.6;margin-right:5px; }
+.home-version-options button[aria-pressed="true"] { background:#123c2d;color:#fff;box-shadow:0 3px 10px #163d2826; }
+.home-version-options button:hover { border-color:#789b87; }
+.home-version-bar::after { content:"";position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:#789c37;transform:scaleX(var(--home-progress,0));transform-origin:left; }
+.home-chapters { position:fixed;right:12px;top:50%;transform:translateY(-35%);display:grid;gap:12px;z-index:10; }
+.home-chapters a { color:var(--home-muted);text-decoration:none;font:10px monospace;display:flex;align-items:center;justify-content:flex-end;gap:8px; }
+.home-chapters a b { display:none; }
+.home-chapters a span { border-right:2px solid var(--home-line);padding:4px 7px; }
+.home-chapters a[aria-current] { color:var(--home-accent); }
+.home-chapters a[aria-current] span { border-color:var(--home-accent); }
+#page-home > section { position:relative;scroll-margin-top:150px; }
+#page-home .eyebrow { color:var(--home-accent);font-size:11px;letter-spacing:.2em; }
+#page-home .vision-heading { max-width:800px; }
+#page-home .vision-heading h2,#page-home .belief-intro h2 { font-size:clamp(30px,3.6vw,54px);font-weight:650;letter-spacing:-.045em;line-height:1.25; }
+#page-home .home-vision-hero { min-height:calc(100svh - 136px);border-radius:0;padding:80px 4% 110px;isolation:isolate;background:transparent;color:var(--home-text); }
+#page-home .vision-copy { max-width:880px; }
+#page-home .vision-copy h1 { max-width:none;font-size:clamp(44px,5.8vw,86px);line-height:1.22;font-weight:650;letter-spacing:-.065em; }
+#page-home .vision-copy p { color:var(--home-muted);max-width:540px;font-size:15px;line-height:1.9; }
+#page-home .vision-copy .btn { background:var(--home-accent);border-color:var(--home-accent);color:#fff;border-radius:4px;padding:13px 26px; }
+#page-home .home-vision-hero::after { display:none; }
+#page-home .home-hero-footer { position:absolute;left:4%;right:4%;bottom:32px;display:flex;justify-content:space-between;color:var(--home-muted);font:10px monospace;letter-spacing:.15em; }
+.home-hero-footer b { font-size:22px;display:inline-block;margin-left:12px; }
+#page-home .home-art { position:absolute;right:-5%;top:8%;width:600px;aspect-ratio:1;z-index:-1;pointer-events:none; }
+.art-orbit { position:absolute;inset:9%;border:1px solid #b4eea95c;border-radius:50%;box-shadow:inset 0 0 60px #a9e9910b; }
+.orbit-two { inset:21%;border-style:dashed;transform:rotate(35deg); }
+.orbit-three { inset:32%;border-width:16px;border-color:#ccebbd12; }
+.art-core { position:absolute;inset:40%;border-radius:50%;background:#dcfbb71a;box-shadow:0 0 90px #c1fcaa3d;display:grid;place-items:center;color:var(--home-accent);font:36px serif; }
+.art-node { position:absolute;padding:10px 18px;border:1px solid #d9f6d93d;border-radius:40px;background:#204131;backdrop-filter:blur(12px);font-size:12px;color:#d9eddf; }
+.node-one { top:15%;left:27%; }.node-two { right:5%;top:54%; }.node-three { left:17%;bottom:16%; }
+.art-caption { position:absolute;bottom:3%;left:30%;color:var(--home-muted);font:10px monospace;letter-spacing:.15em; }
+#page-home .vision-section,#page-home .online-principles { padding:110px 4%;border-top:1px solid var(--home-line); }
+#page-home .audience-card,#page-home .tension-card { border:1px solid var(--home-line);background:#ffffff05;color:var(--home-text);box-shadow:none;border-radius:8px; }
+#page-home .audience-card { min-height:290px; }
+#page-home .audience-card p,#page-home .tension-card p,#page-home .belief-list p { color:var(--home-muted); }
+#page-home .audience-card > span,#page-home .tension-card > span { color:var(--home-accent); }
+#page-home .audience-card::after { border-color:#bcefc008; }
+#page-home .belief-panel { margin:0;padding:110px 4%;border-radius:0;background:transparent;border-top:1px solid var(--home-line); }
+#page-home .belief-list div { border:1px solid var(--home-line);background:#ffffff05;box-shadow:none;border-radius:8px;padding:28px; }
+#page-home .belief-list span { color:var(--home-accent);font-size:24px; }
+#page-home .principle-line,#page-home .principle-line p { border-color:var(--home-line); }
+#page-home .principle-line strong { font-size:42px;font-weight:500; }
+#page-home .principle-line span { color:var(--home-accent); }
+#page-home .partner-strip { display:grid;grid-template-columns:repeat(4,1fr);gap:14px; }
+#page-home .partner { padding:25px 10px;text-align:center;border:1px solid var(--home-line);background:transparent;border-radius:0;color:var(--home-text);font-weight:650;text-decoration:none; }
+#page-home .partner-copy { display:none; }
+[data-home-version="editorial"] #page-home .partner-copy { display:block; }
+#page-home .vision-copy .btn { color:#12382a; }
+[data-home-version="spatial"] #page-home .vision-copy .btn { color:white; }
+/* 01 — Cinematic chapters, a light emerging from the dark. */
+body[data-home-version="cinema"] { background:radial-gradient(ellipse at 80% 8%,#204b39 0,transparent 25%),#071b15; }
+[data-home-version="cinema"] #page-home > section:not(.home-vision-hero) { min-height:80svh;display:flex;flex-direction:column;justify-content:center; }
+[data-home-version="cinema"] #page-home .home-art { opacity:.65;transform:translateY(var(--chapter-shift,0px)) rotate(-18deg); }
+[data-home-version="cinema"] #page-home .vision-copy h1 span { display:inline-block;animation:home-title-reveal 1s both;clip-path:inset(0); }
+[data-home-version="cinema"] #page-home .vision-copy h1 span:last-child { animation-delay:.18s;color:#cde6ce; }
+[data-home-version="cinema"] #page-home .vision-heading { position:sticky;top:160px;z-index:2; }
+[data-home-version="cinema"] #page-home .audience-card { transition:transform .8s;transform:translateY(24px); }
+[data-home-version="cinema"] #page-home .in-view .audience-card { transform:translateY(0); }
+[data-home-version="cinema"] #page-home .audience-card:nth-child(2) { transition-delay:.1s; }
+[data-home-version="cinema"] #page-home .audience-card:nth-child(3) { transition-delay:.2s; }
+[data-home-version="cinema"] #page-home .tension-grid { gap:2px;position:relative; }
+[data-home-version="cinema"] #page-home .tension-grid::after { content:"VS";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#d5ef85;color:#18382b;padding:12px;border-radius:50%;font:italic 18px Georgia;box-shadow:0 0 70px #daf19c66; }
+[data-home-version="cinema"] #page-home .tension-card { min-height:310px;border-radius:0;padding:44px;transition:transform .9s;transform:translateX(-18px);background:linear-gradient(120deg,#204935,#0c281f); }
+[data-home-version="cinema"] #page-home .tension-card:last-child { transform:translateX(18px);background:linear-gradient(120deg,#182823,#344035); }
+[data-home-version="cinema"] #page-home .in-view .tension-card { transform:translateX(0); }
+[data-home-version="cinema"] #page-home .belief-panel { background:radial-gradient(ellipse at 50% 80%,#315a3866,transparent 65%); }
+[data-home-version="cinema"] #page-home .belief-list { margin-top:45px;grid-template-columns:repeat(4,1fr); }
+[data-home-version="cinema"] #page-home .belief-list div { border:0;border-top:1px solid #d5ef8570;border-radius:0;padding:30px 10px; }
+/* 02 — Translucent layers, pointer light and floating orbits. */
+body[data-home-version="spatial"] { --home-text:#183f3d;--home-muted:#466e69;--home-accent:#157365;--home-line:#85b9af4d;background:radial-gradient(ellipse at 80% 10%,#b4f3d8 0,transparent 30%),radial-gradient(ellipse at 10% 40%,#d7d3fc,transparent 32%),#eef7f2; }
+[data-home-version="spatial"] #page-home .home-vision-hero { overflow:visible; }
+[data-home-version="spatial"] #page-home .vision-copy h1 { color:#205c56;text-shadow:none; }
+[data-home-version="spatial"] #page-home .vision-copy h1 span:last-child { background:linear-gradient(110deg,#135e50,#796dc3,#147568);background-size:200%;background-clip:text;color:transparent;animation:home-gradient 8s ease infinite; }
+[data-home-version="spatial"] #page-home .home-art { top:10%;right:-2%;transform:perspective(800px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); }
+[data-home-version="spatial"] .art-orbit { border:1px solid #fff;background:linear-gradient(140deg,#ffffff44,#d7e1ff22);box-shadow:16px 26px 55px #51887822,inset 0 0 30px #fff;transform:rotateX(48deg) rotate(-25deg); }
+[data-home-version="spatial"] .orbit-two { transform:rotateY(50deg) rotate(35deg); }
+[data-home-version="spatial"] .art-core { background:radial-gradient(circle at 30% 25%,white,#b7e6d7 45%,#6faaa0);box-shadow:12px 20px 60px #35655644;color:#237f68; }
+[data-home-version="spatial"] .art-node { background:#ffffff99;color:#286651;border-color:#fff;box-shadow:0 10px 25px #346f5822;animation:home-float 7s ease-in-out infinite; }
+[data-home-version="spatial"] .node-two { animation-delay:-2s; }
+[data-home-version="spatial"] #page-home .audience-card { background:radial-gradient(circle at var(--pointer-x,50%) var(--pointer-y,30%),#fff,#ffffff55 65%);backdrop-filter:blur(20px);border:1px solid #fff;border-radius:24px;box-shadow:0 25px 60px #40796515;transform:perspective(800px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));transition:transform .15s; }
+[data-home-version="spatial"] #page-home .audience-card:nth-child(2) { margin-top:38px; }
+[data-home-version="spatial"] #page-home .audience-card:nth-child(3) { margin-top:76px; }
+[data-home-version="spatial"] #page-home .belief-panel { grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:center; }
+[data-home-version="spatial"] #page-home .belief-list { min-width:0;grid-template-columns:repeat(2,minmax(0,1fr)); }
+[data-home-version="spatial"] #page-home .belief-list div { border-radius:50%;aspect-ratio:1;min-width:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:inset 0 0 35px #fff,0 18px 30px #437a6220;background:#ffffff55;border-color:#fff; }
+[data-home-version="spatial"] #page-home .tension-card { background:#ffffff70;border-color:#fff;border-radius:24px; }
+/* 03 — Oversized print typography and asymmetric Swiss grid. */
+body[data-home-version="editorial"] { --home-text:#123a2b;--home-muted:#536457;--home-accent:#416520;--home-line:#1b3e2d40;background:#f2efe4; }
+[data-home-version="editorial"] #page-home .home-vision-hero { padding-left:0;padding-right:0;border-bottom:12px solid #123a2b; }
+[data-home-version="editorial"] #page-home .vision-copy { max-width:100%; }
+[data-home-version="editorial"] #page-home .vision-copy h1 { font-size:clamp(48px,7.6vw,114px);font-weight:900;line-height:1.12;letter-spacing:-.08em; }
+[data-home-version="editorial"] #page-home .vision-copy h1 span:last-child { background:#d5ef58;box-shadow:12px 0 #d5ef58; }
+[data-home-version="editorial"] #page-home .vision-copy p { margin-left:36%;max-width:580px;margin-top:30px; }
+[data-home-version="editorial"] #page-home .vision-copy .btn { margin-left:36%;background:#123a2b;color:#f2efe4;border-color:#123a2b; }
+[data-home-version="editorial"] #page-home .home-art { width:210px;top:auto;bottom:45px;left:0;opacity:.5; }
+[data-home-version="editorial"] .art-orbit { border-color:#21422a; }
+[data-home-version="editorial"] .art-node,[data-home-version="editorial"] .art-caption { display:none; }
+[data-home-version="editorial"] #page-home .home-hero-footer { left:0;right:0;bottom:20px; }
+[data-home-version="editorial"] #page-home > section:not(:first-child)::before { content:attr(data-chapter);font:900 clamp(80px,12vw,170px)/1 Arial;color:#24422d16;position:absolute;right:0;top:50px;pointer-events:none; }
+[data-home-version="editorial"] #page-home .vision-section,[data-home-version="editorial"] #page-home .online-principles,[data-home-version="editorial"] #page-home .belief-panel { padding-left:0;padding-right:0; }
+[data-home-version="editorial"] #page-home .audience-grid { grid-template-columns:1.3fr 1fr 1fr;gap:0; }
+[data-home-version="editorial"] #page-home .audience-card { border-radius:0;border:1px solid #183b2b;background:#e4e8da;min-height:340px;transition:background .2s,color .2s; }
+[data-home-version="editorial"] #page-home .audience-card:first-child { background:#173f2e;color:white; }
+[data-home-version="editorial"] #page-home .audience-card:first-child p { color:#d0ddcf; }
+[data-home-version="editorial"] #page-home .audience-card:hover { background:#d5ef58;color:#183b2b; }
+[data-home-version="editorial"] #page-home .audience-card:hover p { color:#183b2b; }
+[data-home-version="editorial"] #page-home .audience-card h3 { font-size:40px; }
+[data-home-version="editorial"] #page-home .tension-grid { gap:0; }
+[data-home-version="editorial"] #page-home .tension-card { border:0;border-radius:0;background:#d5ef58;min-height:300px; }
+[data-home-version="editorial"] #page-home .tension-card:last-child { background:#173f2e;color:#fff; }
+[data-home-version="editorial"] #page-home .tension-card:last-child p { color:#d0ddcf; }
+[data-home-version="editorial"] #page-home .belief-intro { align-self:start;position:sticky;top:170px; }
+[data-home-version="editorial"] #page-home .belief-list { grid-template-columns:1fr;gap:0; }
+[data-home-version="editorial"] #page-home .belief-list div { border-radius:0;border:0;border-bottom:2px solid #23482e;background:transparent;padding:28px 0; }
+[data-home-version="editorial"] #page-home .belief-list span { font-size:54px;color:#163f2d; }
+[data-home-version="editorial"] #page-home .partner-strip { display:flex;width:max-content;animation:home-marquee 22s linear infinite; }
+[data-home-version="editorial"] #page-home .partner { min-width:260px;font-size:22px;border:0; }
+[data-home-version="editorial"] #page-home .partners-section { overflow:hidden; }
+[data-home-version="editorial"] #page-home .partners-section:hover .partner-strip { animation-play-state:paused; }
+/* 04 — A graphic learning console, without invented live metrics. */
+body[data-home-version="console"] { --home-text:#d9f9de;--home-muted:#94bba8;--home-accent:#b8f56c;--home-line:#83ba9a33;background:#0c211c; }
+[data-home-version="console"] #page-home { background-image:linear-gradient(#8cbd9610 1px,transparent 1px),linear-gradient(90deg,#8cbd9610 1px,transparent 1px);background-size:48px 48px; }
+[data-home-version="console"] #page-home .home-vision-hero { min-height:640px;padding-left:40px; }
+[data-home-version="console"] #page-home .vision-copy { width:65%; }
+[data-home-version="console"] #page-home .vision-copy h1 { font-size:clamp(42px,4.5vw,66px); }
+[data-home-version="console"] #page-home .home-art { width:390px;right:0;top:90px;border:1px solid #96cf7544;background:#0c211cdd;border-radius:12px; }
+[data-home-version="console"] .art-grid { position:absolute;inset:25px;background:repeating-linear-gradient(0deg,transparent 0 39px,#80b88920 40px),repeating-linear-gradient(90deg,transparent 0 39px,#80b88920 40px); }
+[data-home-version="console"] .art-orbit { border-radius:20%;border-color:#b8f56c66;transform:rotate(45deg); }
+[data-home-version="console"] .orbit-two { border-radius:50%;border-style:dashed;animation:home-spin 40s linear infinite; }
+[data-home-version="console"] .art-core { border:1px solid #b8f56c;background:#254e2a;border-radius:8px;color:#cafa9b; }
+[data-home-version="console"] .art-node { border-radius:3px;background:#142e22;color:#caf69a;font-family:monospace; }
+[data-home-version="console"] #page-home .vision-section,[data-home-version="console"] #page-home .belief-panel,[data-home-version="console"] #page-home .online-principles { margin:24px 0;padding:40px;border:1px solid var(--home-line);border-radius:12px;background:#0c211ce8; }
+[data-home-version="console"] #page-home .vision-heading h2,[data-home-version="console"] #page-home .belief-intro h2 { font-size:32px; }
+[data-home-version="console"] #page-home .audience-card { min-height:240px;background:#123027;border-top:3px solid #b8f56c; }
+[data-home-version="console"] #page-home .audience-card > span { font:28px monospace; }
+[data-home-version="console"] #page-home .belief-list div { border-left:3px solid #b8f56c;border-radius:0; }
+[data-home-version="console"] #page-home .tension-card { background:repeating-linear-gradient(135deg,#a6cd9410 0 1px,transparent 1px 12px); }
+[data-home-version="console"] #page-home .principle-line strong { font-family:monospace;color:#b8f56c; }
+/* 05 — Botanical forms, warm paper and generous growing space. */
+body[data-home-version="organic"] { --home-text:#294839;--home-muted:#697961;--home-accent:#516e32;--home-line:#71855440;background:#f5f3e7; }
+[data-home-version="organic"] #page-home .home-vision-hero { min-height:760px; }
+[data-home-version="organic"] #page-home .vision-copy h1 { font-family:"Songti SC","STSong",serif;font-weight:500;font-size:clamp(46px,5.6vw,80px);line-height:1.4; }
+[data-home-version="organic"] #page-home .vision-copy .btn { border-radius:40px;background:#365f43;color:white; }
+[data-home-version="organic"] #page-home .home-art { right:-4%;top:10%;width:600px;background:radial-gradient(ellipse,#9aac7730,transparent 68%); }
+[data-home-version="organic"] .art-orbit { border-color:#7c915b55;border-radius:46% 54% 67% 33% / 43% 34% 66% 57%;box-shadow:0 0 0 14px #aabc7910,0 0 0 29px #aabc7910;animation:home-spin 80s linear infinite; }
+[data-home-version="organic"] .orbit-two { animation-direction:reverse;border-style:solid; }
+[data-home-version="organic"] .orbit-three { border-width:1px; }
+[data-home-version="organic"] .art-core { background:#a2b57b;border-radius:80% 0 80% 0;color:#fff;box-shadow:0 0 60px #a8bd7366; }
+[data-home-version="organic"] .art-core span { transform:rotate(-12deg); }
+[data-home-version="organic"] .art-node { background:#f5f3e7cc;color:#5e7546;border-color:#9dac7e; }
+[data-home-version="organic"] #page-home .vision-heading h2,[data-home-version="organic"] #page-home .belief-intro h2 { font-family:"Songti SC","STSong",serif;font-weight:500; }
+[data-home-version="organic"] #page-home .audience-grid { gap:28px;align-items:start; }
+[data-home-version="organic"] #page-home .audience-card { min-height:360px;border:0;border-radius:160px 160px 20px 20px;background:#e3e9cd;padding:40px; }
+[data-home-version="organic"] #page-home .audience-card:nth-child(2) { margin-top:60px;background:#eae1ce; }
+[data-home-version="organic"] #page-home .audience-card:nth-child(3) { background:#d2dfc7; }
+[data-home-version="organic"] #page-home .audience-card > span { margin-top:15px; }
+[data-home-version="organic"] #page-home .tension-card { background:#e6eadb;border:0;border-radius:70px 8px 70px 8px;padding:40px; }
+[data-home-version="organic"] #page-home .tension-card:last-child { background:#dadfc7; }
+[data-home-version="organic"] #page-home .belief-panel { background:#35543b;color:#f1f4de;border-radius:40px;padding:70px 5%; }
+[data-home-version="organic"] #page-home .belief-panel .eyebrow,[data-home-version="organic"] #page-home .belief-list span { color:#d3e6a2; }
+[data-home-version="organic"] #page-home .belief-list p { color:#c6d4bc; }
+[data-home-version="organic"] #page-home .belief-list div { border:0;border-bottom:1px solid #d3e6a244;border-radius:0;background:transparent; }
+[data-home-version="organic"] #page-home .partner { border-radius:50px; }
+@keyframes home-title-reveal { from { clip-path:inset(100% 0 0);transform:translateY(30px); } to { clip-path:inset(0);transform:translateY(0); } }
+@keyframes home-float { 50% { transform:translateY(-16px); } }
+@keyframes home-spin { to { transform:rotate(360deg); } }
+@keyframes home-gradient { 50% { background-position:100%; } }
+@keyframes home-marquee { to { transform:translateX(calc(-50% - 7px)); } }
+@media(max-width:1100px) {
+  .version-label { display:none; }.home-version-bar { justify-content:center; }
+  #page-home .home-art { opacity:.45;right:-18%; }
+  [data-home-version="console"] #page-home .home-art { width:310px; }
+  [data-home-version="console"] #page-home .vision-copy { width:80%; }
+}
+@media(max-width:820px) {
+  body[data-page="home"] .shell { width:calc(100% - 32px); }
+  .home-version-bar { padding:8px;top:70px;display:block; }
+  .home-version-options { display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px; }
+  .home-version-options button { font-size:10px;padding:7px 1px;white-space:normal;line-height:1.5; }
+  .home-version-options button span { display:block;margin:0;font-size:9px; }
+  .home-chapters { display:none; }
+  #page-home .home-vision-hero { min-height:690px;padding:66px 8px 110px; }
+  #page-home .vision-copy h1 { font-size:clamp(29px,7.8vw,59px);letter-spacing:-.055em; }
+  #page-home .vision-copy p { font-size:14px;max-width:90%; }
+  #page-home .home-art { width:360px;right:-65px;top:290px;opacity:.35; }
+  #page-home .home-hero-footer { left:8px;right:8px;font-size:8px; }
+  #page-home .vision-section,#page-home .online-principles,#page-home .belief-panel { padding:70px 8px; }
+  #page-home .vision-heading h2,#page-home .belief-intro h2 { font-size:30px; }
+  #page-home .audience-grid,#page-home .tension-grid { grid-template-columns:1fr; }
+  #page-home .audience-card { min-height:240px; }
+  #page-home .belief-list { grid-template-columns:1fr 1fr; }
+  #page-home .belief-list div { padding:22px 14px; }
+  #page-home .belief-list span { font-size:22px; }
+  #page-home .partner-strip { grid-template-columns:1fr 1fr; }
+  #page-home .partner { font-size:13px; }
+  [data-home-version="cinema"] #page-home .vision-heading { position:static; }
+  [data-home-version="cinema"] #page-home .belief-list { grid-template-columns:1fr 1fr; }
+  [data-home-version="cinema"] #page-home .tension-card { transform:none;min-height:230px;padding:30px; }
+  [data-home-version="cinema"] #page-home .tension-card:last-child { transform:none; }
+  [data-home-version="spatial"] #page-home .home-vision-hero { overflow:hidden; }
+  [data-home-version="spatial"] #page-home .home-art { top:310px;right:-70px; }
+  [data-home-version="spatial"] #page-home .audience-card:nth-child(n) { margin:0; }
+  [data-home-version="spatial"] #page-home .belief-panel { grid-template-columns:1fr; }
+  [data-home-version="spatial"] #page-home .belief-list div { border-radius:30px;aspect-ratio:auto;min-height:160px; }
+  [data-home-version="editorial"] #page-home .vision-copy h1 { font-size:clamp(30px,8.2vw,65px); }
+  [data-home-version="editorial"] #page-home .vision-copy p,[data-home-version="editorial"] #page-home .vision-copy .btn { margin-left:0; }
+  [data-home-version="editorial"] #page-home .home-art { top:auto;bottom:35px;left:auto;right:0;width:160px; }
+  [data-home-version="editorial"] #page-home .audience-grid { grid-template-columns:1fr; }
+  [data-home-version="editorial"] #page-home .audience-card { min-height:260px; }
+  [data-home-version="editorial"] #page-home .belief-intro { position:static; }
+  [data-home-version="editorial"] #page-home .belief-list { grid-template-columns:1fr; }
+  [data-home-version="editorial"] #page-home .belief-list span { font-size:44px; }
+  [data-home-version="console"] #page-home .home-vision-hero { min-height:730px;padding-left:8px;align-items:start; }
+  [data-home-version="console"] #page-home .vision-copy { width:100%; }
+  [data-home-version="console"] #page-home .vision-copy h1 { font-size:clamp(29px,7.6vw,58px); }
+  [data-home-version="console"] #page-home .home-art { width:240px;top:auto;bottom:65px;right:0;opacity:.65; }
+  [data-home-version="console"] #page-home .vision-section,[data-home-version="console"] #page-home .belief-panel,[data-home-version="console"] #page-home .online-principles { padding:28px 18px; }
+  [data-home-version="console"] #page-home .vision-heading h2,[data-home-version="console"] #page-home .belief-intro h2 { font-size:27px; }
+  [data-home-version="organic"] #page-home .home-vision-hero { min-height:690px; }
+  [data-home-version="organic"] #page-home .vision-copy h1 { font-size:clamp(30px,7.8vw,59px); }
+  [data-home-version="organic"] #page-home .home-art { width:360px;top:300px;right:-60px; }
+  [data-home-version="organic"] #page-home .audience-card { min-height:300px;border-radius:100px 100px 16px 16px; }
+  [data-home-version="organic"] #page-home .audience-card:nth-child(2) { margin:0; }
+  [data-home-version="organic"] #page-home .belief-panel { border-radius:24px;padding:40px 22px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  body[data-page="home"] { scroll-behavior:auto; }
+  html:has(body[data-page="home"]) { scroll-behavior:auto; }
+  #page-home *,#page-home *::before,#page-home *::after { animation:none!important;transition:none!important;transform:none!important; }
+  [data-home-version="editorial"] #page-home .partner-strip { width:auto;display:grid;grid-template-columns:repeat(2,1fr); }
+  [data-home-version="editorial"] #page-home .partner { min-width:0; }
+  [data-home-version="editorial"] #page-home .partner-copy { display:none; }
+}

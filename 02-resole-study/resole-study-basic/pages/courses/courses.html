@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<base href="../../">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>睿秀学城 · 课程列表</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="courses">
+<div class="app">
+  <div id="site-header"></div>
+  <main class="shell" id="main" tabindex="-1">
+    <section class="page active" id="page-courses" aria-label="课程中心">
+
+      <div class="catalog-heading"><h2>全部课程</h2><span>从兴趣出发，找到适合你的课程</span></div>
+      <button class="btn filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="course-filters">☷ 筛选课程</button>
+      <div class="catalog-layout">
+        <aside class="card filter-sidebar" id="course-filters" aria-label="课程筛选">
+          <div class="filter-group">
+<h2>课程类型</h2>
+<div class="filter-chips" role="group" aria-label="按课程类型筛选"><button class="filter-chip active" data-filter-type="all" aria-pressed="true">全部课程</button><button class="filter-chip" data-filter-type="mooc" aria-pressed="false">公开课程</button><button class="filter-chip" data-filter-type="spoc" aria-pressed="false">专属课程</button>
+</div>
+</div>
+          <div class="filter-group">
+<h2>学科分类</h2>
+<div class="filter-chips" role="group" aria-label="按学科筛选"><button class="filter-chip active" data-filter-subject="all" aria-pressed="true">全部学科</button><button class="filter-chip" data-filter-subject="computer" aria-pressed="false">计算机</button>
+</div>
+</div>
+
+        </aside>
+        <div class="catalog-main">
+          <div class="catalog-toolbar">
+<div class="search"><input id="course-search" type="search" placeholder="输入课程名称" aria-label="按课程名称搜索">
+</div><span class="result-count" id="result-count" aria-live="polite">9 门课程</span>
+</div>
+          <div class="course-grid" id="catalog" data-content-list="">
+
+            <article class="card course-card" data-key="Python 程序设计 陈珺 循环 列表 华东师范大学" data-type="mooc" data-subject="computer engineering" data-popularity="8420" data-order="1">
+<div class="cover a"><span class="cover-tag">公开课程 · 公开学习</span><strong>Python 程序设计</strong>
+</div>
+<div class="course-body">
+<h3>从语法到真实项目</h3>
+<p>用校园数据完成 8 个渐进式项目，配套练习、测验与在线编程。</p>
+<div class="school-line"><span class="school-mark">华</span>华东师范大学 · 陈珺</div>
+<div class="course-bottom"><span>8,420 人学习</span><button class="btn small primary" data-go="detail">查看课程</button>
+</div>
+</div>
+</article>
+
+            <article class="card course-card" data-key="数字素养与安全 周恺 网络安全 睿秀学城联合课程" data-type="spoc" data-subject="computer law" data-popularity="12305" data-order="3">
+<div class="cover c"><span class="cover-tag">专属课程 · 需审核</span><strong>数字素养与安全</strong>
+</div>
+<div class="course-body">
+<h3>负责任地使用数字技术</h3>
+<p>识别网络风险、保护个人信息，在数字社会中建立判断力。</p>
+<div class="school-line"><span class="school-mark">睿</span>睿秀学城联合课程 · 周恺</div>
+<div class="course-bottom"><span>1,286 人学习</span><button class="btn small primary" data-go="spoc-detail">查看课程</button>
+</div>
+</div>
+</article>
+
+
+
+
+
+
+          </div>
+          <div class="statebox" id="search-empty">
+<div>
+<div style="font-size:34px">⌕</div>
+<h2>没有找到相关课程</h2>
+<p>换个关键词，或清除筛选条件后再试。</p><button class="btn primary" id="clear-search">清除筛选</button>
+</div>
+</div>
+        </div>
+      </div>
+    </section>
+    <section class="statebox" id="global-state" aria-live="polite" tabindex="-1"></section>
+  </main>
+  <div id="site-footer"></div>
+
+</div>
+<script src="js/shared/shell.js"></script>
+<script src="js/shared/core.js"></script>
+<script src="js/shared/workflows.js"></script>
+<script src="js/shared/learning-activity.js"></script>
+<script src="js/shared/auth.js"></script>
+<script src="js/data/growth-tasks.js"></script>
+
+
+
+<script src="js/pages/catalog.js"></script>
+<script src="js/shared/states.js"></script>
+<script src="js/shared/init.js"></script>
+<script src="js/shared/topbar.js"></script>
+
+
+</body></html>

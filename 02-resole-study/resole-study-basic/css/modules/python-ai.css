@@ -1,0 +1,355 @@
+/* Python 实验课：普通课程详情的 AI 入口、独立目录/教材/学习会话。 */
+.py-studio { --py-soft:#eef3ee;--py-border:#dce4df;--py-muted:#65756e;--py-code:#172b29; }
+body[data-page="python-ai"] .statusbar { position:relative;right:auto;bottom:auto;width:max-content;margin:0 }
+body[data-page="python-ai"] .status-toggle { padding:4px 8px;border-radius:5px;font-size:9px;box-shadow:none }
+body[data-page="python-ai"] .state-menu { top:30px;bottom:auto }
+.py-studio .py-save-tools { position:relative;display:flex;align-items:center;gap:8px }
+.py-studio #py-save-status { margin-right:auto }
+.py-studio .py-demo-help { flex:none }
+.py-studio .py-demo-help>summary { cursor:pointer;list-style:none;border:1px solid var(--py-border);border-radius:5px;background:white;color:var(--green);padding:3px 8px;font-size:10px;font-weight:700;white-space:nowrap }
+.py-studio .py-demo-help>summary::-webkit-details-marker { display:none }
+.py-studio .py-demo-help[open]>summary { background:var(--py-soft) }
+.py-studio .py-demo-help-panel { position:absolute;z-index:45;right:0;top:calc(100% + 8px);width:min(560px,calc(100vw - 24px));max-height:min(620px,calc(100dvh - 210px));overflow:auto;overscroll-behavior:contain;box-sizing:border-box;padding:20px;border:1px solid var(--py-border);border-radius:12px;background:white;box-shadow:0 12px 40px #203c3426;color:var(--ink);font-size:12px;line-height:1.7;text-align:left }
+.py-studio .py-demo-help-panel header { display:flex;align-items:flex-start;justify-content:space-between;gap:12px }
+.py-studio .py-demo-help-panel h2 { font-size:16px;margin:0 0 5px }
+.py-studio .py-demo-help-panel h3 { font-size:13px;margin:18px 0 5px }
+.py-studio .py-demo-help-panel p { margin:0 0 9px;color:var(--py-muted);font-size:11px }
+.py-studio .py-demo-help-panel [data-py-demo-close] { flex:none;border:1px solid var(--py-border);border-radius:6px;background:white;width:28px;height:28px;color:var(--py-muted);font-size:18px;line-height:1 }
+.py-studio .py-demo-route { margin-top:8px;padding:12px;border-radius:8px;background:var(--py-soft) }
+.py-studio .py-demo-quick { display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 }
+.py-studio .py-demo-route span { font-size:10px;color:var(--py-muted) }
+.py-studio .py-demo-points { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px }
+.py-studio .py-demo-points>div { min-width:0;border:1px solid var(--py-border);border-radius:7px;padding:8px 10px }
+.py-studio .py-demo-help-panel [data-py-demo-prompt] { border:0;background:none;color:var(--green);text-align:left;padding:3px 0;font-size:12px;font-weight:700 }
+.py-studio .py-demo-help-panel [data-py-demo-prompt]:hover { text-decoration:underline }
+.py-studio .py-demo-points span { display:block;font-size:10px;color:var(--py-muted);overflow-wrap:anywhere }
+.py-studio .py-demo-items>div { border-bottom:1px solid var(--py-border);padding:7px 0 }
+.py-studio .py-demo-items p { margin:2px 0 4px }
+.py-studio .py-demo-help-panel ul { margin:5px 0 12px;padding-left:18px;color:var(--py-muted);font-size:11px }
+.py-studio .py-demo-help-panel li { margin-bottom:5px }
+.py-studio .py-demo-help-panel .py-demo-help-note { margin:16px 0 0;padding-top:12px;border-top:1px solid var(--py-border);font-size:10px }
+.paid-course-page.has-python-ai .py-course-prompt { grid-column:1/-1;border:1px solid var(--line);border-radius:14px;background:white;padding:22px;margin:0 0 20px }
+.paid-course-page.has-python-ai .py-course-prompt h2 { font-size:18px;margin:0 0 6px }
+.paid-course-page.has-python-ai .py-course-prompt p { color:var(--muted);font-size:13px;margin:0 0 15px }
+.paid-course-page.has-python-ai #py-entry-form { display:flex;gap:10px }
+.paid-course-page.has-python-ai #py-entry-prompt { flex:1;min-width:0;padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:var(--mist);font-size:13px }
+.paid-course-page.has-python-ai #py-entry-error:empty { display:none }
+.paid-course-page.has-python-ai #paid-course-action a { text-decoration:none }
+.paid-course-page.has-python-ai .course-summary { min-width:0 }
+.paid-course-page.has-python-ai .course-art { width:100%;min-width:0 }
+.py-studio a.btn { display:inline-flex;align-items:center;justify-content:center;text-decoration:none }
+.py-studio-shell { width:min(1540px,calc(100% - 40px)) }
+.py-studio { padding:22px 0 30px }
+.py-studio .py-back { color:var(--muted);text-decoration:none;font-size:12px }
+.py-studio .py-studio-head { display:flex;align-items:center;justify-content:space-between;gap:15px }
+.py-studio .py-studio-head h1 { font-size:23px;line-height:1.4;margin:7px 0 0 }
+.py-studio .py-studio-head h1 span { display:inline-block;font-size:11px;vertical-align:middle;padding:4px 9px;margin-left:8px;border:1px solid #b9d6c5;border-radius:6px;color:var(--green) }
+.py-studio .py-studio-summary { display:flex;gap:14px;align-items:center;font-size:11px;color:var(--py-muted) }
+.py-studio .py-studio-controls { display:flex;flex-direction:column;align-items:flex-end;gap:10px }
+.py-studio .py-mode-switch { display:flex;gap:3px;padding:3px;border:1px solid var(--py-border);border-radius:9px;background:#eaf0e9 }
+.py-studio .py-mode-switch button { padding:7px 12px;border:0;border-radius:6px;background:none;color:var(--py-muted);font-size:11px;white-space:nowrap }
+.py-studio .py-mode-switch button[aria-pressed="true"] { background:white;color:var(--green);font-weight:750;box-shadow:0 1px 4px #203c3410 }
+.py-studio .py-course-state { border-left:1px solid var(--py-border);padding-left:14px }
+.py-studio .py-demo-line { display:flex;justify-content:space-between;gap:15px;margin:12px 0 16px;font-size:10px;color:var(--py-muted);line-height:1.7 }
+.py-studio .py-demo-line i { display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:6px }
+.py-studio .py-mini-label { font-size:10px;letter-spacing:.06em;color:var(--py-muted) }
+.py-studio .py-workspace { display:grid;grid-template-columns:200px minmax(260px,.78fr) minmax(0,1.8fr);gap:14px;height:calc(100dvh - 205px);min-height:720px }
+.py-studio .py-workspace.outline-collapsed { grid-template-columns:44px minmax(260px,.78fr) minmax(0,1.8fr) }
+.py-studio .py-outline-panel,.py-studio .py-book-panel,.py-studio .py-conversation-panel { min-width:0;min-height:0;border:1px solid var(--py-border);border-radius:13px;background:white;overflow:hidden }
+.py-studio .py-outline-panel,.py-studio .py-book-panel { display:flex;flex-direction:column }
+.py-studio .py-panel-heading { display:flex;align-items:center;justify-content:space-between;padding:15px;border-bottom:1px solid var(--py-border);gap:8px;min-height:56px;box-sizing:border-box;flex:none }
+.py-studio .py-panel-heading strong { font-size:12px }
+.py-studio .py-panel-heading>span { font-size:10px;color:var(--py-muted) }
+.py-studio #py-outline-toggle { flex:none;display:grid;place-items:center;width:28px;height:28px;padding:0;border:1px solid var(--py-border);border-radius:6px;color:var(--green);background:#f7faf5;line-height:0 }
+.py-studio #py-outline-toggle svg { display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round }
+.py-studio .outline-collapsed .py-outline-panel .py-panel-heading { padding:12px 7px;justify-content:center }
+.py-studio .outline-collapsed .py-outline-panel strong,.py-studio .outline-collapsed .py-curriculum { display:none }
+.py-studio .py-curriculum { padding:8px 14px 13px;border-bottom:1px solid var(--py-border) }
+.py-studio .py-curriculum details summary { display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;padding:11px 3px }
+.py-studio .py-curriculum details summary::-webkit-details-marker { display:none }
+.py-studio .py-theme-index { font:10px ui-monospace,monospace;color:var(--py-muted) }
+.py-studio .py-curriculum summary strong { font-size:12px;flex:1 }
+.py-studio .py-curriculum summary small { font-size:10px;color:var(--py-muted) }
+.py-studio .py-curriculum summary:after { content:'⌄';font-size:11px;color:var(--py-muted) }
+.py-studio .py-curriculum details[open] summary:after { transform:rotate(180deg) }
+.py-studio .py-earned { color:var(--green) }
+.py-studio .py-point-list { padding:0 0 6px 17px }
+.py-studio .py-point-list button { display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;text-align:left;border:0;border-radius:6px;background:white;padding:10px;font-size:12px;color:var(--ink) }
+.py-studio .py-point-list button[aria-current="true"] { background:var(--py-soft);color:var(--green);font-weight:700 }
+.py-studio .py-point-list small { font-size:9px;white-space:nowrap;color:var(--py-muted) }
+.py-studio .is-passed,.py-course .is-passed { color:var(--green)!important }
+.py-studio .py-textbook { padding:22px;line-height:1.95 }
+.py-studio .py-book-source { font-size:10px;letter-spacing:.06em;color:var(--green) }
+.py-studio .py-textbook h2 { font-size:21px;line-height:1.5;margin:10px 0 16px }
+.py-studio .py-textbook>p { font-size:13px;color:#4e6156 }
+.py-studio .py-textbook .py-goal { font-size:11px;color:var(--py-muted);border-bottom:1px solid var(--py-border);padding-bottom:15px }
+.py-studio .py-textbook pre { padding:14px;border-radius:8px;background:#f2f5f2;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.9 ui-monospace,monospace }
+.py-studio .py-book-tip { background:#f6f7ed;border-radius:8px;padding:14px;margin:18px 0 }
+.py-studio .py-book-tip strong { font-size:11px;color:#67733c }
+.py-studio .py-book-tip p { font-size:12px;color:#637052;margin:5px 0 0 }
+.py-studio .py-book-actions { display:flex;justify-content:space-between;gap:10px }
+.py-studio .py-book-actions button { border:0;background:none;font-size:11px;font-weight:700;color:var(--green);padding:7px 0 }
+.py-studio .py-textbook .py-passed-note { color:var(--green);font-size:11px }
+.py-studio .py-tool-heading { padding:15px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px }
+.py-studio .py-tool-heading>div { display:flex;align-items:center;gap:8px;font-size:12px }
+.py-studio .py-live-dot { height:6px;width:6px;border-radius:50%;background:var(--green) }
+.py-studio .py-guide { padding:26px 30px }
+.py-studio .py-guide h2 { font-size:23px;line-height:1.5;letter-spacing:-.03em;margin:13px 0 }
+.py-studio .py-guide>p { color:var(--py-muted);font-size:12px;line-height:1.85 }
+.py-studio .py-guide-options { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px }
+.py-studio .py-guide-options button { text-align:left;border:1px solid var(--py-border);border-radius:10px;background:#f8faf7;padding:15px;min-width:0 }
+.py-studio .py-guide-options b { font:10px ui-monospace,monospace;color:var(--green);display:block;margin-bottom:6px }
+.py-studio .py-guide-options strong { display:block;font-size:13px }
+.py-studio .py-guide-options span { display:block;font-size:10px;color:var(--py-muted);margin-top:6px }
+.py-studio .py-guide-foot { font-size:10px!important;color:var(--py-muted);margin-top:18px;line-height:1.8 }
+.py-studio .py-welcome { position:relative;padding-top:24px }
+.py-studio .py-welcome-art { display:flex;align-items:center;gap:18px;margin:18px 0 }
+.py-studio .py-welcome-art>span { display:grid;place-items:center;width:58px;height:58px;border-radius:17px;background:#e5eedc;color:#416b44;font-size:27px;font-weight:800;transform:rotate(-6deg) }
+.py-studio .py-welcome-art code { border:1px solid var(--py-border);padding:9px 13px;border-radius:7px;font-size:11px;color:#5b7264;background:#fbfcfa }
+.py-studio .py-welcome-art i { font-size:24px;color:#a2b970;font-style:normal }
+.py-studio .py-assessment-bar { border-top:1px solid var(--py-border);display:grid;grid-template-columns:repeat(3,1fr);padding:10px 12px;gap:8px;background:#fbfcfa }
+.py-studio .py-assessment-bar button { border:1px solid transparent;border-radius:7px;text-align:left;background:transparent;padding:5px 10px;min-width:0 }
+.py-studio .py-assessment-bar button+button { border-left-color:var(--py-border) }
+.py-studio .py-assessment-bar span { display:block;font-size:11px;color:var(--ink) }
+.py-studio .py-assessment-bar small { display:block;font-size:9px;color:var(--py-muted);margin:3px 0 0 17px }
+.py-studio .py-assessment-bar button[aria-pressed="true"] { background:var(--py-soft);border-color:#d4e0d6 }
+.py-studio .py-message { margin-bottom:14px;max-width:94% }
+.py-studio .py-message-name { display:block;color:var(--py-muted);font-size:9px;margin-bottom:5px }
+.py-studio .py-message-text { font-size:12px;line-height:1.8;color:#41564a;white-space:pre-wrap;overflow-wrap:anywhere }
+.py-studio .py-message-user { margin-left:auto;background:var(--py-soft);border-radius:9px;padding:9px 12px;width:fit-content }
+.py-studio .py-message-actions { display:flex;flex-wrap:wrap;gap:7px;margin-top:9px }
+.py-studio .py-message-actions button { border:1px solid var(--py-border);background:white;border-radius:6px;padding:6px 9px;font-size:10px;color:var(--green) }
+.py-studio #py-chat-form { padding:0 16px 10px }
+.py-studio .py-composer { border:1px solid #cedbd1;display:flex;align-items:flex-end;padding:8px 10px;border-radius:10px;background:#fafcf9 }
+.py-studio .py-composer textarea { resize:vertical;min-height:28px;max-height:80px;flex:1;min-width:0;border:0;background:none;outline:none;font-size:12px;line-height:1.8;padding:3px }
+.py-studio .py-composer:focus-within { outline:2px solid var(--green);outline-offset:2px }
+.py-studio .py-composer button { width:30px;height:30px;flex:none;border:0;border-radius:7px;background:var(--green);color:white;font-size:18px }
+.py-studio .py-composer-foot { display:flex;justify-content:space-between;gap:10px;font-size:8px;color:var(--py-muted);margin:6px 2px 0 }
+.py-studio .py-code-head { display:flex;justify-content:space-between;gap:10px;padding:12px 18px;background:var(--py-code);color:#c8d8cf;font:10px ui-monospace,monospace }
+.py-studio .py-code-head>div { display:flex;gap:9px }
+.py-studio .py-code-head button { border:0;background:#ffffff12;border-radius:4px;padding:5px 8px;color:#d7e6df;font-size:10px }
+.py-studio .py-code-head button:last-child { background:#c8e7ad;color:#244b30 }
+.py-studio #py-code-editor { width:100%;display:block;min-height:180px;border:0;resize:vertical;background:var(--py-code);color:#dcebcf;font:13px/1.9 ui-monospace,monospace;padding:12px 22px;tab-size:4;box-sizing:border-box }
+.py-studio .py-output { padding:15px 20px }
+.py-studio .py-output>span { font-size:11px;font-weight:700 }
+.py-studio .py-output small { margin-left:10px;font-size:9px;font-weight:400;color:var(--py-muted) }
+.py-studio .py-output pre { font:11px/1.7 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:#53655c }
+.py-studio .py-code-note { padding:0 20px 14px;font-size:10px;color:var(--py-muted) }
+.py-studio .py-video { background:#203c34;margin:20px;border-radius:12px;color:#eaf1e5;padding:20px }
+.py-studio .py-video-top { display:flex;justify-content:space-between;gap:10px;font-size:9px;color:#b7cbbd;letter-spacing:.04em }
+.py-studio .py-video-slide { padding:25px 10px;min-height:200px }
+.py-studio .py-video-slide>span { color:#c5dfa8;font:11px ui-monospace,monospace }
+.py-studio .py-video-slide h2 { font-size:26px;line-height:1.4 }
+.py-studio .py-video-slide p { font-size:13px;line-height:2;color:#d1dfcf;max-width:600px }
+.py-studio .py-video-controls { display:flex;align-items:center;gap:15px }
+.py-studio .py-video-controls button { background:none;border:0;color:#d8e8d0;font-size:11px }
+.py-studio .py-video-progress { flex:1;height:3px;background:#ffffff20 }
+.py-studio .py-video-progress span { display:block;height:100%;background:#c5dfa8 }
+.py-studio .py-video-feedback { display:flex;align-items:center;justify-content:center;gap:10px;margin:0 20px 20px;font-size:10px;color:var(--py-muted) }
+.py-studio .py-video-feedback button { border:1px solid var(--py-border);background:white;padding:6px 9px;border-radius:5px;font-size:10px;color:var(--ink) }
+.py-studio .py-video-feedback button[aria-pressed="true"] { background:var(--py-soft);border-color:var(--green);color:var(--green) }
+.py-studio .py-terminal { min-height:100%;background:var(--py-code);color:#d2e5c8;padding:20px;font:12px/1.8 ui-monospace,monospace;box-sizing:border-box }
+.py-studio .py-terminal p { margin:0 0 8px }
+.py-studio .py-terminal p span { font-size:10px;color:#adc6b9 }
+.py-studio .py-terminal pre { white-space:pre-wrap;overflow-wrap:anywhere }
+.py-studio #py-terminal-form { display:flex;gap:10px;align-items:center }
+.py-studio #py-terminal-input { flex:1;min-width:0;border:0;border-bottom:1px solid #b4cfa755;background:none;color:#d2e5c8;padding:5px }
+.py-studio #py-terminal-form button { background:#ffffff15;color:#d2e5c8;border:0;padding:6px 9px;border-radius:4px;font-size:11px }
+.py-studio .py-test { padding:24px 28px }
+.py-studio .py-test h2 { font-size:22px;margin:8px 0 }
+.py-studio .py-test-heading p { font-size:11px;color:var(--py-muted);line-height:1.8 }
+.py-studio .py-test fieldset { border:0;padding:0;margin:24px 0;min-width:0 }
+.py-studio .py-test legend { font-size:13px;font-weight:650;margin-bottom:10px }
+.py-studio .py-test fieldset label { display:flex;gap:9px;align-items:center;border:1px solid var(--py-border);border-radius:7px;padding:10px 12px;margin:7px 0;font-size:12px }
+.py-studio .py-test fieldset input { accent-color:var(--green);flex:none }
+.py-studio .py-test fieldset .py-answer-correct { background:var(--py-soft);border-color:#bdd4c5 }
+.py-studio .py-explanation { font-size:11px;color:var(--green);line-height:1.8 }
+.py-studio #py-test-error { color:var(--danger);font-size:12px }
+.py-studio #py-test-form>.btn { margin-right:8px }
+.py-studio .py-test-result { padding:14px 16px;background:#f7f4e9;border-radius:8px;display:flex;gap:5px;flex-direction:column;font-size:12px;color:#75622d }
+.py-studio .py-test-result span { font-size:11px }
+.py-studio .py-test-result.is-success { background:var(--py-soft);color:var(--green) }
+.py-studio .py-locked,.py-studio .py-tool-empty { text-align:center;padding:32px 30px }
+.py-studio .py-lock-icon,.py-studio .py-tool-empty>span { display:block;margin:0 auto 15px;width:45px;height:45px;line-height:45px;border-radius:12px;background:var(--py-soft);color:var(--py-muted);font-size:22px }
+.py-studio .py-locked h2,.py-studio .py-tool-empty h2 { font-size:23px;margin:10px 0 }
+.py-studio .py-locked>p,.py-studio .py-tool-empty p { font-size:12px;color:var(--py-muted);line-height:1.9 }
+.py-studio .py-lock-rule { background:#f6f8f5;border:1px dashed var(--py-border);padding:14px;text-align:left;max-width:430px;margin:20px auto;font-size:12px;border-radius:9px }
+.py-studio .py-lock-rule p { color:var(--py-muted);font-size:11px;line-height:1.8;margin:6px 0 0 }
+.py-studio .py-mobile-switch { display:none }
+
+.py-studio .py-curriculum { flex:1;overflow:auto;padding:8px 10px;border:0;scrollbar-width:thin }
+.py-studio .py-curriculum summary { min-height:40px }
+.py-studio .py-curriculum summary strong { font-size:11px }
+.py-studio .py-point-list { padding-left:5px }
+.py-studio .py-point-list button { flex-wrap:wrap;min-height:43px;padding:9px 7px;font-size:11px }
+.py-studio .py-textbook { flex:1;overflow:auto;min-height:0;scrollbar-width:thin;padding:22px }
+.py-studio .py-textbook>p { font-size:14px }
+.py-studio .py-conversation-panel { display:flex;flex-direction:column }
+.py-studio .py-session-heading { display:flex;align-items:stretch;min-height:58px;border-bottom:1px solid var(--py-border);gap:8px;padding:0 14px;flex:none }
+.py-studio #py-session-tabs { display:flex;align-items:stretch;gap:7px;overflow:auto;flex:1;min-width:0;scrollbar-width:thin }
+.py-studio #py-session-tabs button { flex:none;min-width:95px;border:0;border-bottom:2px solid transparent;background:none;text-align:left;padding:11px 9px 8px;color:var(--py-muted);font-size:12px }
+.py-studio #py-session-tabs button small { display:block;margin-top:4px;font-size:9px;max-width:125px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis }
+.py-studio #py-session-tabs button[aria-selected="true"] { border-color:var(--green);color:var(--green);font-weight:750 }
+.py-studio #py-new-chat { border:0;background:none;white-space:nowrap;flex:none;color:var(--green);font-size:11px;padding:0 5px }
+.py-studio .py-session-actions { display:flex;justify-content:flex-end;align-items:center;flex:none;gap:14px;padding:6px 14px;border-bottom:1px solid var(--py-border);background:#fafcf9 }
+.py-studio .py-session-actions button { border:0;background:none;padding:5px 0;font-size:11px;color:var(--py-muted);white-space:nowrap }
+.py-studio .py-session-actions button:hover { color:var(--green) }
+.py-studio[data-mode="single"] .py-multi-only { display:none }
+.py-studio .py-progress-reset { border-top:1px solid var(--py-border);margin-top:14px }
+.py-studio .py-progress-reset .btn { font-size:11px;color:var(--danger) }
+.py-studio #py-progress-reset-status { margin-top:8px;color:var(--green) }
+.py-studio .py-archive-dialog { width:min(560px,calc(100vw - 32px));max-height:80dvh;box-sizing:border-box;overflow:auto;padding:22px;border:1px solid var(--py-border);border-radius:14px;color:var(--ink);background:white;box-shadow:0 18px 60px #203c3433 }
+.py-studio .py-archive-dialog::backdrop { background:#172b2966 }
+.py-studio .py-archive-dialog header { display:flex;align-items:flex-start;justify-content:space-between;gap:12px }
+.py-studio .py-archive-dialog h2 { margin:0;font-size:18px }
+.py-studio .py-archive-dialog p { color:var(--py-muted);font-size:12px;line-height:1.8;overflow-wrap:anywhere }
+.py-studio #py-close-archives { flex:none;width:30px;height:30px;border:1px solid var(--py-border);border-radius:6px;background:white;font-size:20px;color:var(--py-muted) }
+.py-studio #py-archive-list article { display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid var(--py-border) }
+.py-studio #py-archive-list article>div { min-width:0 }
+.py-studio #py-archive-list strong { font-size:13px }
+.py-studio #py-archive-list small { display:block;margin-top:4px;color:var(--py-muted);font-size:11px }
+.py-studio #py-archive-list .btn { flex:none }
+.py-studio .py-point-list .py-theme-assessment { margin-top:4px;border-top:1px solid var(--py-border);border-radius:0;color:var(--green);font-size:11px }
+.py-studio .py-learning-stream { position:relative;flex:1;min-height:0;overflow:auto;padding:20px;scrollbar-width:thin }
+.py-studio .py-messages { flex:none;min-height:auto;overflow:visible;padding:0 }
+.py-studio .py-message { max-width:100%;margin:0 0 24px }
+.py-studio .py-message-name { font-size:10px;margin-bottom:8px }
+.py-studio .py-message-text { font-size:14px;line-height:1.95 }
+.py-studio .py-message-user { max-width:90%;margin-left:auto;padding:12px 16px }
+.py-studio .py-message-actions button { font-size:11px;padding:8px 10px }
+.py-studio .py-activity { border:1px solid var(--py-border);border-radius:11px;overflow:hidden;background:#fff;margin-top:12px }
+.py-studio .py-activity[hidden],.py-studio .py-messages[hidden] { display:none!important }
+.py-studio .py-function-tabs { display:none;flex:none;gap:18px;padding:0 18px;border-bottom:1px solid var(--py-border);overflow-x:auto;scrollbar-width:thin }
+.py-studio .py-function-tabs button { flex:none;padding:17px 0 13px;border:0;border-bottom:2px solid transparent;background:none;color:var(--py-muted);font-size:12px;white-space:nowrap }
+.py-studio .py-function-tabs button[aria-selected="true"] { border-color:var(--green);color:var(--green);font-weight:750 }
+.py-studio[data-mode="single"] .py-function-tabs { display:flex }
+.py-studio[data-mode="single"] .py-session-heading { display:none }
+.py-studio[data-mode="single"] .py-learning-stream { padding:0 }
+.py-studio[data-mode="single"] .py-messages { padding:22px }
+.py-studio[data-mode="single"] .py-activity { border:0;border-radius:0;margin:0 }
+.py-studio[data-mode="single"] .py-activity .py-tool-heading { display:none }
+.py-studio[data-mode="multi"] .py-tool-heading { border-bottom:1px solid var(--py-border);padding:12px 15px }
+.py-studio[data-mode="multi"] .py-code-head { padding:12px 15px }
+.py-studio[data-mode="multi"] .py-code-note { margin:0;padding:0 15px 15px }
+.py-studio .py-tool-heading { padding:14px 17px;background:#f9fbf7 }
+.py-studio .py-tool-content { flex:none;overflow:visible;min-height:160px }
+.py-studio .py-conversation-footer { flex:none;border-top:1px solid var(--py-border);background:white }
+.py-studio .py-assessment-bar { border:0;padding:9px 12px;background:white }
+.py-studio #py-chat-form { padding:0 15px 12px }
+.py-studio .py-composer { background:#fafcf9 }
+.py-studio .py-composer textarea { min-height:44px;resize:vertical;font-size:13px }
+.py-studio .py-composer-foot { font-size:9px }
+.py-studio .py-locked .btn { margin:4px }
+.py-studio .py-for-entry { padding:0 28px 24px }
+.py-studio .py-for-entry p { font-size:11px;color:var(--py-muted) }
+.py-studio .py-for-lesson { padding:24px;min-width:0 }
+.py-studio .py-for-lesson h2 { margin:8px 0 16px;font-size:22px;line-height:1.5 }
+.py-studio .py-for-lesson h3 { margin:20px 0 10px;font-size:17px;line-height:1.5 }
+.py-studio .py-for-lesson p { font-size:13px;line-height:1.9;color:var(--py-muted);margin:8px 0 14px;overflow-wrap:anywhere }
+.py-studio .py-for-steps { display:flex;gap:5px;list-style:none;padding:0;margin:0 0 20px }
+.py-studio .py-for-steps li { flex:1;text-align:center;padding:7px 2px;border-radius:6px;background:#f4f7f3;color:var(--py-muted);font-size:11px;white-space:nowrap }
+.py-studio .py-for-steps li[aria-current="step"] { background:var(--green);color:white;font-weight:700 }
+.py-studio .py-for-lesson pre { font:13px/1.8 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;padding:14px;border-radius:8px;background:var(--py-code);color:#e2eddb }
+.py-studio .py-for-lesson fieldset { border:0;min-width:0;margin:18px 0;padding:0 }
+.py-studio .py-for-lesson legend { font-size:13px;font-weight:700;line-height:1.8;margin-bottom:8px }
+.py-studio .py-for-lesson fieldset label { display:flex;align-items:center;gap:9px;padding:11px;border:1px solid var(--py-border);border-radius:7px;margin:7px 0;font-size:13px;line-height:1.7 }
+.py-studio .py-for-lesson input { flex:none;accent-color:var(--green) }
+.py-studio .py-for-sequence { display:flex;gap:8px;margin:20px 0 }
+.py-studio .py-for-sequence span { flex:1;text-align:center;background:var(--py-soft);border-radius:9px;padding:12px 4px;font-size:22px;color:var(--green) }
+.py-studio .py-for-sequence small { display:block;font-size:10px;margin-top:5px }
+.py-studio .py-for-sequence .is-stop { background:#f5f3ee;color:var(--py-muted);border:1px dashed var(--py-border) }
+.py-studio .py-for-lesson .py-for-rule { padding-left:12px;border-left:3px solid var(--green);color:var(--ink) }
+.py-studio .py-for-actions { display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 }
+.py-studio .py-for-actions .btn { max-width:100%;white-space:normal }
+.py-studio #py-for-editor { width:100%;min-height:150px;box-sizing:border-box;resize:vertical;padding:14px;border:1px solid var(--py-border);border-radius:8px;background:var(--py-code);color:#e2eddb;font:13px/1.9 ui-monospace,monospace;tab-size:4 }
+.py-studio .py-for-feedback,.py-studio .py-for-hints { padding:14px;border:1px solid var(--py-border);border-radius:8px;margin:16px 0;background:#f7f8f3;font-size:13px;line-height:1.8;overflow-wrap:anywhere }
+.py-studio .py-for-feedback.is-success { background:var(--py-soft);border-color:#bbd4c3;color:var(--green) }
+.py-studio .py-for-lesson .py-for-feedback p,.py-studio .py-for-lesson .py-for-hints p { margin:6px 0 }
+.py-studio .py-for-lesson .py-for-note { font-size:11px }
+.py-studio .py-for-source { border:0;background:none;color:var(--green);padding:10px 0;font-size:11px;text-align:left }
+.py-studio .py-for-lesson .py-for-error { color:var(--danger);font-size:12px }
+.py-studio .py-for-error:empty { display:none }
+.py-studio .py-for-review { border-bottom:1px solid var(--py-border);padding:12px 0;font-size:12px;line-height:1.8 }
+@media(max-width:1150px) {
+ .py-studio .py-workspace { grid-template-columns:170px minmax(245px,.8fr) minmax(0,1.7fr);gap:10px }
+ .py-studio .py-workspace.outline-collapsed { grid-template-columns:44px minmax(245px,.8fr) minmax(0,1.7fr) }
+ .py-studio .py-curriculum { padding:7px }
+ .py-studio .py-theme-index { display:none }
+ .py-studio .py-textbook { padding:18px }
+ .py-studio .py-learning-stream { padding:15px }
+ .py-studio .py-guide { padding:22px }
+ .py-studio .py-guide-options { grid-template-columns:1fr }
+ .py-studio .py-welcome-art code { font-size:10px;padding:8px }
+ .py-studio .py-welcome-art { gap:10px }
+ .py-studio .py-welcome-art i { display:none }
+}
+@media(max-width:1000px) {
+ .py-studio .py-mobile-switch { display:flex;gap:4px;padding:4px;background:#e9efea;border-radius:9px;margin-bottom:12px }
+ .py-studio .py-mobile-switch button { flex:1;border:0;background:none;border-radius:6px;padding:10px;font-size:12px;color:var(--py-muted) }
+ .py-studio .py-mobile-switch button[aria-pressed="true"] { background:white;color:var(--green);font-weight:700 }
+ .py-studio .py-workspace,.py-studio .py-workspace.outline-collapsed { display:block;height:calc(100dvh - 270px);min-height:620px }
+ .py-studio .py-outline-panel,.py-studio .py-book-panel,.py-studio .py-conversation-panel { height:100%;display:none;box-sizing:border-box }
+ .py-studio .py-workspace[data-panel="outline"] .py-outline-panel,.py-studio .py-workspace[data-panel="book"] .py-book-panel,.py-studio .py-workspace[data-panel="chat"] .py-conversation-panel { display:flex }
+ .py-studio #py-outline-toggle { display:none }
+ .py-studio .outline-collapsed .py-outline-panel strong { display:block }
+ .py-studio .outline-collapsed .py-curriculum { display:block }
+ .py-studio .py-point-list button { font-size:13px;min-height:44px }
+ .py-studio .py-curriculum summary strong { font-size:13px }
+ .py-studio .py-guide-options { grid-template-columns:1fr 1fr }
+}
+@media(max-width:820px) {
+ .paid-course-page.has-python-ai .py-course-prompt { order:1;margin-top:18px }
+ .paid-course-page.has-python-ai #py-entry-form { flex-direction:column }
+ .paid-course-page.has-python-ai .py-course-prompt h2 { font-size:16px }
+ .paid-course-page.has-python-ai .course-facts strong { white-space:normal }
+ .py-studio .py-save-tools { justify-content:space-between }
+ .py-studio .py-demo-help-panel { padding:16px;max-height:calc(100dvh - 300px) }
+ .py-studio .py-demo-points { grid-template-columns:minmax(0,1fr) }
+ .py-studio .py-for-lesson { padding:18px 13px }
+ .py-studio .py-for-lesson h2 { font-size:19px }
+ .py-studio .py-for-steps li { font-size:10px;padding:7px 0 }
+ .py-studio-shell { width:calc(100% - 24px) }
+ .py-studio { padding-top:16px }
+ .py-studio .py-studio-head { align-items:flex-start;flex-direction:column;gap:9px }
+ .py-studio .py-studio-head h1 { font-size:20px }
+ .py-studio .py-studio-summary { width:100%;justify-content:space-between;font-size:10px }
+ .py-studio .py-studio-controls { width:100%;align-items:stretch;gap:9px }
+ .py-studio .py-mode-switch { align-self:flex-end }
+ .py-studio .py-demo-line { flex-direction:column;gap:2px;margin:10px 0 12px;font-size:9px }
+ .py-studio .py-workspace,.py-studio .py-workspace.outline-collapsed { height:calc(100dvh - 392px);min-height:350px }
+ .py-studio .py-learning-stream { padding:15px 12px }
+ .py-studio .py-message-text { font-size:13px }
+ .py-studio .py-message-user { padding:10px 12px }
+ .py-studio .py-tool-heading { padding:12px }
+ .py-studio .py-tool-heading .py-mini-label { font-size:8px }
+ .py-studio .py-guide { padding:20px 15px }
+ .py-studio .py-guide h2 { font-size:20px }
+ .py-studio .py-guide-options { grid-template-columns:1fr;gap:8px }
+ .py-studio .py-welcome-art { gap:10px;margin:12px 0 }
+ .py-studio .py-welcome-art>span { width:40px;height:40px;font-size:22px;border-radius:12px }
+ .py-studio .py-welcome-art code { font-size:9px;padding:7px }
+ .py-studio .py-assessment-bar { padding:8px;gap:3px }
+ .py-studio .py-assessment-bar button { padding:6px 4px }
+ .py-studio .py-assessment-bar span { font-size:10px }
+ .py-studio .py-assessment-bar small { font-size:8px;margin-left:13px }
+ .py-studio #py-chat-form { padding:0 10px 10px }
+ .py-studio .py-composer textarea { min-height:40px;font-size:12px }
+ .py-studio .py-composer-foot { font-size:7px;gap:5px }
+ .py-studio .py-code-head { flex-direction:column;padding:12px }
+ .py-studio #py-code-editor { min-height:180px;font-size:11px;padding:14px }
+ .py-studio .py-output { padding:12px }
+ .py-studio .py-output small { display:block;margin:4px 0 0 }
+ .py-studio .py-video { margin:10px;padding:13px }
+ .py-studio .py-video-top { font-size:8px }
+ .py-studio .py-video-slide { padding:20px 0;min-height:180px }
+ .py-studio .py-video-slide h2 { font-size:21px }
+ .py-studio .py-video-feedback { flex-wrap:wrap;gap:7px;margin:0 10px 14px }
+ .py-studio .py-test { padding:20px 13px }
+ .py-studio .py-locked,.py-studio .py-tool-empty { padding:24px 15px }
+ .py-studio .py-terminal { padding:14px;font-size:11px }
+ .py-studio .py-function-tabs { gap:18px;padding:0 14px }
+ .py-studio .py-session-actions { gap:10px;padding:5px 10px }
+ .py-studio .py-session-actions button { font-size:10px }
+ .py-studio .py-archive-dialog { padding:16px }
+ .py-studio[data-mode="single"] .py-messages { padding:18px 14px }
+}

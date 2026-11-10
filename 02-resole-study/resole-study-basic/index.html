@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>睿秀学城 · 首页</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages/home-versions.css">
+  <link rel="stylesheet" href="css/pages/home-visual.css">
+</head>
+<body data-page="home" data-home-version="visual-spatial" class="home-visual">
+<div class="app">
+  <div id="site-header"></div>
+  <div class="home-version-bar" role="group" aria-label="首页设计版本">
+    <span class="version-label">DESIGN LAB <b>首页两种风格</b></span>
+    <div class="home-version-options">
+      <button data-home-choice="visual-spatial" aria-pressed="true"><span>01</span> 光影空间</button>
+      <button data-home-choice="visual-organic" aria-pressed="false"><span>02</span> 生长实验室</button>
+      <button data-home-choice="cinema" hidden aria-pressed="false"><span>03</span> 电影叙事</button>
+      <button data-home-choice="spatial" hidden aria-pressed="false"><span>04</span> 光影空间</button>
+      <button data-home-choice="editorial" hidden aria-pressed="false"><span>05</span> 编辑杂志</button>
+      <button data-home-choice="console" hidden aria-pressed="false"><span>06</span> 学习控制台</button>
+      <button data-home-choice="organic" hidden aria-pressed="false"><span>07</span> 生长实验室</button>
+    </div>
+    <span class="version-status sr-only" aria-live="polite"></span>
+  </div>
+  <nav class="home-chapters" aria-label="首页章节"></nav>
+  <main class="shell" id="main" tabindex="-1">
+    <section class="page active" id="page-home" aria-labelledby="home-title">
+      <section class="vision-hero home-vision-hero">
+        <div class="vision-copy">
+          <div class="eyebrow">睿秀学城 · 面向每一位学习者</div>
+          <h1 id="home-title"><span>让规模化教育，</span><br><span>真正看见每一个人。</span></h1>
+          <p>连接课程、实践与学习数据，为学习者、教育者与教育机构提供连贯、主动、因人而异的学习体验。</p>
+          <div class="home-hero-actions"><button class="btn primary" data-go="courses">探索课程</button><a class="btn home-photo-only" href="#home-chapter-4">了解教育理念</a></div>
+          <ul class="home-photo-only home-hero-tags"><li>因人而异的学习路径</li><li>有据可依的教学过程</li><li>循序渐进的能力成长</li></ul>
+        </div>
+        <div class="home-photo-only home-photo-media">
+          <span class="photo-orbit orbit-first" aria-hidden="true"></span><span class="photo-orbit orbit-second" aria-hidden="true"></span>
+          <figure class="home-photo-frame"><img class="photo-spatial" src="assets/home/hero-spatial.jpg" alt="明亮通透的学习空间，学习者在窗前使用笔记本"><img class="photo-organic" src="assets/home/hero-organic.jpg" alt="暖阳下的阅读场景，人与绿植共处"></figure>
+          <span class="photo-chip chip-one photo-spatial">在线课程</span><span class="photo-chip chip-two photo-spatial">编程刷题</span><span class="photo-chip chip-three photo-spatial">特色专区</span>
+          <div class="photo-badge photo-organic"><span>生</span><div><b>生长式学习</b><small>让每一步成长都被看见</small></div></div>
+        </div>
+        <div class="home-art" aria-hidden="true">
+          <div class="art-grid"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-orbit orbit-three"></div>
+          <div class="art-core"><span>人</span></div>
+          <span class="art-node node-one">课程</span><span class="art-node node-two">实践</span><span class="art-node node-three">连接</span>
+          <span class="art-caption">LEARNING, REIMAGINED.</span>
+        </div>
+        <div class="home-hero-footer" aria-hidden="true"><span class="home-edition">01 / LIGHT & SPACE</span><span>向下探索 <b>↓</b></span></div>
+      </section>
+
+      <section class="vision-section audience-section" aria-labelledby="audience-title">
+        <div class="vision-heading">
+          <div class="eyebrow">我们服务</div>
+          <h2 id="audience-title">让每一种教育角色，都有清晰的成长路径</h2>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card"><img class="home-photo-only audience-photo" src="assets/home/audience-learner.jpg" alt="学习者在校园走廊" loading="lazy"><span>01</span><h3>学习者</h3><p>渴望系统成长、而非拼凑知识的终身学习者</p></article>
+          <article class="audience-card"><img class="home-photo-only audience-photo" src="assets/home/audience-teacher.jpg" alt="教育者在教室" loading="lazy"><span>02</span><h3>教育者</h3><p>希望在规模化教学中仍能做到因材施教的教师</p></article>
+          <article class="audience-card"><img class="home-photo-only audience-photo" src="assets/home/audience-school.jpg" alt="现代化校园建筑" loading="lazy"><span>03</span><h3>教育机构</h3><p>需要兼顾教学质量与运营效率的学校</p></article>
+        </div>
+      </section>
+
+      <section class="vision-section" aria-labelledby="challenge-title">
+        <div class="vision-heading">
+          <div class="eyebrow">我们关注的问题</div>
+          <h2 id="challenge-title">在两组矛盾之间，找到新的学习方式</h2>
+        </div>
+        <div class="tension-grid">
+          <article class="tension-card statement-card"><img class="home-photo-only tension-photo" src="assets/home/campus-team.jpg" alt="学生小组讨论" loading="lazy"><span>01</span><div><h3>大规模 vs 个性化</h3><p>万人同课，却希望每个人学有所得。</p></div></article>
+          <article class="tension-card statement-card"><img class="home-photo-only tension-photo" src="assets/home/campus-lab.jpg" alt="计算机实验室" loading="lazy"><span>02</span><div><h3>碎片化 vs 系统性</h3><p>知识触手可及，却难以内化为能力。</p></div></article>
+        </div>
+      </section>
+
+      <section class="belief-panel" aria-labelledby="belief-title">
+        <div class="belief-intro"><div class="eyebrow">我们的教育理念</div><h2 id="belief-title">教育的温度，来自人与人的连接</h2><img class="home-photo-only belief-photo" src="assets/home/campus-library.jpg" alt="明亮的图书馆" loading="lazy"></div>
+        <div class="belief-list">
+          <div><span>有教无类</span><p>让每个人都能获得学习机会</p></div>
+          <div><span>因材施教</span><p>尊重差异，提供适合的路径</p></div>
+          <div><span>寓教于乐</span><p>让探索与创造成为学习动力</p></div>
+          <div><span>教学相长</span><p>让教与学在互动中共同进步</p></div>
+        </div>
+      </section>
+
+      <section class="online-principles" aria-labelledby="online-title">
+        <div class="vision-heading"><div class="eyebrow">我们理解的在线学习</div><h2 id="online-title">不止于把课程搬到线上</h2></div>
+        <div class="principle-line"><p><img class="home-photo-only principle-photo" src="assets/home/course-language.jpg" alt="互动学习" loading="lazy"><strong>无交互</strong><span>非在线</span></p><p><img class="home-photo-only principle-photo" src="assets/home/course-design.jpg" alt="主动创作" loading="lazy"><strong>无主动</strong><span>非学习</span></p><p><img class="home-photo-only principle-photo" src="assets/home/course-math.jpg" alt="数据与思维" loading="lazy"><strong>无数据</strong><span>非智慧</span></p></div>
+      </section>
+
+      <section class="vision-section partners-section" aria-labelledby="partners-title">
+        <div class="vision-heading"><div class="eyebrow">合作机构</div><h2 id="partners-title">与高校一起建设优质课程</h2></div>
+        <div class="partner-strip">
+          <a class="partner" href="pages/institutions/institution.html?id=ecnu">华东师范大学</a><a class="partner" href="pages/institutions/institution.html?id=shou">上海开放大学</a><a class="partner" href="pages/institutions/institution.html?id=tongji">同济大学</a><a class="partner" href="pages/institutions/institutions.html">全部合作机构 →</a>
+        </div>
+      </section>
+    </section>
+    <section class="statebox" id="global-state" aria-live="polite" tabindex="-1"></section>
+  </main>
+  <div id="site-footer"></div>
+
+</div>
+<script src="js/shared/shell.js"></script>
+<script src="js/shared/core.js"></script>
+<script src="js/shared/workflows.js"></script>
+<script src="js/shared/auth.js"></script>
+<script src="js/pages/home.js"></script>
+<script src="js/shared/states.js"></script>
+<script src="js/shared/init.js"></script>
+<script src="js/shared/topbar.js"></script>
+</body>
+</html>

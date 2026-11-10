@@ -1,0 +1,40 @@
+/* SMS audit table and filters, scoped to the logs page. */
+#sms-panel .sms-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:20px;margin-bottom:20px}
+#sms-panel .form-group{min-width:0}
+#sms-panel .form-group input,#sms-panel .form-group select{width:100%;min-width:0}
+#sms-panel .sms-filter-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px}
+#sms-panel .sms-list{overflow:hidden}
+#sms-panel .sms-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px}
+#sms-panel .sms-table-wrap{border-radius:0;max-height:640px}
+#sms-panel .sms-table{min-width:2110px;table-layout:fixed}
+#sms-panel .sms-table th{position:sticky;top:0;z-index:1}
+#sms-panel .sms-table td{vertical-align:top;overflow-wrap:anywhere}
+#sms-panel .sms-table th:nth-child(1){width:110px}
+#sms-panel .sms-table th:nth-child(2){width:150px}
+#sms-panel .sms-table th:nth-child(3){width:300px}
+#sms-panel .sms-table th:nth-child(4){width:110px}
+#sms-panel .sms-table th:nth-child(5){width:320px}
+#sms-panel .sms-table th:nth-child(6){width:100px}
+#sms-panel .sms-table th:nth-child(7){width:130px}
+#sms-panel .sms-table th:nth-child(8){width:190px}
+#sms-panel .sms-table th:nth-child(9){width:160px}
+#sms-panel .sms-table th:nth-child(10){width:240px}
+#sms-panel .sms-table th:nth-child(11){width:200px}
+#sms-panel .sms-table th:nth-child(-n+2),#sms-panel .sms-table td:nth-child(-n+2){position:sticky;left:0;background:#fff;z-index:2}
+#sms-panel .sms-table th:nth-child(2),#sms-panel .sms-table td:nth-child(2){left:110px;border-right:1px solid var(--line)}
+#sms-panel .sms-table th:nth-child(-n+2){background:#f8faf9;z-index:3}
+#sms-panel .sms-cell-response code{font-size:12px;white-space:pre-wrap}
+#sms-panel .sms-cell-phone,#sms-panel .sms-cell-createdAt{white-space:nowrap;font-variant-numeric:tabular-nums}
+#sms-panel .sms-pagination{gap:12px;flex-wrap:wrap}
+#sms-panel .sms-page-controls,#sms-panel #sms-jump-form{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#sms-panel #sms-jump{width:64px;min-width:0}
+#sms-panel #sms-page-error{flex-basis:100%;margin:0;color:var(--red)}
+#sms-panel #sms-page-error:empty{display:none}
+@media(max-width:760px){
+ #sms-panel .sms-filters{grid-template-columns:1fr;padding:16px;gap:14px}
+ #sms-panel .sms-table th:nth-child(-n+2),#sms-panel .sms-table td:nth-child(-n+2){position:static}
+ #sms-panel .sms-table th:nth-child(-n+2){position:sticky}
+ #sms-panel .sms-pagination{align-items:flex-start;flex-direction:column}
+ #sms-panel .sms-page-controls{gap:12px}
+ #sms-panel .sms-list-heading{align-items:flex-start;flex-direction:column;padding:16px}
+}

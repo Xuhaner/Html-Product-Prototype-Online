@@ -1,0 +1,49 @@
+/* Administration login is independent of the student authentication UI. */
+.admin-login{min-height:100dvh;background:#f4f7f5}
+.admin-login .login-header{max-width:1320px;margin:auto;padding:28px 48px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.admin-login .login-brand{display:flex;align-items:center;gap:12px;font-size:21px}
+.admin-login .brand-mark{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--green);color:white;font-size:24px}
+.admin-login .login-brand small{display:block;font-size:11px;font-weight:500;letter-spacing:3px;color:var(--muted)}
+.admin-login .login-header>a:last-child{color:var(--muted)}
+.admin-login .login-layout{max-width:1160px;min-height:690px;margin:30px auto 0;display:grid;grid-template-columns:1fr 470px;gap:90px;align-items:center;padding:0 32px}
+.admin-login .login-intro{padding:12px 0}
+.admin-login .login-eyebrow{font-size:12px;color:var(--green);font-weight:700;letter-spacing:2px}
+.admin-login .login-intro h1{font-size:44px;line-height:1.4;letter-spacing:-1px;margin:18px 0;color:#173e2e}
+.admin-login .login-intro>p{color:var(--muted);font-size:16px;line-height:1.9}
+.admin-login .login-map{position:relative;height:224px;margin:30px 0;background:radial-gradient(ellipse,var(--green-soft),transparent 68%);display:grid;place-items:center}
+.admin-login .login-map-center{width:126px;height:126px;border:1px solid #bddacb;border-radius:50%;display:grid;align-content:center;justify-items:center;background:#fff;font-size:19px;font-weight:700;box-shadow:0 12px 35px #146c4b0c}
+.admin-login .login-map-center span{font-size:11px;font-weight:400;color:var(--muted);margin-top:6px}
+.admin-login .login-map-node{position:absolute;padding:12px 18px;background:#fff;border:1px solid var(--line);border-radius:12px;color:var(--green);box-shadow:var(--shadow)}
+.admin-login .login-map-node:nth-child(2){left:0;top:24px}
+.admin-login .login-map-node:nth-child(3){right:0;top:48px}
+.admin-login .login-map-node:nth-child(4){bottom:0;left:24px}
+.admin-login .login-intro-foot{color:var(--muted);letter-spacing:2px}
+.admin-login .login-card{padding:36px 36px 28px;background:white;border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 70px #1c4c3310}
+.admin-login .login-card-heading h2{font-size:28px;margin:10px 0 4px}
+.admin-login .login-card-heading p{color:var(--muted);margin:0 0 24px}
+.admin-login .login-role-label{display:flex;align-items:center;gap:12px;color:var(--muted)}
+.admin-login .login-role-label select{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--mist);color:var(--ink)}
+.admin-login .login-tabs{display:flex;border-bottom:1px solid var(--line);gap:28px;margin:20px 0 24px}
+.admin-login .login-tabs button{padding:12px 0;border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);font-weight:600}
+.admin-login .login-tabs button[aria-selected="true"]{border-bottom-color:var(--green);color:var(--green)}
+.admin-login .login-form{display:grid;gap:18px}
+.admin-login .login-form[hidden]{display:none}
+.admin-login .login-form label{display:grid;gap:8px;font-weight:600}
+.admin-login .login-form input{height:48px;width:100%;min-width:0;border:1px solid #cbd5d0;border-radius:10px;padding:0 13px;background:#fff;color:var(--ink)}
+.admin-login .login-password{position:relative}
+.admin-login .login-password input{padding-right:60px}
+.admin-login .login-password button{position:absolute;right:4px;top:4px;padding:10px;border:0;background:none;color:var(--green)}
+.admin-login .login-code{display:flex;gap:8px}
+.admin-login .login-code button{flex:none;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--green-soft);color:var(--green);font-size:12px}
+.admin-login .login-submit{border:0;border-radius:10px;background:var(--green);color:white;height:50px;font-weight:650;font-size:15px}
+.admin-login .login-submit:hover{background:var(--green-dark)}
+.admin-login .login-error,.admin-login .login-code-status,.admin-login .login-status{margin:0;font-size:12px}
+.admin-login .login-error{color:var(--red)}
+.admin-login .login-error:empty,.admin-login .login-code-status:empty,.admin-login .login-status:empty{display:none}
+.admin-login .login-code-status,.admin-login .login-status{color:var(--green)}
+.admin-login .login-unified{margin:22px 0 14px;text-align:center;font-size:12px;color:var(--muted)}
+.admin-login .login-demo{margin:0;padding:12px;background:var(--mist);border-radius:8px;font-size:11px;color:var(--muted);line-height:1.8}
+.admin-login .login-status{margin-top:14px}
+.admin-login .login-footer{text-align:center;color:var(--muted);font-size:12px;padding:36px 16px}
+@media(max-width:850px){.admin-login .login-layout{gap:32px;grid-template-columns:1fr 420px}.admin-login .login-intro h1{font-size:32px}.admin-login .login-map-node{padding:8px}.admin-login .login-header{padding:24px 32px}}
+@media(max-width:700px){.admin-login .login-header{padding:22px 20px}.admin-login .login-brand{font-size:18px}.admin-login .login-header>a:last-child{font-size:12px}.admin-login .login-layout{display:block;min-height:0;padding:0 16px;margin:20px auto 0;max-width:470px}.admin-login .login-intro{display:none}.admin-login .login-card{padding:28px 22px 24px;border-radius:18px}.admin-login .login-footer{padding:28px 16px}}

@@ -1,0 +1,58 @@
+/* Course transaction lists and detail drawers. */
+body[data-page="commerce"] .main{min-width:0}
+body[data-page="commerce"] .commerce-notice{margin:0 0 18px;padding:11px 14px;border-radius:10px;background:var(--green-soft);color:var(--green-dark);font-size:12px}
+body[data-page="commerce"] .commerce-heading{display:flex;align-items:center;gap:16px;margin:0 0 14px}
+body[data-page="commerce"] .commerce-heading h2{margin:0;font-size:19px}
+body[data-page="commerce"] .commerce-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 20px;padding:20px;margin-bottom:16px}
+body[data-page="commerce"] .commerce-filters label{font-size:12px;color:var(--muted)}
+body[data-page="commerce"] .commerce-filters input,body[data-page="commerce"] .commerce-filters select{width:100%;min-width:0}
+body[data-page="commerce"] .commerce-filter-actions{grid-column:1/-1;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+body[data-page="commerce"] #manage-table{min-width:1400px;font-size:12px}
+body[data-page="commerce"] #manage-table th,body[data-page="commerce"] #manage-table td{padding:13px 14px;white-space:nowrap}
+body[data-page="commerce"] .commerce-ellipsis{max-width:210px;overflow:hidden;text-overflow:ellipsis}
+body[data-page="commerce"] .commerce-money{color:var(--red);font-variant-numeric:tabular-nums;font-weight:700}
+body[data-page="commerce"] .commerce-link{padding:4px 0;background:none;border:0;color:var(--blue);font-weight:650;white-space:nowrap;min-height:32px}
+body[data-page="commerce"] .commerce-link+.commerce-link{margin-left:14px}
+body[data-page="commerce"] .commerce-actions{position:sticky;right:0;background:#fff;box-shadow:-5px 0 10px rgba(24,54,42,.04);z-index:1}
+body[data-page="commerce"] th.commerce-actions{background:#f8faf9}
+body[data-page="commerce"] .commerce-pagination{display:flex;align-items:center;justify-content:flex-end;gap:18px;padding:15px 18px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+body[data-page="commerce"] .commerce-pagination select{min-height:34px;padding:4px 8px}
+body[data-page="commerce"] .commerce-backdrop{place-items:stretch end;padding:0}
+body[data-page="commerce"] .commerce-drawer{width:min(1020px,calc(100vw - 80px));max-height:100vh;height:100%;border-radius:16px 0 0 16px;display:flex;flex-direction:column;overflow:hidden}
+body[data-page="commerce"] .commerce-review .commerce-drawer{width:min(680px,calc(100vw - 80px))}
+body[data-page="commerce"] .commerce-drawer .modal-head{border-bottom:1px solid var(--line);flex-shrink:0;padding:20px 24px}
+body[data-page="commerce"] .commerce-drawer .modal-body{overflow:auto;min-height:0;flex:1;padding:22px 24px}
+body[data-page="commerce"] .commerce-drawer .modal-foot{flex-shrink:0;border-radius:0}
+body[data-page="commerce"] .commerce-subtitle{margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line);color:var(--green);font-size:15px}
+body[data-page="commerce"] .commerce-subtitle:not(:first-child){margin-top:24px}
+body[data-page="commerce"] .commerce-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 20px;border:1px solid var(--line);border-bottom:0}
+body[data-page="commerce"] .commerce-kv>div{display:grid;grid-template-columns:115px minmax(0,1fr);border-bottom:1px solid var(--line);font-size:13px}
+body[data-page="commerce"] .commerce-kv dt{background:#f6f8f7;padding:10px 12px;color:var(--muted)}
+body[data-page="commerce"] .commerce-kv dd{margin:0;padding:10px 12px;overflow-wrap:anywhere;white-space:pre-wrap}
+body[data-page="commerce"] .commerce-review .commerce-kv{grid-template-columns:1fr}
+body[data-page="commerce"] .commerce-detail-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+body[data-page="commerce"] .commerce-transactions table{min-width:720px;font-size:12px}
+body[data-page="commerce"] .commerce-transactions th,body[data-page="commerce"] .commerce-transactions td{padding:10px 12px}
+body[data-page="commerce"] .commerce-error{color:var(--red);font-size:12px}
+body[data-page="commerce"] .commerce-history{list-style:none;margin:0;padding:0 0 0 14px;border-left:2px solid var(--line)}
+body[data-page="commerce"] .commerce-history li{padding:5px 0 14px;display:grid;gap:4px;font-size:13px;overflow-wrap:anywhere}
+body[data-page="commerce"] .commerce-history time{color:var(--muted);font-size:12px}
+body[data-page="commerce"] .commerce-invoice-amount{display:grid;justify-items:center;gap:8px;margin:0 0 26px;color:var(--muted)}
+body[data-page="commerce"] .commerce-invoice-amount strong{font-size:40px;color:var(--ink);line-height:1.2;font-variant-numeric:tabular-nums}
+body[data-page="commerce"] .commerce-confirm{padding:20px 0}
+body[data-page="commerce"] .commerce-confirm p{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(min-width:1700px){body[data-page="commerce"] .commerce-filters{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(max-width:1100px){body[data-page="commerce"] .commerce-filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){
+ body[data-page="commerce"] .commerce-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px}
+ body[data-page="commerce"] .commerce-heading{display:block}
+ body[data-page="commerce"] .commerce-heading h2{margin-bottom:4px}
+ body[data-page="commerce"] .commerce-drawer,body[data-page="commerce"] .commerce-review .commerce-drawer{width:100vw;border-radius:0}
+ body[data-page="commerce"] .commerce-drawer .modal-head{padding:16px}
+ body[data-page="commerce"] .commerce-drawer .modal-body{padding:18px 14px}
+ body[data-page="commerce"] .commerce-kv{grid-template-columns:1fr}
+ body[data-page="commerce"] .commerce-kv>div{grid-template-columns:100px minmax(0,1fr)}
+ body[data-page="commerce"] .commerce-drawer .form-grid{grid-template-columns:1fr}
+ body[data-page="commerce"] .commerce-pagination{gap:10px;padding:14px;justify-content:flex-start}
+ body[data-page="commerce"] .commerce-actions{position:static;box-shadow:none}
+}

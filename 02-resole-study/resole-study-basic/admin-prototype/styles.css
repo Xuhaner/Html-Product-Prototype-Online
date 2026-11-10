@@ -1,0 +1,29 @@
+/* Admin shared stylesheet entry. Keep imports ordered from foundations to overrides. */
+@import url("css/foundation.css");
+@import url("css/layout.css");
+@import url("css/modules/dashboard.css");
+@import url("css/components.css");
+@import url("css/modules/management.css");
+@import url("css/modules/configuration.css");
+@import url("css/responsive.css");
+@import url("css/components/navigation.css");
+@import url("css/modules/admin-modes.css");
+@import url("css/modules/admin-profile.css");
+@import url("css/modules/admin-login.css");
+@import url("css/modules/users.css");
+@import url("css/modules/organizations.css");
+@import url("css/modules/logs.css");
+@import url("css/modules/governance.css");
+@import url("css/modules/courses.css");
+@import url("css/modules/course-knowledge.css");
+@import url("css/modules/resources.css");
+@import url("css/modules/classes.css");
+
+@import url("css/modules/assessments.css");
+@import url("css/modules/system-management.css");
+@import url("css/modules/question-bank.css");
+@import url("css/modules/commerce.css");
+@import url("css/modules/classroom.css");
+@import url("css/modules/smart-build.css");
+
+@import url("css/modules/course-content.css");

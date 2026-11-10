@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<base href="../../">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>睿秀学城 · 考试详情</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages/exam.css">
+</head>
+<body data-page="exam">
+<div class="app">
+  <div id="site-header"></div>
+  <main class="shell" id="main" tabindex="-1">
+    <section class="page active" id="page-exam" aria-labelledby="exam-title">
+<nav class="crumbs" aria-label="面包屑"><button id="exam-back" data-go="detail">Python 程序设计</button> / 考试详情</nav>
+<header class="exam-heading"><div><h1 id="exam-title">Python 程序设计期中考试</h1></div><span class="badge" id="exam-badge">尚未开始</span></header>
+<div class="exam-notice" id="exam-notice" role="status">考试将于 9 月 12 日 14:00 开放。现在可以查看规则并完成考前准备。</div>
+<div class="exam-layout">
+  <div class="exam-content">
+    <section class="card exam-card"><h2>考试安排</h2><dl class="exam-facts"><div><dt>开放时间</dt><dd>2026 年 9 月 12 日<br>14:00–15:00（北京时间）</dd></div><div><dt>作答时长</dt><dd>60 分钟</dd></div><div><dt>试卷总分</dt><dd>100 分 <small>· 60 分及格</small></dd></div><div><dt>作答机会</dt><dd>1 次 <small>· 提交后不可修改</small></dd></div><div><dt>成绩发布</dt><dd>教师完成批阅后统一公布</dd></div></dl></section>
+    <section class="card exam-card"><h2>考试须知</h2><ol class="exam-rules"><li><strong>按时进入，留意截止时间。</strong><p>考试统一于 15:00 结束；迟于 14:00 进入，可用时长将相应缩短。</p></li><li><strong>独立完成，保持考试环境稳定。</strong><p>闭卷作答，不得使用外部资料、通信工具或 AI 助手。正式考试的身份核验和监考要求以教师通知为准。</p></li><li><strong>提交前检查全部答案。</strong><p>仅有一次作答机会，交卷后无法修改。遇到网络异常，应恢复连接并核对保存状态，避免重复交卷。</p></li></ol></section>
+  </div>
+  <aside class="card exam-card exam-entry" aria-labelledby="entry-title"><div class="eyebrow">考前准备</div><h2 id="entry-title">准备好，再出发</h2><p class="meta">请使用稳定的网络，并预留完整的考试时间。</p><div class="field"><label for="exam-promise"><input type="checkbox" id="exam-promise" aria-describedby="promise-error"> 我已阅读考试须知，并承诺独立完成。</label><div class="error-text" id="promise-error" role="alert">请先阅读并同意考试规则。</div></div><button class="btn primary" id="start-exam" disabled aria-describedby="exam-entry-hint">考试尚未开始</button><p class="meta" id="exam-entry-hint">9 月 12 日 14:00 开放进入。</p><button class="btn" data-go="detail">返回课程</button><p class="exam-boundary">交互演示：确认后进入本地演示答卷；不接入真实监考或判题。</p></aside>
+</div>
+</section>
+    <section class="statebox" id="global-state" aria-live="polite" tabindex="-1"></section>
+  </main>
+  <div id="site-footer"></div>
+  <dialog id="exam-dialog" aria-labelledby="dialog-title">
+<div class="dialog-body">
+<div class="eyebrow">准备进入考试</div>
+<h2 id="dialog-title">确认现在开始吗？</h2>
+<p>正式考试确认后开始计时，最晚于 15:00 结束。本次将进入本地演示答卷，作答仅保存在当前标签页。</p>
+<div class="dialog-actions"><button class="btn" data-close-dialog>取消</button><button class="btn primary" id="confirm-exam">确认开始</button>
+</div>
+</div>
+</dialog>
+</div>
+<script src="js/shared/shell.js"></script>
+<script src="js/shared/core.js"></script>
+<script src="js/shared/workflows.js"></script>
+<script src="js/shared/auth.js"></script>
+<script src="js/data/questions.js"></script>
+<script src="js/pages/exam.js"></script>
+<script src="js/shared/states.js"></script>
+<script src="js/shared/init.js"></script>
+<script src="js/shared/topbar.js"></script>
+</body>
+</html>

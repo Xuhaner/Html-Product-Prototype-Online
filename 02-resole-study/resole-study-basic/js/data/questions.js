@@ -1,0 +1,40 @@
+// 演示题库；标准答案仅供本地交互，不用于真实考试。
+const questionBank = [
+ {prompt:'哪段代码会依次输出列表 names 中的每个名字？',options:['for name in names: print(name)','if name in names: print(names)','print(names[0])'],answer:'0',explain:'for 循环依次取得可迭代对象中的每个元素。'},
+ {prompt:'list(range(1, 5)) 的结果是什么？',options:['[1, 2, 3, 4]','[1, 2, 3, 4, 5]','[0, 1, 2, 3, 4]'],answer:'0',explain:'range 包含起点，不包含终点。'},
+ {prompt:'len([2, 4, 6]) 的值是什么？',options:['2','3','6'],answer:'1',explain:'len 返回列表的元素数量，这里有 3 个元素。'},
+ {prompt:'循环中 break 的作用是什么？',options:['跳过本次迭代','结束当前循环','重新开始循环'],answer:'1',explain:'break 立即结束它所在的最内层循环。'},
+ {prompt:'sum([1, 2, 3]) 的结果是什么？',options:['6','123','3'],answer:'0',explain:'sum 将各元素相加，得到 6。'},
+ {prompt:'Python 定义函数使用哪个关键字？',options:['function','def','func'],answer:'1',explain:'def 用于定义函数。'},
+ {prompt:'表达式 7 // 2 的值是什么？',options:['3.5','3','4'],answer:'1',explain:'// 执行向下取整的除法。'},
+ {prompt:'将字符串转成整数使用哪个函数？',options:['str','float','int'],answer:'2',explain:'int 可以将合法的整数字符串转换为整数。'},
+ {prompt:'列表索引从哪个数开始？',options:['0','1','-1'],answer:'0',explain:'第一个元素的非负索引为 0。'},
+ {prompt:'判断两个值是否相等使用哪个运算符？',options:['=','==','!='],answer:'1',explain:'== 比较相等，= 是赋值。'},
+ {prompt:'表达式 not True 的结果是什么？',options:['True','False','None'],answer:'1',explain:'not 对布尔值取反。'},
+ {prompt:'函数没有 return 语句时默认返回什么？',options:['0','False','None'],answer:'2',explain:'没有显式返回值的函数返回 None。'},
+ {prompt:'填空：len("python") 的值为 ____。',type:'text',answer:'6',explain:'字符串包含 6 个字符。'},
+ {prompt:'填空：2 ** 3 的值为 ____。',type:'text',answer:'8',explain:'** 是幂运算，2 的三次方为 8。'},
+ {prompt:'填空："abc"[1] 的值为 ____（不加引号）。',type:'text',answer:'b',explain:'索引 1 对应第二个字符 b。'},
+ {prompt:'填空：min([4, 2, 7]) 的值为 ____。',type:'text',answer:'2',explain:'列表的最小值为 2。'},
+ {prompt:'编写函数 total(nums)，返回整数列表 nums 的元素之和。',type:'code',example:'total([1, 2, 3]) → 6',explain:'可以使用 sum(nums) 或循环累加。'},
+ {prompt:'编写函数 even(n)，返回 n 是否为偶数的布尔值。',type:'code',example:'even(4) → True',explain:'判断 n % 2 == 0。'},
+ {prompt:'编写函数 largest(nums)，返回非空整数列表的最大值。',type:'code',example:'largest([2, 7, 3]) → 7',explain:'可以使用 max(nums) 或循环比较。'},
+ {prompt:'编写函数 count_a(text)，统计字符串中小写 a 的个数。',type:'code',example:'count_a("banana") → 3',explain:'可以使用 text.count("a")。'},
+ {prompt:'一份调查只收到了经常使用校园 App 的学生回答，最需要警惕什么问题？',options:['样本存在选择偏差','样本数量一定太多','数据无法保存'],answer:'0',explain:'主动使用 App 的学生不能代表全部学生，结论可能受到选择偏差影响。'},
+ {prompt:'用柱状图比较四个学院的平均阅读时长时，纵轴从 95 分钟开始，可能造成什么影响？',options:['让差异看起来被放大','让数据自动更准确','让类别顺序随机变化'],answer:'0',explain:'截断纵轴会放大视觉差异，阅读时应同时检查坐标轴范围。'},
+ {prompt:'表格中“报名人数”一列同时出现 120、98 人和“约一百”，清洗时应先做什么？',options:['统一字段格式和单位','删除所有较小数值','直接计算平均数'],answer:'0',explain:'同一字段应先统一为可比较的数据类型、格式和单位。'},
+ {prompt:'看到“学习时长越长，成绩越高”的相关关系，可以直接得出什么结论？',options:['学习时长一定导致成绩提高','两者有关联，但还需排查其他因素','成绩一定导致学习时长增加'],answer:'1',explain:'相关不等于因果，还可能受到基础水平、课程难度等混杂因素影响。'},
+ {prompt:'公开展示班级成绩时，哪种做法更能保护个人隐私？',options:['展示姓名和学号','只展示去标识后的分段统计','把表格链接发到公开群'],answer:'1',explain:'去标识并按区间汇总可以减少个体被识别的风险。'},
+ {prompt:'某月网站访问量突然增长 300%，最合适的第一步是什么？',options:['立即宣布活动成功','核对统计口径、埋点和异常流量','删除增长最高的一天'],answer:'1',explain:'异常变化应先验证数据来源和统计口径，再解释业务原因。'},
+ {prompt:'比较两个班的考试表现，两个班人数差异很大，优先比较哪项指标？',options:['总分之和','平均分及分布','最高分学生姓名'],answer:'1',explain:'总分会受到人数影响，平均水平和分布更适合比较不同规模群体。'},
+ {prompt:'问卷中的缺失值最稳妥的处理方式是什么？',options:['全部填 0','先分析缺失原因和比例再决定','直接删除整份数据'],answer:'1',explain:'缺失可能有不同机制，应先判断原因与规模，再选择删除、插补或保留。'},
+ {prompt:'仪表盘显示“完成率 80%”，还需要了解什么才能正确解读？',options:['分子、分母和统计时间范围','页面背景颜色','图表制作人的姓名'],answer:'0',explain:'比例必须结合口径、基数与时间范围解读。'},
+ {prompt:'将包含手机号的数据文件共享给外部合作方前，最优先的操作是什么？',options:['压缩文件体积','确认授权范围并脱敏','把文件名改成英文'],answer:'1',explain:'个人信息共享应遵循最小必要原则，并确认授权与脱敏要求。'}
+];
+const assessmentConfigs = {
+ practice:{title:'循环结构练习',label:'Python 程序设计 · 章节巩固',indices:[0,1,2,3,4],points:[20,20,20,20,20],minutes:0,limit:Infinity,returnRoute:'detail',returnLabel:'返回课程'},
+ test:{title:'第三章小测',label:'Python 程序设计 · 章节巩固',indices:[1,3,4,5,6],points:[20,20,20,20,20],minutes:15,limit:2,returnRoute:'detail',returnLabel:'返回课程'},
+ exam:{title:'Python 程序设计期中考试',label:'Python 程序设计 · 考试演示',indices:Array.from({length:20},(_,i)=>i),points:[...Array(12).fill(3),...Array(4).fill(6),...Array(4).fill(10)],minutes:60,limit:1,examLike:true,pending:true,requiresConfirmation:true,returnRoute:'detail',returnLabel:'返回课程'},
+ 'open-python':{title:'Python 入门 100 基础题',label:'独立练习 · 不绑定课程',indices:[5,6,7,8,9],points:[20,20,20,20,20],minutes:0,limit:Infinity,storageKey:'open-python',returnRoute:'open-tasks',returnLabel:'返回开放任务'},
+ 'data-literacy':{title:'数据素养等级测评',label:'独立考试 · 不绑定课程',indices:[20,21,22,23,24,25,26,27,28,29],points:Array(10).fill(10),minutes:30,limit:2,storageKey:'data-literacy',examLike:true,requiresConfirmation:true,returnRoute:'open-tasks',returnLabel:'返回开放任务'}
+};
