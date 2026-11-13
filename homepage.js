@@ -1,7 +1,10 @@
 const $ = id => document.getElementById(id);
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const projectLink = project => `project.html?id=${encodeURIComponent(project.id)}`;
-const entryLink = (project, item, entry) => [project.id, item.id, entry.path].map(part => part.split('/').map(encodeURIComponent).join('/')).join('/');
+const entryLink = (project, item, entry) => {
+  const [path, fragment] = entry.path.split('#');
+  return [project.id, item.id, path].map(part => part.split('/').map(encodeURIComponent).join('/')).join('/') + (fragment ? '#' + encodeURIComponent(fragment) : '');
+};
 const sorted = items => [...items].sort((a,b) => b.updatedAt.localeCompare(a.updatedAt));
 const matches = (item, query) => [item.name, item.description, item.updateNote, ...item.entries.map(e => e.name)].join(' ').toLocaleLowerCase().includes(query);
 function entries(project, item) {

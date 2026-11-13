@@ -3,6 +3,7 @@ import json
 import re
 from datetime import date
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 data = json.loads((ROOT / 'catalog.json').read_text())
@@ -11,8 +12,10 @@ count = 0
 
 def check_path(base, value):
     assert isinstance(value, str) and value, 'Missing path'
-    target = (base / value).resolve()
-    assert not Path(value).is_absolute() and target.is_relative_to(base.resolve()), f'Unsafe path: {value}'
+    url = urlsplit(value)
+    assert not url.scheme and not url.netloc, f'Unsafe path: {value}'
+    target = (base / url.path).resolve()
+    assert not Path(url.path).is_absolute() and target.is_relative_to(base.resolve()), f'Unsafe path: {value}'
     assert target.is_file(), f'Missing entry: {target}'
 
 for project in data['projects']:

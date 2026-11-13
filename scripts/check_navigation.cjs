@@ -13,6 +13,7 @@ for (const list of [false,true]) {
  for (const entry of item.entries) assert.ok(html.includes('01-demo/example/'+entry.path));
  assert.ok(html.includes('本次更新'));
 }
+assert.equal(entryLink(project,item,{path:'index.html#admin'}),'01-demo/example/index.html#admin');
 assert.ok(matches(item,'管理端'));
 assert.ok(matches(item,'新增入口'));
 assert.ok(!matches(item,'没有这个内容'));

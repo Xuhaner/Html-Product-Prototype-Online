@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贵兰在线 · 一对一材料诊断模块 需求原型 v2.0</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    /* —— 以下色值取自 guilan.cn 线上样式 —— */
+    --blue:#006eff; --blue-d:#0056cc; --blue-l:#e8f1ff;
+    --ink:#1F2329; --gray6:#646a73; --gray9:#999; --gray-c:#c1c1c1;
+    --line:#e5e7eb; --bg:#f5f6f8; --card:#fff;
+    --red:#ff402a;
+  }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--ink); font-size:14px;
+    -webkit-font-smoothing:antialiased; padding-bottom:40px;
+  }
+  /* ============ 评审工具条 ============ */
+  .bar{
+    position:sticky; top:0; z-index:80; background:#10233f; color:#c6d8f2;
+    padding:10px 18px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .bar .tt{font-size:12.5px; color:#fff; font-weight:600}
+  .bar .tt em{font-style:normal; color:#7fa9e8; font-weight:400; margin-left:6px}
+  .nav{display:flex; gap:5px; flex-wrap:wrap}
+  .nav button{
+    font:inherit; font-size:12px; padding:5px 12px; border-radius:4px; cursor:pointer;
+    background:rgba(255,255,255,.08); color:#b9cdea; border:0; transition:.15s;
+  }
+  .nav button:hover{background:rgba(255,255,255,.16); color:#fff}
+  .nav button.on{background:var(--blue); color:#fff; font-weight:600}
+  .bar .tip{margin-left:auto; font-size:11px; color:#6f8bb5}
+
+  .wrap{max-width:1000px; margin:20px auto 0; padding:0 16px}
+  .page{display:none}
+  .page.on{display:block; animation:fade .2s ease}
+  @keyframes fade{from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:none}}
+
+  /* ============ 官网导航（还原） ============ */
+  .site-nav{
+    background:#fff; border-bottom:1px solid #f0f0f0;
+  }
+  .site-nav .inner{
+    max-width:1200px; margin:0 auto; padding:0 24px; height:60px;
+    display:flex; align-items:center; gap:30px;
+  }
+  .logo{display:flex; align-items:center; gap:8px; font-size:18px; font-weight:700; color:var(--blue); letter-spacing:.5px}
+  .logo .mark{
+    width:28px;height:28px;border-radius:6px;background:var(--blue);color:#fff;
+    display:grid;place-items:center;font-size:13px;
+  }
+  .menu{display:flex; gap:26px}
+  .menu a{
+    font-size:14.5px; color:var(--ink); text-decoration:none; cursor:pointer; line-height:60px;
+    position:relative; display:block;
+  }
+  .menu a:hover{color:var(--blue)}
+  .menu a.hot{color:var(--blue); font-weight:600}
+  .menu a.hot::after{
+    content:"新增"; position:absolute; top:12px; right:-30px;
+    font-size:9px; background:var(--red); color:#fff; padding:1px 5px; border-radius:3px; line-height:1.4;
+  }
+  .site-nav .right{margin-left:auto; display:flex; align-items:center; gap:16px}
+  .site-nav .right .u{
+    display:flex; align-items:center; gap:6px; font-size:13.5px; color:var(--ink); cursor:pointer;
+  }
+  .site-nav .right .u .av{
+    width:26px;height:26px;border-radius:50%;background:var(--blue-l);color:var(--blue);
+    display:grid;place-items:center;font-size:11px;font-weight:600;
+  }
+  .search{
+    display:flex; align-items:center; gap:6px; background:#f5f6f8; border-radius:17px;
+    padding:6px 14px; font-size:13px; color:var(--gray9); width:180px;
+  }
+
+  /* ============ ① 首页新增模块 ============ */
+  .hero-banner{
+    max-width:1200px; margin:24px auto 0; padding:0 24px;
+  }
+  .banner{
+    background:linear-gradient(120deg,#006eff 0%,#2b8bff 70%,#5aa9ff 100%);
+    border-radius:10px; color:#fff; padding:30px 36px;
+    display:flex; align-items:center; gap:30px; position:relative; overflow:hidden;
+  }
+  .banner::after{
+    content:""; position:absolute; right:-50px; bottom:-70px; width:220px; height:220px;
+    border-radius:50%; background:rgba(255,255,255,.10);
+  }
+  .banner .b-txt{flex:1}
+  .banner .kicker{font-size:12px; letter-spacing:2px; color:#bcd9ff; font-weight:600}
+  .banner h2{font-size:24px; margin:9px 0 8px; font-weight:700}
+  .banner p{font-size:13.5px; color:#dcecff; line-height:1.8; max-width:560px}
+  .banner .b-act{flex-shrink:0; text-align:right; position:relative; z-index:1}
+  .banner .stat{
+    font-size:12px; color:#bcd9ff; margin-bottom:12px;
+  }
+  .banner .stat b{font-size:20px; color:#fff; font-family:Georgia,serif; margin:0 3px}
+
+  .btn{
+    font:inherit; border:0; cursor:pointer; border-radius:6px; font-size:14px; font-weight:500;
+    padding:10px 22px; transition:.16s; display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn-white{background:#fff; color:var(--blue); font-weight:600}
+  .btn-white:hover{background:#eaf3ff}
+  .btn-white:disabled{background:#e5e7eb; color:var(--gray9); cursor:not-allowed}
+  .btn-blue{background:var(--blue); color:#fff}
+  .btn-blue:hover{background:var(--blue-d)}
+  .btn-plain{background:#fff; color:var(--ink); border:1px solid var(--line)}
+  .btn-plain:hover{color:var(--blue); border-color:var(--blue)}
+  .btn-full{width:100%}
+
+  .sec{max-width:1200px; margin:26px auto 0; padding:0 24px}
+  .sec-hd{display:flex; align-items:baseline; gap:10px; margin-bottom:14px}
+  .sec-hd h3{font-size:18px; font-weight:600}
+  .sec-hd span{font-size:12.5px; color:var(--gray9)}
+
+  .flow{display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px}
+  .flow .f{
+    background:#fff; border-radius:8px; padding:16px 15px;
+    border:1px solid #f0f0f0;
+  }
+  .flow .f b{
+    display:block; font-size:13px; margin-bottom:6px; color:var(--ink);
+  }
+  .flow .f b i{
+    font-style:normal; color:var(--blue); font-weight:700; margin-right:6px; font-size:15px;
+  }
+  .flow .f p{font-size:12px; color:var(--gray9); line-height:1.7}
+  .flow .f .no{
+    float:right; font-size:10px; color:var(--gray-c);
+  }
+
+  /* ============ ② 预约表单页 ============ */
+  .crumb{
+    max-width:1000px; margin:18px auto 0; padding:0 4px;
+    font-size:13px; color:var(--gray9);
+  }
+  .crumb b{color:var(--ink); font-weight:400}
+  .crumb b.cur{color:var(--blue)}
+  .crumb i{font-style:normal; margin:0 8px; color:var(--gray-c)}
+
+  .card{
+    background:var(--card); border-radius:8px; border:1px solid #f0f0f0;
+    padding:26px 30px 30px;
+  }
+  .card-hd{display:flex; align-items:center; gap:12px; margin-bottom:6px}
+  .card-hd h2{font-size:19px; font-weight:600}
+  .card-hd .quota{
+    font-size:11px; color:var(--red); background:#fff1ef; padding:2px 8px; border-radius:3px; font-weight:500;
+  }
+  .card-sub{font-size:13px; color:var(--gray9); line-height:1.8; margin-bottom:22px}
+  .card-sub b{color:var(--blue); font-weight:500}
+
+  .fgrid{display:grid; grid-template-columns:1fr 1fr; gap:18px 20px}
+  .fld{display:flex; flex-direction:column; gap:7px}
+  .fld.full{grid-column:1/-1}
+  .fld label{font-size:13px; color:var(--ink); font-weight:500}
+  .fld label i{color:var(--red); font-style:normal; margin-right:2px}
+  .fld .hint{font-size:11.5px; color:var(--gray-c); font-weight:400; margin-left:6px}
+  .fld input,.fld select,.fld textarea{
+    font:inherit; font-size:13.5px; padding:9px 12px; border:1px solid var(--line);
+    border-radius:6px; background:#fff; color:var(--ink); width:100%; transition:.15s;
+  }
+  .fld input::placeholder,.fld textarea::placeholder{color:var(--gray-c)}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{
+    outline:0; border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,110,255,.10);
+  }
+  .fld textarea{resize:vertical; min-height:70px; line-height:1.7}
+  .upload{
+    border:1px dashed var(--gray-c); border-radius:6px; padding:18px; text-align:center;
+    font-size:13px; color:var(--gray9); cursor:pointer; background:#fafbfc; transition:.15s;
+  }
+  .upload:hover{border-color:var(--blue); color:var(--blue); background:#f5faff}
+  .upload b{color:var(--blue); font-weight:500}
+  .agree{display:flex; gap:8px; align-items:flex-start; font-size:12px; color:var(--gray9); line-height:1.7}
+  .agree input{width:14px;height:14px;margin-top:2px;accent-color:var(--blue); flex-shrink:0}
+
+  .form-foot{display:flex; gap:10px; margin-top:22px}
+  .form-foot .btn{flex:1; padding:12px}
+
+  /* ============ ③ 成功页 ============ */
+  .succ{padding:44px 30px 30px; text-align:center}
+  .succ .tick{
+    width:58px;height:58px;border-radius:50%;background:var(--blue-l);color:var(--blue);
+    display:grid;place-items:center;font-size:26px;margin:0 auto 16px;
+  }
+  .succ h2{font-size:19px; margin-bottom:9px}
+  .succ > p{font-size:13px; color:var(--gray9); line-height:1.8}
+  .succ .no-box{
+    display:inline-block; margin:16px 0 2px; padding:8px 18px; border-radius:6px;
+    background:#f5f6f8; border:1px dashed var(--gray-c); font-size:13px; color:var(--gray6);
+  }
+  .succ .no-box b{color:var(--blue); font-variant-numeric:tabular-nums; letter-spacing:.5px}
+  .steps2{max-width:560px; margin:26px auto 0; text-align:left}
+  .tl{display:flex; gap:13px; padding-bottom:18px; position:relative}
+  .tl:last-child{padding-bottom:0}
+  .tl::before{content:""; position:absolute; left:8px; top:20px; bottom:0; width:1px; background:var(--line)}
+  .tl:last-child::before{display:none}
+  .tl .dot{
+    width:17px;height:17px;border-radius:50%;border:3px solid var(--blue-l); background:var(--blue);
+    flex-shrink:0; margin-top:2px; z-index:1;
+  }
+  .tl.done .dot{background:var(--gray-c); border-color:#eef0f2}
+  .tl-b b{font-size:13.5px; display:block; margin-bottom:4px}
+  .tl-b p{font-size:12px; color:var(--gray9); line-height:1.7}
+  .succ .acts{display:flex; gap:10px; margin-top:26px; justify-content:center}
+  .succ .acts .btn{min-width:150px}
+
+  /* ============ ④ 管理端 ============ */
+  .wrap:has(#admin.on){max-width:1700px; margin:0 auto; padding:0}
+  .admin-wrap{display:flex; min-height:calc(100vh - 70px)}
+  .side{
+    width:190px; background:#fff; border-right:1px solid var(--line);
+    padding:18px 0; flex-shrink:0;
+  }
+  .side .logo{padding:0 18px 24px}
+  .side .s-title{font-size:12px; color:var(--gray9); padding:8px 18px 6px}
+  .side a{
+    display:block; padding:10px 18px; font-size:13.5px; color:var(--gray6); cursor:pointer;
+    border-left:2px solid transparent;
+  }
+  .side a:hover{color:var(--blue); background:#f7faff}
+  .side a.on{color:var(--blue); font-weight:600; border-left-color:var(--blue); background:#f5faff}
+  .admin-main{flex:1; min-width:0; padding:0 16px 24px}
+  .admin-path{height:52px; display:flex; align-items:center; gap:12px; color:var(--gray6)}
+  #admin .admin-card{border-radius:0; padding:0 22px 22px}
+  .admin-tabs{display:flex; gap:28px; align-items:center; border-bottom:1px solid var(--line); overflow:auto; white-space:nowrap}
+  .admin-tabs span{padding:20px 0 14px; font-size:14px}
+  .admin-tabs .on{color:var(--blue); border-bottom:2px solid var(--blue); font-weight:600}
+  .config-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; padding:26px 0; border-bottom:1px solid var(--line)}
+  .config-grid .fld{gap:12px}
+  .quota-form{grid-column:1/-1; display:grid; gap:18px; width:100%; max-width:360px}
+  .quota-form .btn{justify-self:start}
+  .fld .switch{appearance:none; padding:0; width:40px; height:22px; border:0; border-radius:12px; background:#c7cbd1; position:relative; cursor:pointer}
+  .switch::after{content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; background:#fff; border-radius:50%; transition:transform .15s}
+  .switch:checked{background:var(--blue)}
+  .switch:checked::after{transform:translateX(18px)}
+  .switch:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
+  .module-hidden #home .hero-banner,.module-hidden #home > .sec,.module-hidden .menu .hot{display:none}
+  .new-label-hidden .menu a.hot::after{display:none}
+  .filters{display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; padding:24px 0}
+  .filters .fld{flex:1; min-width:140px}
+  .filters .btn{padding:9px 20px; font-size:13px}
+  .table-scroll{overflow:auto}
+  #admin .tbl{min-width:1240px; white-space:nowrap}
+  #admin .tbl th,#admin .tbl td{padding:14px 12px}
+  #admin .tbl th:last-child,#admin .tbl td:last-child{position:sticky; right:0; background:#fff; box-shadow:-6px 0 8px -8px #888}
+  #admin .tbl th:last-child{background:#f7f8fa}
+  .row-actions{display:flex; gap:14px}
+  button.link{font:inherit; color:var(--blue); background:none; border:0; cursor:pointer; white-space:nowrap}
+  button.link:disabled{color:var(--gray-c); cursor:default; text-decoration:none}
+  .detail-dialog{border:0; border-radius:8px; padding:24px; width:min(620px,calc(100% - 32px)); margin:auto; color:var(--ink)}
+  .detail-dialog::backdrop{background:rgba(0,0,0,.35)}
+  .detail-dialog h3{font-size:18px; margin-bottom:24px}
+  .detail-fields{display:grid; grid-template-columns:90px 1fr; gap:16px; font-size:14px}
+  .detail-fields dt{color:var(--gray6)}
+  .detail-fields dd{overflow-wrap:anywhere; white-space:pre-wrap}
+  .detail-dialog .form-foot{justify-content:flex-end}
+  .detail-dialog .form-foot .btn{flex:none; padding:9px 22px}
+  .admin-card{background:#fff; border:1px solid #f0f0f0; border-radius:8px; padding:20px 22px}
+  .admin-hd{display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap}
+  .admin-hd h3{font-size:16px; font-weight:600}
+  .tbl{width:100%; border-collapse:collapse; font-size:13px}
+  .tbl th{
+    text-align:left; font-size:12px; color:var(--gray9); font-weight:500;
+    padding:10px 12px; background:#f7f8fa; white-space:nowrap;
+  }
+  .tbl th:first-child{border-radius:6px 0 0 6px}
+  .tbl th:last-child{border-radius:0 6px 6px 0}
+  .tbl td{padding:13px 12px; border-bottom:1px solid #f5f6f8; vertical-align:middle}
+  .tbl tr:hover td{background:#fafbfc}
+  .tbl .an{font-variant-numeric:tabular-nums; color:var(--gray9); font-size:12px}
+  .st{font-size:11px; padding:2px 9px; border-radius:3px; white-space:nowrap}
+  .st.wait{background:#fff1ef; color:var(--red)}
+  .st.ok{background:var(--blue-l); color:var(--blue)}
+  .link{color:var(--blue); cursor:pointer; font-size:13px}
+  .link:hover{text-decoration:underline}
+  .pager{display:flex; align-items:center; gap:10px; margin-top:16px; font-size:12.5px; color:var(--gray9)}
+  .pager .pg{
+    display:flex; gap:5px;
+  }
+  .pager .pg span{
+    min-width:28px; height:28px; display:grid; place-items:center; border:1px solid var(--line);
+    border-radius:4px; cursor:pointer; background:#fff; color:var(--gray6); font-size:12.5px;
+  }
+  .pager .pg span.on{background:var(--blue); border-color:var(--blue); color:#fff}
+
+  .foot{
+    max-width:1200px; margin:34px auto 0; padding:20px 24px; border-top:1px solid var(--line);
+    font-size:12px; color:var(--gray9); line-height:2;
+  }
+
+  @media(max-width:820px){
+    .fgrid{grid-template-columns:1fr}
+    .flow{grid-template-columns:1fr 1fr}
+    .admin-wrap{flex-direction:column}
+    .side{width:100%}
+    .side .s-title,.side a:not(.on){display:none}
+    .side .logo{padding-bottom:12px}
+    .config-grid{grid-template-columns:1fr 1fr}
+    .banner{flex-direction:column; align-items:flex-start; gap:18px}
+    .menu{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="tt">贵兰在线 · 一对一材料诊断模块<em>需求原型 v2.0</em></div>
+  <div class="nav">
+    <button class="on" data-go="home">① 官网首页（新入口）</button>
+    <button data-go="apply">② 预约表单页</button>
+    <button data-go="done">③ 提交成功</button>
+    <button data-go="admin">④ 管理端</button>
+  </div>
+  <div class="tip">色值取自 guilan.cn 线上样式（#006eff）</div>
+</div>
+
+<div class="wrap">
+<div class="page on" id="home">
+
+  <!-- ======== 官网导航 ======== -->
+  <div class="site-nav" style="margin:-20px -16px 0; border-radius:0">
+    <div class="inner">
+      <div class="logo"><span class="mark">贵</span>贵兰在线</div>
+      <div class="menu">
+        <a>首页</a>
+        <a>课程</a>
+        <a>院校</a>
+        <a>资讯</a>
+        <a class="hot" data-go="apply">博士申请·材料诊断</a>
+      </div>
+      <div class="right">
+        <div class="search">🔍 搜索</div>
+        <div class="u"><span class="av">王</span>王某</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== 新增 banner ======== -->
+  <div class="hero-banner">
+    <div class="banner">
+      <div class="b-txt">
+        <div class="kicker">华东师范大学贵州研究院 × 贵兰在线</div>
+        <h2>博士研究生申请 · 一对一材料诊断</h2>
+        <p>数据学院教师与在读博士生为你看材料。研究计划书、个人陈述或业绩材料任选其一，登录贵兰在线填报信息即可预约。</p>
+      </div>
+      <div class="b-act">
+        <div class="stat">本期名额<b>60</b>名 · 剩余<b>23</b>名</div>
+        <button class="btn btn-white" id="reserve-button" data-go="apply">立即预约 ›</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== 流程 ======== -->
+  <div class="sec">
+    <div class="sec-hd"><h3>怎么预约</h3><span>登录后填报即可，5 分钟完成</span></div>
+    <div class="flow">
+      <div class="f"><span class="no">STEP 1</span><b><i>01</i>登录注册</b><p>使用贵兰在线现有账号，无需重复注册</p></div>
+      <div class="f"><span class="no">STEP 2</span><b><i>02</i>填报信息</b><p>姓名、单位，上传一份材料</p></div>
+      <div class="f"><span class="no">STEP 3</span><b><i>03</i>等待匹配</b><p>48 小时内匹配老师，短信通知时间</p></div>
+      <div class="f"><span class="no">STEP 4</span><b><i>04</i>收取意见</b><p>5 个工作日内收到一份书面诊断意见</p></div>
+    </div>
+  </div>
+
+  <!-- ======== 预约记录 ======== -->
+  <div class="sec" style="margin-bottom:8px">
+    <div class="sec-hd"><h3>预约记录</h3></div>
+    <div class="admin-card">
+      <table class="tbl">
+        <thead><tr><th>预约时间</th><th>预约编号</th><th>操作</th></tr></thead>
+        <tbody><tr><td>2026-11-13 08:42</td><td>GL2026-0187</td><td><button class="link" type="button" data-go="done">查看详情</button></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="foot">
+    关于我们 · 使用文档 · 联系我们 · 法律条款&nbsp;&nbsp;|&nbsp;&nbsp;贵公网安备52990102000374号&nbsp;&nbsp;黔ICP备2025054928号-1
+  </div>
+</div>
+
+<!-- ==================== ② 预约表单页 ==================== -->
+<div class="page" id="apply">
+  <div class="site-nav" style="margin:-20px -16px 0; border-radius:0">
+    <div class="inner">
+      <div class="logo"><span class="mark">贵</span>贵兰在线</div>
+      <div class="menu"><a data-go="home">首页</a><a>课程</a><a>院校</a><a>资讯</a><a class="hot">博士申请·材料诊断</a></div>
+      <div class="right"><div class="u"><span class="av">王</span>王某</div></div>
+    </div>
+  </div>
+
+  <div class="crumb"><b data-go="home">首页</b><i>/</i><b class="cur">一对一材料诊断预约</b></div>
+
+  <form class="card" id="booking-form">
+    <div class="card-hd">
+      <h2>一对一材料诊断预约</h2>
+      <span class="quota">本期剩余 23 名</span>
+    </div>
+    <div class="card-sub">
+      由<b>华东师范大学数据学院教师与在读博士生</b>提供诊断。材料不限形式，<b>研究计划书、个人陈述、业绩成果</b>任选其一。
+    </div>
+
+    <div class="fgrid">
+      <div class="fld">
+        <label><i>*</i>姓名</label>
+        <input value="王某">
+      </div>
+      <div class="fld">
+        <label><i>*</i>手机号 <span class="hint">登录账号自动带出，可修改</span></label>
+        <input value="13800006688">
+      </div>
+      <div class="fld full">
+        <label><i>*</i>工作单位</label>
+        <input placeholder="如：贵州某某大数据科技有限公司">
+      </div>
+      <div class="fld">
+        <label for="professional-title"><i>*</i>职称</label>
+        <input id="professional-title" name="professionalTitle" required>
+      </div>
+      <div class="fld">
+        <label for="position"><i>*</i>职务</label>
+        <input id="position" name="position" required>
+      </div>
+      <div class="fld">
+        <label>工龄 <span class="hint">选填</span></label>
+        <input placeholder="如：6 年">
+      </div>
+
+      <div class="fld full">
+        <label><i>*</i>个人简历 <span class="hint">Word / PDF，≤50MB</span></label>
+        <div class="upload">将文件拖到此处，或 <b>点击上传</b></div>
+      </div>
+
+      <div class="fld full">
+        <label for="supplement">补充说明 <span class="hint">选填</span></label>
+        <textarea id="supplement" name="supplement" placeholder="如：本人在企业做数据平台，想结合酱酒生产场景做课题。"></textarea>
+      </div>
+    </div>
+
+    <div class="agree" style="margin-top:18px">
+      <input type="checkbox" checked>
+      <span>我已知悉：诊断意见仅作备考参考，不作为录取依据；提交材料仅用于本次诊断，诊断完成 30 日后销毁。</span>
+    </div>
+
+    <div class="form-foot">
+      <button class="btn btn-plain" type="button" data-go="home">返回</button>
+      <button class="btn btn-blue" type="submit">提交预约</button>
+    </div>
+
+  </form>
+  <div style="height:20px"></div>
+</div>
+
+<!-- ==================== ③ 提交成功 ==================== -->
+<div class="page" id="done">
+  <div class="site-nav" style="margin:-20px -16px 0; border-radius:0">
+    <div class="inner">
+      <div class="logo"><span class="mark">贵</span>贵兰在线</div>
+      <div class="menu"><a data-go="home">首页</a><a>课程</a><a>院校</a><a>资讯</a><a class="hot">博士申请·材料诊断</a></div>
+      <div class="right"><div class="u"><span class="av">王</span>王某</div></div>
+    </div>
+  </div>
+
+  <div class="crumb"><b data-go="home">首页</b><i>/</i><b class="cur">预约结果</b></div>
+
+  <div class="card">
+    <div class="succ">
+      <div class="tick">✓</div>
+      <h2>预约成功</h2>
+      <p>我们会尽快为你匹配老师。<br>可凭申请编号与手机号随时查询进度。</p>
+      <div class="no-box">申请编号 <b>GL2026-0187</b></div>
+
+      <div class="steps2">
+        <div class="tl done">
+          <div class="dot"></div>
+          <div class="tl-b">
+            <b>已提交 · 11月13日 08:42</b>
+            <p>预约已进入队列。</p>
+          </div>
+        </div>
+        <div class="tl">
+          <div class="dot"></div>
+          <div class="tl-b">
+            <b>等待匹配 · 48 小时内</b>
+            <p>匹配成功后短信通知，含老师姓名与会议链接。</p>
+          </div>
+        </div>
+        <div class="tl">
+          <div class="dot"></div>
+          <div class="tl-b">
+            <b>书面意见 · 5 个工作日内</b>
+            <p>意见发到你的微信或邮箱。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acts">
+        <button class="btn btn-plain" data-go="home">返回首页</button>
+        <button class="btn btn-blue" data-go="apply">再预约一份材料</button>
+      </div>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+</div>
+
+<!-- ==================== ④ 管理端 ==================== -->
+<div class="page" id="admin">
+  <div class="admin-wrap">
+    <aside class="side">
+      <div class="logo"><span class="mark">贵</span>贵兰在线</div>
+      <div class="s-title">运营管理</div>
+      <a>机构类型管理</a>
+      <a>业务标签</a>
+      <a>业务分类</a>
+      <a>资讯管理</a>
+      <a>站点配置</a>
+      <a>课程配置</a>
+      <a>轮播图管理</a>
+      <a class="on">首页配置</a>
+    </aside>
+
+    <div class="admin-main">
+      <div class="admin-path"><span>运营管理</span><span>/</span><span>首页配置</span></div>
+      <div class="admin-card">
+        <div class="admin-tabs">
+          <span>师生访谈</span><span>热门课程</span><span>专题活动</span><span>数字素养</span><span>OPC训练营</span><span>素养能力提升</span><span class="on">材料诊断</span>
+        </div>
+
+        <div class="config-grid">
+          <div class="fld">
+            <label for="module-visible">模块是否显示</label>
+            <input class="switch" id="module-visible" type="checkbox" role="switch" checked>
+          </div>
+          <div class="fld">
+            <label for="new-label-visible">【新增】标签是否显示</label>
+            <input class="switch" id="new-label-visible" type="checkbox" role="switch" checked>
+          </div>
+          <form class="quota-form" id="quota-form">
+            <div class="fld">
+              <label for="total-quota"><i>*</i>本期名额</label>
+              <input id="total-quota" type="number" min="0" step="1" value="60" required>
+            </div>
+            <div class="fld">
+              <label for="remaining-quota"><i>*</i>剩余名额</label>
+              <input id="remaining-quota" type="number" min="0" max="60" step="1" value="23" required>
+            </div>
+            <button class="btn btn-blue" type="submit">保存</button>
+          </form>
+        </div>
+
+        <form class="filters" id="record-filters">
+          <div class="fld">
+            <label for="filter-name">姓名</label>
+            <input id="filter-name" type="search">
+          </div>
+          <div class="fld">
+            <label for="filter-phone">手机号</label>
+            <input id="filter-phone" type="search" inputmode="tel">
+          </div>
+          <div class="fld">
+            <label for="filter-status">状态</label>
+            <select id="filter-status"><option value="">全部</option><option>待处理</option><option>已反馈</option></select>
+          </div>
+          <button class="btn btn-plain" type="reset">重置</button>
+          <button class="btn btn-blue" type="submit">查询</button>
+        </form>
+
+        <div class="table-scroll">
+          <table class="tbl" id="diagnosis-records">
+            <thead>
+              <tr><th>编号</th><th>姓名</th><th>手机号</th><th>工作单位</th><th>职称</th><th>职务</th><th>工龄</th><th>状态</th><th>提交时间</th><th>操作</th></tr>
+            </thead>
+            <tbody>
+              <tr data-supplement="本人在企业做数据平台，想结合酱酒生产场景做课题。">
+                <td>GL2026-0187</td><td>王某</td><td>13800006688</td><td>贵州某大数据公司</td><td>工程师</td><td>项目经理</td><td>6 年</td><td><span class="st wait">待处理</span></td><td>2026-11-13 08:42</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
+              </tr>
+              <tr>
+                <td>GL2026-0186</td><td>李某</td><td>13900001234</td><td>省属高校</td><td>副教授</td><td>系主任</td><td>10 年</td><td><span class="st wait">待处理</span></td><td>2026-11-12 15:02</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
+              </tr>
+              <tr>
+                <td>GL2026-0185</td><td>陈某</td><td>13700005678</td><td>某磷化工集团</td><td>高级工程师</td><td>技术主管</td><td>8 年</td><td><span class="st wait">待处理</span></td><td>2026-11-11 10:41</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
+              </tr>
+              <tr>
+                <td>GL2026-0182</td><td>周某</td><td>13600009012</td><td>市属国企</td><td>经济师</td><td>部门经理</td><td>12 年</td><td><span class="st ok">已反馈</span></td><td>2026-11-10 09:15</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback" disabled>确认反馈</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pager"><span id="record-count">共 4 条</span><div class="pg"><span class="on">1</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <dialog class="detail-dialog" id="record-detail">
+    <h3>查看详情</h3>
+    <dl class="detail-fields" id="detail-fields"></dl>
+    <form method="dialog" class="form-foot"><button class="btn btn-plain">关闭</button></form>
+  </dialog>
+  <dialog class="detail-dialog" id="feedback-confirm" aria-labelledby="feedback-confirm-title">
+    <h3 id="feedback-confirm-title">确认反馈</h3>
+    <p>确认将该预约标记为“已反馈”？</p>
+    <form method="dialog" class="form-foot">
+      <button class="btn btn-plain" value="cancel">取消</button>
+      <button class="btn btn-blue" value="confirm">确认</button>
+    </form>
+  </dialog>
+</div>
+
+</div>
+
+<script>
+  const pages = document.querySelectorAll('.page');
+  function go(id){
+    if (![...pages].some(page => page.id === id)) id = 'home';
+    history.replaceState(null, '', '#' + id);
+    pages.forEach(p => p.classList.toggle('on', p.id === id));
+    document.querySelectorAll('.nav button').forEach(b => {
+      b.classList.toggle('on', b.dataset.go === id);
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  go(location.hash.slice(1));
+  window.addEventListener('hashchange', () => go(location.hash.slice(1)));
+  document.querySelectorAll('[data-go]').forEach(el => {
+    el.addEventListener('click', e => { e.stopPropagation(); go(el.dataset.go); });
+  });
+  document.getElementById('booking-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.querySelector('#diagnosis-records tbody tr').dataset.supplement = document.getElementById('supplement').value;
+    go('done');
+  });
+
+  document.getElementById('module-visible').addEventListener('change', e => {
+    document.body.classList.toggle('module-hidden', !e.target.checked);
+  });
+  document.getElementById('new-label-visible').addEventListener('change', e => {
+    document.body.classList.toggle('new-label-hidden', !e.target.checked);
+  });
+  const totalQuota = document.getElementById('total-quota');
+  const remainingQuota = document.getElementById('remaining-quota');
+  function updateQuota(){
+    const total = Math.max(0, Math.trunc(Number(totalQuota.value) || 0));
+    const remaining = Math.min(total, Math.max(0, Math.trunc(Number(remainingQuota.value) || 0)));
+    totalQuota.value = total;
+    remainingQuota.value = remaining;
+    remainingQuota.max = total;
+    const counts = document.querySelectorAll('#home .stat b');
+    counts[0].textContent = total;
+    counts[1].textContent = remaining;
+    document.querySelector('#apply .quota').textContent = `本期剩余 ${remaining} 名`;
+    document.getElementById('reserve-button').disabled = remaining === 0;
+  }
+  totalQuota.addEventListener('input', () => {
+    remainingQuota.max = Math.max(0, totalQuota.valueAsNumber || 0);
+  });
+  document.getElementById('quota-form').addEventListener('submit', e => {
+    e.preventDefault();
+    updateQuota();
+  });
+  updateQuota();
+
+  const recordsTable = document.getElementById('diagnosis-records');
+  const filterName = document.getElementById('filter-name');
+  const filterPhone = document.getElementById('filter-phone');
+  const filterStatus = document.getElementById('filter-status');
+  function filterRecords(){
+    let count = 0;
+    recordsTable.querySelectorAll('tbody tr').forEach(row => {
+      const cells = row.cells;
+      row.hidden = !(cells[1].textContent.includes(filterName.value.trim()) &&
+        cells[2].textContent.includes(filterPhone.value.trim()) &&
+        (!filterStatus.value || cells[7].textContent === filterStatus.value));
+      if (!row.hidden) count++;
+    });
+    document.getElementById('record-count').textContent = `共 ${count} 条`;
+  }
+  document.getElementById('record-filters').addEventListener('submit', e => {
+    e.preventDefault();
+    filterRecords();
+  });
+  document.getElementById('record-filters').addEventListener('reset', () => {
+    filterName.value = filterPhone.value = filterStatus.value = '';
+    filterRecords();
+  });
+  filterStatus.addEventListener('change', filterRecords);
+
+  const feedbackConfirm = document.getElementById('feedback-confirm');
+  let feedbackRow = null;
+  feedbackConfirm.addEventListener('close', () => {
+    if (feedbackConfirm.returnValue === 'confirm' && feedbackRow) {
+      const status = feedbackRow.cells[7].querySelector('.st');
+      status.textContent = '已反馈';
+      status.className = 'st ok';
+      feedbackRow.querySelector('[data-action="feedback"]').disabled = true;
+      filterRecords();
+    }
+    feedbackRow = null;
+  });
+
+  recordsTable.addEventListener('click', e => {
+    const button = e.target.closest('button[data-action]');
+    if (!button || button.disabled) return;
+    const row = button.closest('tr');
+    const cells = row.cells;
+    const headings = recordsTable.querySelectorAll('thead th');
+    if (button.dataset.action === 'detail') {
+      const fields = document.getElementById('detail-fields');
+      fields.replaceChildren();
+      for (let i = 0; i < 9; i++) {
+        const label = document.createElement('dt');
+        const value = document.createElement('dd');
+        label.textContent = headings[i].textContent;
+        value.textContent = cells[i].textContent;
+        fields.append(label, value);
+      }
+      const supplementLabel = document.createElement('dt');
+      const supplementValue = document.createElement('dd');
+      supplementLabel.textContent = '补充说明';
+      supplementValue.textContent = row.dataset.supplement || '—';
+      fields.append(supplementLabel, supplementValue);
+      document.getElementById('record-detail').showModal();
+    }
+    if (button.dataset.action === 'feedback') {
+      feedbackRow = row;
+      feedbackConfirm.returnValue = '';
+      feedbackConfirm.showModal();
+    }
+    if (button.dataset.action === 'download') {
+      // 原型示例简历使用当前行数据生成 Word 文档。
+      const resume = document.implementation.createHTMLDocument('个人简历');
+      const heading = resume.createElement('h1');
+      heading.textContent = '个人简历';
+      const fields = resume.createElement('dl');
+      for (let i = 1; i < 7; i++) {
+        const label = resume.createElement('dt');
+        const value = resume.createElement('dd');
+        label.textContent = headings[i].textContent;
+        value.textContent = cells[i].textContent;
+        fields.append(label, value);
+      }
+      resume.body.append(heading, fields);
+      const url = URL.createObjectURL(new Blob(['\ufeff', resume.documentElement.outerHTML], {type:'application/msword'}));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${cells[1].textContent}_个人简历.doc`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+  });
+</script>
+</body>
+</html>
