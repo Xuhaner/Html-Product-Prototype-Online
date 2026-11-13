@@ -232,8 +232,9 @@
   .admin-tabs .on{color:var(--blue); border-bottom:2px solid var(--blue); font-weight:600}
   .config-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; padding:26px 0; border-bottom:1px solid var(--line)}
   .config-grid .fld{gap:12px}
-  .quota-form{grid-column:1/-1; display:grid; gap:18px; width:100%; max-width:360px}
-  .quota-form .btn{justify-self:start}
+  .quota-form{grid-column:1/-1; display:flex; align-items:flex-end; gap:16px; width:100%; max-width:660px}
+  .quota-form .fld{flex:1; min-width:0}
+  .quota-form .btn{flex-shrink:0}
   .fld .switch{appearance:none; padding:0; width:40px; height:22px; border:0; border-radius:12px; background:#c7cbd1; position:relative; cursor:pointer}
   .switch::after{content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; background:#fff; border-radius:50%; transition:transform .15s}
   .switch:checked{background:var(--blue)}
@@ -245,10 +246,14 @@
   .filters .fld{flex:1; min-width:140px}
   .filters .btn{padding:9px 20px; font-size:13px}
   .table-scroll{overflow:auto}
-  #admin .tbl{min-width:1240px; white-space:nowrap}
-  #admin .tbl th,#admin .tbl td{padding:14px 12px}
-  #admin .tbl th:last-child,#admin .tbl td:last-child{position:sticky; right:0; background:#fff; box-shadow:-6px 0 8px -8px #888}
-  #admin .tbl th:last-child{background:#f7f8fa}
+  #diagnosis-records{min-width:1360px; white-space:nowrap}
+  #diagnosis-records th,#diagnosis-records td{padding:14px 12px}
+  #diagnosis-records th:last-child,#diagnosis-records td:last-child{position:sticky; right:0; background:#fff; box-shadow:-6px 0 8px -8px #888}
+  #diagnosis-records th:last-child{background:#f7f8fa}
+  .supplement{display:block; width:120px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
+  .files-table{table-layout:fixed}
+  .files-table th:last-child{width:90px}
+  .files-table td{overflow-wrap:anywhere}
   .row-actions{display:flex; gap:14px}
   button.link{font:inherit; color:var(--blue); background:none; border:0; cursor:pointer; white-space:nowrap}
   button.link:disabled{color:var(--gray-c); cursor:default; text-decoration:none}
@@ -425,8 +430,8 @@
         <input id="position" name="position" required>
       </div>
       <div class="fld">
-        <label>工龄 <span class="hint">选填</span></label>
-        <input placeholder="如：6 年">
+        <label for="service-years"><i>*</i>工龄</label>
+        <input id="service-years" name="serviceYears" placeholder="如：6 年" required>
       </div>
 
       <div class="fld full">
@@ -571,24 +576,24 @@
         <div class="table-scroll">
           <table class="tbl" id="diagnosis-records">
             <thead>
-              <tr><th>编号</th><th>姓名</th><th>手机号</th><th>工作单位</th><th>职称</th><th>职务</th><th>工龄</th><th>状态</th><th>提交时间</th><th>操作</th></tr>
+              <tr><th>编号</th><th>姓名</th><th>手机号</th><th>工作单位</th><th>职称</th><th>职务</th><th>工龄</th><th>补充说明</th><th>状态</th><th>提交时间</th><th>操作</th></tr>
             </thead>
             <tbody>
-              <tr data-supplement="本人在企业做数据平台，想结合酱酒生产场景做课题。">
-                <td>GL2026-0187</td><td>王某</td><td>13800006688</td><td>贵州某大数据公司</td><td>工程师</td><td>项目经理</td><td>6 年</td><td><span class="st wait">待处理</span></td><td>2026-11-13 08:42</td>
-                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
+              <tr data-resume-files="个人简历,个人简历附件">
+                <td>GL2026-0187</td><td>王某</td><td>13800006688</td><td>贵州某大数据公司</td><td>工程师</td><td>项目经理</td><td>6 年</td><td><span class="supplement" title="本人在企业做数据平台，想结合酱酒生产场景做课题。">本人在企业做数据平台，想结合酱酒生产场景做课题。</span></td><td><span class="st wait">待处理</span></td><td>2026-11-13 08:42</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="files">文件列表</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
               </tr>
               <tr>
-                <td>GL2026-0186</td><td>李某</td><td>13900001234</td><td>省属高校</td><td>副教授</td><td>系主任</td><td>10 年</td><td><span class="st wait">待处理</span></td><td>2026-11-12 15:02</td>
-                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
+                <td>GL2026-0186</td><td>李某</td><td>13900001234</td><td>省属高校</td><td>副教授</td><td>系主任</td><td>10 年</td><td><span class="supplement">—</span></td><td><span class="st wait">待处理</span></td><td>2026-11-12 15:02</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="files">文件列表</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
               </tr>
               <tr>
-                <td>GL2026-0185</td><td>陈某</td><td>13700005678</td><td>某磷化工集团</td><td>高级工程师</td><td>技术主管</td><td>8 年</td><td><span class="st wait">待处理</span></td><td>2026-11-11 10:41</td>
-                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
+                <td>GL2026-0185</td><td>陈某</td><td>13700005678</td><td>某磷化工集团</td><td>高级工程师</td><td>技术主管</td><td>8 年</td><td><span class="supplement">—</span></td><td><span class="st wait">待处理</span></td><td>2026-11-11 10:41</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="files">文件列表</button><button class="link" type="button" data-action="feedback">确认反馈</button></div></td>
               </tr>
               <tr>
-                <td>GL2026-0182</td><td>周某</td><td>13600009012</td><td>市属国企</td><td>经济师</td><td>部门经理</td><td>12 年</td><td><span class="st ok">已反馈</span></td><td>2026-11-10 09:15</td>
-                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="download">下载简历</button><button class="link" type="button" data-action="feedback" disabled>确认反馈</button></div></td>
+                <td>GL2026-0182</td><td>周某</td><td>13600009012</td><td>市属国企</td><td>经济师</td><td>部门经理</td><td>12 年</td><td><span class="supplement">—</span></td><td><span class="st ok">已反馈</span></td><td>2026-11-10 09:15</td>
+                <td><div class="row-actions"><button class="link" type="button" data-action="detail">查看详情</button><button class="link" type="button" data-action="files">文件列表</button><button class="link" type="button" data-action="feedback" disabled>确认反馈</button></div></td>
               </tr>
             </tbody>
           </table>
@@ -602,6 +607,17 @@
     <h3>查看详情</h3>
     <dl class="detail-fields" id="detail-fields"></dl>
     <form method="dialog" class="form-foot"><button class="btn btn-plain">关闭</button></form>
+  </dialog>
+  <dialog class="detail-dialog" id="resume-files" aria-labelledby="resume-files-title">
+    <h3 id="resume-files-title">文件列表</h3>
+    <table class="tbl files-table">
+      <thead><tr><th>文件名</th><th>操作</th></tr></thead>
+      <tbody id="resume-file-list"></tbody>
+    </table>
+    <div class="form-foot">
+      <form method="dialog"><button class="btn btn-plain">关闭</button></form>
+      <button class="btn btn-blue" type="button" id="download-all-files">下载全部文件</button>
+    </div>
   </dialog>
   <dialog class="detail-dialog" id="feedback-confirm" aria-labelledby="feedback-confirm-title">
     <h3 id="feedback-confirm-title">确认反馈</h3>
@@ -633,7 +649,11 @@
   });
   document.getElementById('booking-form').addEventListener('submit', e => {
     e.preventDefault();
-    document.querySelector('#diagnosis-records tbody tr').dataset.supplement = document.getElementById('supplement').value;
+    const row = document.querySelector('#diagnosis-records tbody tr');
+    const supplement = row.querySelector('.supplement');
+    supplement.textContent = document.getElementById('supplement').value || '—';
+    supplement.title = document.getElementById('supplement').value;
+    row.cells[6].textContent = document.getElementById('service-years').value;
     go('done');
   });
 
@@ -676,7 +696,7 @@
       const cells = row.cells;
       row.hidden = !(cells[1].textContent.includes(filterName.value.trim()) &&
         cells[2].textContent.includes(filterPhone.value.trim()) &&
-        (!filterStatus.value || cells[7].textContent === filterStatus.value));
+        (!filterStatus.value || row.querySelector('.st').textContent === filterStatus.value));
       if (!row.hidden) count++;
     });
     document.getElementById('record-count').textContent = `共 ${count} 条`;
@@ -695,7 +715,7 @@
   let feedbackRow = null;
   feedbackConfirm.addEventListener('close', () => {
     if (feedbackConfirm.returnValue === 'confirm' && feedbackRow) {
-      const status = feedbackRow.cells[7].querySelector('.st');
+      const status = feedbackRow.querySelector('.st');
       status.textContent = '已反馈';
       status.className = 'st ok';
       feedbackRow.querySelector('[data-action="feedback"]').disabled = true;
@@ -713,18 +733,13 @@
     if (button.dataset.action === 'detail') {
       const fields = document.getElementById('detail-fields');
       fields.replaceChildren();
-      for (let i = 0; i < 9; i++) {
+      for (let i = 0; i < cells.length - 1; i++) {
         const label = document.createElement('dt');
         const value = document.createElement('dd');
         label.textContent = headings[i].textContent;
         value.textContent = cells[i].textContent;
         fields.append(label, value);
       }
-      const supplementLabel = document.createElement('dt');
-      const supplementValue = document.createElement('dd');
-      supplementLabel.textContent = '补充说明';
-      supplementValue.textContent = row.dataset.supplement || '—';
-      fields.append(supplementLabel, supplementValue);
       document.getElementById('record-detail').showModal();
     }
     if (button.dataset.action === 'feedback') {
@@ -732,11 +747,33 @@
       feedbackConfirm.returnValue = '';
       feedbackConfirm.showModal();
     }
-    if (button.dataset.action === 'download') {
-      // 原型示例简历使用当前行数据生成 Word 文档。
-      const resume = document.implementation.createHTMLDocument('个人简历');
+    if (button.dataset.action === 'files') {
+      // 原型示例文件沿用当前行数据生成 Word 文档。
+      const titles = (row.dataset.resumeFiles || '个人简历').split(',');
+      resumeFiles = titles.map(title => createResumeFile(row, title));
+      const list = document.getElementById('resume-file-list');
+      list.replaceChildren();
+      resumeFiles.forEach((file, index) => {
+        const fileRow = list.insertRow();
+        fileRow.insertCell().textContent = file.name;
+        const download = document.createElement('button');
+        download.type = 'button';
+        download.className = 'link';
+        download.textContent = '下载';
+        download.addEventListener('click', () => downloadResumeFile(resumeFiles[index]));
+        fileRow.insertCell().append(download);
+      });
+      document.getElementById('resume-files').showModal();
+    }
+  });
+
+  let resumeFiles = [];
+  function createResumeFile(row, title){
+      const cells = row.cells;
+      const headings = recordsTable.querySelectorAll('thead th');
+      const resume = document.implementation.createHTMLDocument(title);
       const heading = resume.createElement('h1');
-      heading.textContent = '个人简历';
+      heading.textContent = title;
       const fields = resume.createElement('dl');
       for (let i = 1; i < 7; i++) {
         const label = resume.createElement('dt');
@@ -746,15 +783,23 @@
         fields.append(label, value);
       }
       resume.body.append(heading, fields);
-      const url = URL.createObjectURL(new Blob(['\ufeff', resume.documentElement.outerHTML], {type:'application/msword'}));
+      return {
+        name: `${cells[1].textContent}_${title}.doc`,
+        blob: new Blob(['\ufeff', resume.documentElement.outerHTML], {type:'application/msword'})
+      };
+  }
+  function downloadResumeFile(file){
+      const url = URL.createObjectURL(file.blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${cells[1].textContent}_个人简历.doc`;
+      link.download = file.name;
       document.body.append(link);
       link.click();
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
+  }
+  document.getElementById('download-all-files').addEventListener('click', () => {
+    resumeFiles.forEach(downloadResumeFile);
   });
 </script>
 </body>

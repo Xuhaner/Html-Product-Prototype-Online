@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const { JSDOM } = require('jsdom');
 
 const dom = new JSDOM(fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8'), {
+  url: 'https://prototype.test/index.html#admin',
   runScripts: 'dangerously',
   beforeParse(window) { window.scrollTo = () => {}; }
 });
@@ -19,7 +20,12 @@ const rows = [...table.tBodies[0].rows];
 const visible = () => rows.filter(row => !row.hidden);
 const filters = d.getElementById('record-filters');
 const query = () => filters.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+const detailValue = label => [...d.querySelectorAll('#detail-fields dt')]
+  .find(dt => dt.textContent === label).nextElementSibling.textContent;
 
+assert.equal(d.querySelector('.page.on').id, 'admin');
+d.querySelector('.nav [data-go="home"]').click();
+assert.equal(dom.window.location.hash, '#home');
 d.querySelector('#home .tbl [data-go="done"]').click();
 assert.equal(d.querySelector('.page.on').id, 'done');
 d.querySelector('#done [data-go="home"]').click();
@@ -52,7 +58,7 @@ for (const id of ['total-quota', 'remaining-quota']) {
   input(id, id === 'total-quota' ? '60' : '23');
 }
 assert.deepEqual([...table.querySelectorAll('th')].map(th => th.textContent),
-  ['编号', '姓名', '手机号', '工作单位', '职称', '职务', '工龄', '状态', '提交时间', '操作']);
+  ['编号', '姓名', '手机号', '工作单位', '职称', '职务', '工龄', '补充说明', '状态', '提交时间', '操作']);
 assert(!d.getElementById('admin').textContent.includes('提醒'));
 assert(!d.getElementById('admin').textContent.includes('已约时间'));
 assert(rows.every(row => /^1\d{10}$/.test(row.cells[2].textContent)));
@@ -91,16 +97,16 @@ let feedbackOpened = false;
 feedbackDialog.showModal = () => { feedbackOpened = true; };
 rows[0].querySelector('[data-action="feedback"]').click();
 assert(feedbackOpened);
-assert.equal(rows[0].cells[7].textContent, '待处理');
+assert.equal(rows[0].querySelector('.st').textContent, '待处理');
 feedbackDialog.returnValue = 'cancel';
 feedbackDialog.dispatchEvent(new Event('close'));
-assert.equal(rows[0].cells[7].textContent, '待处理');
+assert.equal(rows[0].querySelector('.st').textContent, '待处理');
 assert.equal(visible().length, 3);
 rows[0].querySelector('[data-action="feedback"]').click();
 assert.equal(feedbackDialog.returnValue, '');
 feedbackDialog.returnValue = 'confirm';
 feedbackDialog.dispatchEvent(new Event('close'));
-assert.equal(rows[0].cells[7].textContent, '已反馈');
+assert.equal(rows[0].querySelector('.st').textContent, '已反馈');
 assert(rows[0].querySelector('[data-action="feedback"]').disabled);
 assert.equal(visible().length, 2);
 
@@ -111,20 +117,35 @@ rows[1].querySelector('[data-action="detail"]').click();
 assert(opened);
 assert.equal(d.querySelectorAll('#detail-fields dt').length, 10);
 assert.equal(d.querySelector('#detail-fields dd').textContent, 'GL2026-0186');
-assert.equal(d.querySelector('#detail-fields dt:last-of-type').textContent, '补充说明');
-assert.equal(d.querySelector('#detail-fields dd:last-of-type').textContent, '—');
+assert.equal(detailValue('补充说明'), '—');
 rows[0].querySelector('[data-action="detail"]').click();
-assert.equal(d.querySelector('#detail-fields dd:last-of-type').textContent, rows[0].dataset.supplement);
-let downloaded;
+assert.equal(detailValue('补充说明'), rows[0].querySelector('.supplement').textContent);
+assert.equal(rows[0].cells[7].querySelector('.supplement').title, detailValue('补充说明'));
+const downloaded = [];
 dom.window.URL.createObjectURL = blob => {
   assert.equal(blob.type, 'application/msword');
   assert(blob.size > 0);
   return 'blob:prototype';
 };
 dom.window.URL.revokeObjectURL = () => {};
-dom.window.HTMLAnchorElement.prototype.click = function () { downloaded = this.download; };
-rows[1].querySelector('[data-action="download"]').click();
-assert.equal(downloaded, '李某_个人简历.doc');
+dom.window.HTMLAnchorElement.prototype.click = function () { downloaded.push(this.download); };
+let filesOpened = false;
+d.getElementById('resume-files').showModal = () => { filesOpened = true; };
+rows[0].querySelector('[data-action="files"]').click();
+assert(filesOpened);
+assert.equal(downloaded.length, 0);
+assert.deepEqual([...d.querySelectorAll('#resume-file-list td:first-child')].map(td => td.textContent),
+  ['王某_个人简历.doc', '王某_个人简历附件.doc']);
+d.querySelector('#resume-file-list button').click();
+assert.deepEqual(downloaded, ['王某_个人简历.doc']);
+downloaded.length = 0;
+d.getElementById('download-all-files').click();
+assert.deepEqual(downloaded, ['王某_个人简历.doc', '王某_个人简历附件.doc']);
+downloaded.length = 0;
+rows[1].querySelector('[data-action="files"]').click();
+assert.equal(d.querySelectorAll('#resume-file-list tr').length, 1);
+d.getElementById('download-all-files').click();
+assert.deepEqual(downloaded, ['李某_个人简历.doc']);
 
 d.querySelector('.nav [data-go="apply"]').click();
 const form = d.getElementById('booking-form');
@@ -137,10 +158,15 @@ form.querySelector('[type="submit"]').click();
 assert.equal(d.querySelector('.page.on').id, 'apply');
 d.getElementById('professional-title').value = '工程师';
 d.getElementById('position').value = '项目经理';
+assert(d.getElementById('service-years').required);
+d.querySelector('#booking-form [type="submit"]').click();
+assert.equal(d.querySelector('.page.on').id, 'apply');
+d.getElementById('service-years').value = '6 年';
 d.getElementById('supplement').value = '补充第一行\n补充第二行';
 form.querySelector('[type="submit"]').click();
 assert.equal(d.querySelector('.page.on').id, 'done');
 rows[0].querySelector('[data-action="detail"]').click();
-assert.equal(d.querySelector('#detail-fields dd:last-of-type').textContent, '补充第一行\n补充第二行');
+assert.equal(rows[0].cells[7].textContent, '补充第一行\n补充第二行');
+assert.equal(detailValue('补充说明'), '补充第一行\n补充第二行');
 dom.window.close();
-console.log('通过：名额必填及保存生效、反馈二次确认与取消、补充说明提交及详情展示，以及首页跳转、按钮禁用、配置、筛选、下载和表单校验。');
+console.log('通过：工龄必填、补充说明列表及详情同步、单文件与多文件列表及全部下载，以及名额保存、反馈二次确认、搜索筛选和首页交互。');
